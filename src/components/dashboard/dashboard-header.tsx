@@ -49,21 +49,29 @@ export function DashboardHeader() {
         
         {/* Navigation Links */}
         <div className="hidden md:flex items-center gap-1">
-          <Button variant="ghost" size="sm" className="text-primary">
-            <Calendar className="w-4 h-4 mr-2" />
-            Agendamentos
+          <Button variant="ghost" size="sm" className="text-primary" asChild>
+            <a href="/appointments">
+              <Calendar className="w-4 h-4 mr-2" />
+              Agendamentos
+            </a>
           </Button>
-          <Button variant="ghost" size="sm">
-            <BarChart3 className="w-4 h-4 mr-2" />
-            Relatórios
+          <Button variant="ghost" size="sm" asChild>
+            <a href="/services">
+              <BarChart3 className="w-4 h-4 mr-2" />
+              Serviços
+            </a>
           </Button>
-          <Button variant="ghost" size="sm">
-            <Users className="w-4 h-4 mr-2" />
-            Clientes
+          <Button variant="ghost" size="sm" asChild>
+            <a href="/clients">
+              <Users className="w-4 h-4 mr-2" />
+              Clientes
+            </a>
           </Button>
-          <Button variant="ghost" size="sm">
-            <Settings className="w-4 h-4 mr-2" />
-            Configurações
+          <Button variant="ghost" size="sm" asChild>
+            <a href="/settings">
+              <Settings className="w-4 h-4 mr-2" />
+              Configurações
+            </a>
           </Button>
         </div>
         

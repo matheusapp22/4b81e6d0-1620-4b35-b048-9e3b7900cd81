@@ -19,7 +19,7 @@ export function QuickActions() {
       icon: Plus,
       color: 'text-primary',
       bgColor: 'bg-primary/10',
-      onClick: () => console.log('New appointment')
+      href: '/appointments'
     },
     {
       title: 'Adicionar Cliente',
@@ -27,31 +27,31 @@ export function QuickActions() {
       icon: Users,
       color: 'text-neon-blue',
       bgColor: 'bg-blue-500/10',
-      onClick: () => console.log('Add client')
+      href: '/clients'
     },
     {
-      title: 'Ver Calendário',
+      title: 'Ver Agendamentos',
       description: 'Visualizar agenda completa',
       icon: Calendar,
       color: 'text-neon-green',
       bgColor: 'bg-green-500/10',
-      onClick: () => console.log('View calendar')
+      href: '/appointments'
     },
     {
-      title: 'Configurar Horários',
-      description: 'Definir horários de trabalho',
+      title: 'Gerenciar Serviços',
+      description: 'Configurar seus serviços',
       icon: Clock,
       color: 'text-warning',
       bgColor: 'bg-yellow-500/10',
-      onClick: () => console.log('Configure hours')
+      href: '/services'
     },
     {
-      title: 'Relatórios',
-      description: 'Ver relatórios e métricas',
+      title: 'Horários',
+      description: 'Configurar horários de trabalho',
       icon: BarChart3,
       color: 'text-neon-pink',
       bgColor: 'bg-pink-500/10',
-      onClick: () => console.log('View reports')
+      href: '/settings'
     },
     {
       title: 'Configurações',
@@ -59,7 +59,7 @@ export function QuickActions() {
       icon: Settings,
       color: 'text-muted-foreground',
       bgColor: 'bg-muted/30',
-      onClick: () => console.log('Settings')
+      href: '/settings'
     }
   ];
 
@@ -75,15 +75,17 @@ export function QuickActions() {
               key={action.title}
               variant="ghost"
               className="h-auto p-4 flex flex-col items-center gap-2 hover-glow"
-              onClick={action.onClick}
+              asChild
             >
-              <div className={`p-3 rounded-lg ${action.bgColor}`}>
-                <action.icon className={`w-5 h-5 ${action.color}`} />
-              </div>
-              <div className="text-center">
-                <p className="text-xs font-medium">{action.title}</p>
-                <p className="text-xs text-muted-foreground">{action.description}</p>
-              </div>
+              <a href={action.href}>
+                <div className={`p-3 rounded-lg ${action.bgColor}`}>
+                  <action.icon className={`w-5 h-5 ${action.color}`} />
+                </div>
+                <div className="text-center">
+                  <p className="text-xs font-medium">{action.title}</p>
+                  <p className="text-xs text-muted-foreground">{action.description}</p>
+                </div>
+              </a>
             </Button>
           ))}
         </div>
