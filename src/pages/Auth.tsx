@@ -1,10 +1,10 @@
 import { useState, useEffect } from 'react';
+import { useAuth } from '@/contexts/auth-context';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { GlassCard } from '@/components/ui/glass-card';
-import { useAuth } from '@/contexts/auth-context';
 import { Zap, Mail, Lock, User, Building, ArrowLeft } from 'lucide-react';
 import { Link } from 'react-router-dom';
 

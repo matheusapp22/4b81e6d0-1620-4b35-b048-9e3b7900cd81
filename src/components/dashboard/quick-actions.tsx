@@ -30,12 +30,12 @@ export function QuickActions() {
       href: '/clients'
     },
     {
-      title: 'Ver Agendamentos',
+      title: 'Ver Agenda',
       description: 'Visualizar agenda completa',
       icon: Calendar,
       color: 'text-neon-green',
       bgColor: 'bg-green-500/10',
-      href: '/appointments'
+      href: '/calendar'
     },
     {
       title: 'Gerenciar Serviços',
@@ -46,12 +46,12 @@ export function QuickActions() {
       href: '/services'
     },
     {
-      title: 'Horários',
-      description: 'Configurar horários de trabalho',
+      title: 'Relatórios',
+      description: 'Ver relatórios e métricas',
       icon: BarChart3,
       color: 'text-neon-pink',
       bgColor: 'bg-pink-500/10',
-      href: '/settings'
+      href: '/reports'
     },
     {
       title: 'Configurações',

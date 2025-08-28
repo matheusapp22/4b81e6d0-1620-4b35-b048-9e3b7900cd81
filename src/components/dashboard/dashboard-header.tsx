@@ -36,35 +36,37 @@ export function DashboardHeader() {
       <nav className="flex items-center justify-between">
         {/* Logo */}
         <div className="flex items-center gap-2">
-          <div className="w-8 h-8 bg-gradient-primary rounded-lg flex items-center justify-center">
-            <Zap className="w-5 h-5 text-white" />
-          </div>
-          <div>
-            <span className="font-bold text-lg gradient-text">GoAgendas</span>
-            {profile?.business_name && (
-              <p className="text-xs text-muted-foreground">{profile.business_name}</p>
-            )}
-          </div>
+          <a href="/dashboard" className="flex items-center gap-2">
+            <div className="w-8 h-8 bg-gradient-primary rounded-lg flex items-center justify-center">
+              <Zap className="w-5 h-5 text-white" />
+            </div>
+            <div>
+              <span className="font-bold text-lg gradient-text">GoAgendas</span>
+              {profile?.business_name && (
+                <p className="text-xs text-muted-foreground">{profile.business_name}</p>
+              )}
+            </div>
+          </a>
         </div>
         
         {/* Navigation Links */}
         <div className="hidden md:flex items-center gap-1">
-          <Button variant="ghost" size="sm" className="text-primary" asChild>
+          <Button variant="ghost" size="sm" asChild>
             <a href="/appointments">
               <Calendar className="w-4 h-4 mr-2" />
               Agendamentos
             </a>
           </Button>
           <Button variant="ghost" size="sm" asChild>
-            <a href="/services">
+            <a href="/calendar">
               <BarChart3 className="w-4 h-4 mr-2" />
-              Serviços
+              Agenda
             </a>
           </Button>
           <Button variant="ghost" size="sm" asChild>
-            <a href="/clients">
+            <a href="/reports">
               <Users className="w-4 h-4 mr-2" />
-              Clientes
+              Relatórios
             </a>
           </Button>
           <Button variant="ghost" size="sm" asChild>
