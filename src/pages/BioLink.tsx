@@ -97,18 +97,18 @@ const BioLink = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-hero flex items-center justify-center p-4">
-        <div className="animate-spin rounded-full h-16 w-16 sm:h-32 sm:w-32 border-b-2 border-primary"></div>
+      <div className="min-h-screen bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900 flex items-center justify-center p-4">
+        <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-white"></div>
       </div>
     );
   }
 
   if (!profile) {
     return (
-      <div className="min-h-screen bg-gradient-hero flex items-center justify-center p-4">
-        <GlassCard className="p-6 sm:p-8 text-center max-w-sm mx-auto">
-          <h1 className="text-xl sm:text-2xl font-bold text-white mb-4">Negócio não encontrado</h1>
-          <p className="text-sm sm:text-base text-white/80">O link que você acessou não foi encontrado.</p>
+      <div className="min-h-screen bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900 flex items-center justify-center p-4">
+        <GlassCard className="p-8 text-center max-w-sm mx-auto">
+          <h1 className="text-2xl font-bold text-white mb-4">Negócio não encontrado</h1>
+          <p className="text-white/80">O link que você acessou não foi encontrado.</p>
         </GlassCard>
       </div>
     );
