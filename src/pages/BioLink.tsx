@@ -60,7 +60,7 @@ const BioLink = () => {
         .from('profiles')
         .select('*')
         .eq('business_name', username)
-        .single();
+        .maybeSingle();
 
       if (profileError || !profileData) {
         console.error('Profile not found:', profileError);
@@ -116,58 +116,65 @@ const BioLink = () => {
 
   return (
     <div className="min-h-screen bg-gradient-hero">
-      <div className="container mx-auto px-4 py-8 max-w-md">
+      <div className="container mx-auto px-4 py-4 sm:py-8 max-w-md">
         {/* Banner */}
         {profile.banner_url && (
-          <div className="mb-6 rounded-xl overflow-hidden">
+          <div className="mb-4 sm:mb-6 rounded-xl overflow-hidden">
             <img
               src={profile.banner_url}
               alt="Banner"
-              className="w-full h-48 object-cover"
+              className="w-full h-32 sm:h-48 object-cover"
             />
           </div>
         )}
         
         {/* Business Header */}
-        <GlassCard className="p-6 text-center mb-6">
-          <Avatar className="w-24 h-24 mx-auto mb-4">
+        <GlassCard className="p-4 sm:p-6 text-center mb-4 sm:mb-6">
+          <Avatar className="w-20 h-20 sm:w-24 sm:h-24 mx-auto mb-4">
             <AvatarImage src={profile.avatar_url} />
-            <AvatarFallback className="text-2xl">
+            <AvatarFallback className="text-xl sm:text-2xl">
               {profile.business_name ? profile.business_name[0] : profile.first_name[0]}
             </AvatarFallback>
           </Avatar>
-          <h1 className="text-2xl font-bold text-white mb-2">
+          <h1 className="text-xl sm:text-2xl font-bold text-white mb-3">
             {profile.business_name || `${profile.first_name} ${profile.last_name}`}
           </h1>
-          <div className="flex items-center justify-center gap-2 text-white/80 mb-4">
-            <Star className="w-4 h-4 fill-yellow-400 text-yellow-400" />
-            <span>4.8 • 127 avaliações</span>
+          
+          {/* 5 Stars */}
+          <div className="flex justify-center gap-1 mb-3">
+            {[...Array(5)].map((_, i) => (
+              <Star key={i} className="w-5 h-5 fill-yellow-400 text-yellow-400" />
+            ))}
+          </div>
+          
+          <div className="flex items-center justify-center gap-2 text-white/80 text-sm sm:text-base">
+            <span>5.0 • Avaliação perfeita</span>
           </div>
         </GlassCard>
 
         {/* Contact Info */}
-        <GlassCard className="p-4 mb-6">
-          <h2 className="text-lg font-semibold text-white mb-3">Contato</h2>
+        <GlassCard className="p-4 mb-4 sm:mb-6">
+          <h2 className="text-base sm:text-lg font-semibold text-white mb-3">Contato</h2>
           <div className="space-y-2">
             {profile.phone && (
-              <div className="flex items-center gap-3 text-white/90">
+              <div className="flex items-center gap-3 text-white/90 text-sm sm:text-base">
                 <Phone className="w-4 h-4" />
                 <span>{profile.phone}</span>
               </div>
             )}
             {profile.email && (
-              <div className="flex items-center gap-3 text-white/90">
+              <div className="flex items-center gap-3 text-white/90 text-sm sm:text-base">
                 <Mail className="w-4 h-4" />
-                <span>{profile.email}</span>
+                <span className="break-all">{profile.email}</span>
               </div>
             )}
           </div>
         </GlassCard>
 
         {/* Business Hours */}
-        <GlassCard className="p-4 mb-6">
-          <h2 className="text-lg font-semibold text-white mb-3 flex items-center gap-2">
-            <Clock className="w-5 h-5" />
+        <GlassCard className="p-4 mb-4 sm:mb-6">
+          <h2 className="text-base sm:text-lg font-semibold text-white mb-3 flex items-center gap-2">
+            <Clock className="w-4 h-4 sm:w-5 sm:h-5" />
             Horários de Funcionamento
           </h2>
           <div className="space-y-2">
@@ -183,22 +190,22 @@ const BioLink = () => {
         </GlassCard>
 
         {/* Services */}
-        <GlassCard className="p-4 mb-6">
-          <h2 className="text-lg font-semibold text-white mb-3">Serviços</h2>
+        <GlassCard className="p-4 mb-4 sm:mb-6">
+          <h2 className="text-base sm:text-lg font-semibold text-white mb-3">Serviços</h2>
           <div className="space-y-3">
             {services.map((service) => (
               <div key={service.id} className="border border-white/20 rounded-lg p-3">
-                <div className="flex justify-between items-start mb-2">
-                  <h3 className="font-medium text-white">{service.name}</h3>
-                  <Badge variant="secondary" style={{ backgroundColor: service.color + '20', color: service.color }}>
+                <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start mb-2 gap-2">
+                  <h3 className="font-medium text-white text-sm sm:text-base">{service.name}</h3>
+                  <Badge variant="secondary" style={{ backgroundColor: service.color + '20', color: service.color }} className="self-start">
                     R$ {service.price}
                   </Badge>
                 </div>
                 {service.description && (
-                  <p className="text-white/80 text-sm mb-2">{service.description}</p>
+                  <p className="text-white/80 text-xs sm:text-sm mb-2">{service.description}</p>
                 )}
-                <div className="flex justify-between items-center">
-                  <span className="text-white/70 text-sm flex items-center gap-1">
+                <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2">
+                  <span className="text-white/70 text-xs sm:text-sm flex items-center gap-1">
                     <Clock className="w-3 h-3" />
                     {service.duration} min
                   </span>
@@ -207,12 +214,13 @@ const BioLink = () => {
                       <Button
                         variant="neon"
                         size="sm"
+                        className="w-full sm:w-auto"
                         onClick={() => setSelectedService(service)}
                       >
                         Agendar
                       </Button>
                     </DialogTrigger>
-                    <DialogContent className="glass-card border-neon">
+                    <DialogContent className="glass-card border-neon mx-4 max-w-[calc(100vw-2rem)] sm:max-w-lg">
                       <DialogHeader>
                         <DialogTitle className="text-white">Agendar {service.name}</DialogTitle>
                       </DialogHeader>
