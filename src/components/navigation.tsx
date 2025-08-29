@@ -20,7 +20,8 @@ export function Navigation() {
     window.location.pathname === '/appointments' ||
     window.location.pathname === '/calendar' ||
     window.location.pathname === '/reports' ||
-    window.location.pathname === '/settings'
+    window.location.pathname === '/settings' ||
+    window.location.pathname === '/biolink-editor'
   )) {
     return null;
   }

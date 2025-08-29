@@ -17,6 +17,7 @@ interface BusinessProfile {
   phone: string;
   email: string;
   avatar_url: string;
+  banner_url?: string;
   timezone: string;
 }
 
@@ -116,6 +117,17 @@ const BioLink = () => {
   return (
     <div className="min-h-screen bg-gradient-hero">
       <div className="container mx-auto px-4 py-8 max-w-md">
+        {/* Banner */}
+        {profile.banner_url && (
+          <div className="mb-6 rounded-xl overflow-hidden">
+            <img
+              src={profile.banner_url}
+              alt="Banner"
+              className="w-full h-48 object-cover"
+            />
+          </div>
+        )}
+        
         {/* Business Header */}
         <GlassCard className="p-6 text-center mb-6">
           <Avatar className="w-24 h-24 mx-auto mb-4">

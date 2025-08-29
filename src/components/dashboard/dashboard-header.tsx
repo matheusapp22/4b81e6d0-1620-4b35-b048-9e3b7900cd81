@@ -9,7 +9,8 @@ import {
   Zap, 
   LogOut,
   Bell,
-  User
+  User,
+  Link2
 } from 'lucide-react';
 import {
   DropdownMenu,
@@ -75,6 +76,12 @@ export function DashboardHeader() {
               Configurações
             </a>
           </Button>
+          <Button variant="ghost" size="sm" asChild>
+            <a href="/biolink-editor">
+              <Link2 className="w-4 h-4 mr-2" />
+              BioLink
+            </a>
+          </Button>
         </div>
         
         {/* User Menu */}
@@ -109,13 +116,23 @@ export function DashboardHeader() {
                 </div>
               </DropdownMenuLabel>
               <DropdownMenuSeparator />
-              <DropdownMenuItem>
-                <User className="mr-2 h-4 w-4" />
-                <span>Perfil</span>
+              <DropdownMenuItem asChild>
+                <a href="/settings">
+                  <User className="mr-2 h-4 w-4" />
+                  <span>Perfil</span>
+                </a>
               </DropdownMenuItem>
-              <DropdownMenuItem>
-                <Settings className="mr-2 h-4 w-4" />
-                <span>Configurações</span>
+              <DropdownMenuItem asChild>
+                <a href="/biolink-editor">
+                  <Link2 className="mr-2 h-4 w-4" />
+                  <span>Editor BioLink</span>
+                </a>
+              </DropdownMenuItem>
+              <DropdownMenuItem asChild>
+                <a href="/settings">
+                  <Settings className="mr-2 h-4 w-4" />
+                  <span>Configurações</span>
+                </a>
               </DropdownMenuItem>
               <DropdownMenuSeparator />
               <DropdownMenuItem onClick={signOut}>
