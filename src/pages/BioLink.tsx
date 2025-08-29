@@ -130,25 +130,34 @@ const BioLink = () => {
         
         {/* Business Header */}
         <GlassCard className="p-4 sm:p-6 text-center mb-4 sm:mb-6">
-          <Avatar className="w-16 h-16 xs:w-20 xs:h-20 sm:w-24 sm:h-24 mx-auto mb-3 sm:mb-4">
+          <Avatar className="w-20 h-20 xs:w-24 xs:h-24 sm:w-28 sm:h-28 mx-auto mb-4 border-2 border-white/20">
             <AvatarImage src={profile.avatar_url} />
-            <AvatarFallback className="text-lg xs:text-xl sm:text-2xl">
+            <AvatarFallback className="text-xl xs:text-2xl sm:text-3xl font-bold bg-gradient-to-br from-primary to-primary/60">
               {profile.business_name ? profile.business_name[0] : profile.first_name[0]}
             </AvatarFallback>
           </Avatar>
-          <h1 className="text-lg xs:text-xl sm:text-2xl font-bold text-white mb-3 px-2">
-            {profile.business_name || `${profile.first_name} ${profile.last_name}`}
-          </h1>
+          
+          {/* Business Name */}
+          <div className="mb-4">
+            <h1 className="text-xl xs:text-2xl sm:text-3xl font-bold text-white mb-2 leading-tight">
+              {profile.business_name || `${profile.first_name} ${profile.last_name}`}
+            </h1>
+            {profile.business_name && (
+              <p className="text-white/70 text-sm xs:text-base">
+                {profile.first_name} {profile.last_name}
+              </p>
+            )}
+          </div>
           
           {/* 5 Stars */}
-          <div className="flex justify-center gap-1 mb-2 sm:mb-3">
+          <div className="flex justify-center gap-1 mb-3">
             {[...Array(5)].map((_, i) => (
-              <Star key={i} className="w-4 h-4 sm:w-5 sm:h-5 fill-yellow-400 text-yellow-400" />
+              <Star key={i} className="w-5 h-5 sm:w-6 sm:h-6 fill-yellow-400 text-yellow-400 drop-shadow-sm" />
             ))}
           </div>
           
-          <div className="flex items-center justify-center gap-2 text-white/80 text-xs xs:text-sm sm:text-base">
-            <span>5.0 • Avaliação perfeita</span>
+          <div className="flex items-center justify-center gap-2 text-white/90 text-sm xs:text-base font-medium">
+            <span>★ 5.0 • Avaliação perfeita</span>
           </div>
         </GlassCard>
 
@@ -172,18 +181,23 @@ const BioLink = () => {
         </GlassCard>
 
         {/* Business Hours */}
-        <GlassCard className="p-3 sm:p-4 mb-4 sm:mb-6">
-          <h2 className="text-sm xs:text-base sm:text-lg font-semibold text-white mb-2 sm:mb-3 flex items-center gap-2">
-            <Clock className="w-3 h-3 xs:w-4 xs:h-4 sm:w-5 sm:h-5" />
+        <GlassCard className="p-4 sm:p-5 mb-4 sm:mb-6">
+          <h2 className="text-base xs:text-lg sm:text-xl font-semibold text-white mb-4 flex items-center gap-2">
+            <Clock className="w-4 h-4 xs:w-5 xs:h-5 sm:w-6 sm:h-6 text-primary" />
             Horários de Funcionamento
           </h2>
-          <div className="space-y-1 sm:space-y-2">
+          <div className="grid grid-cols-1 gap-2 sm:gap-3">
             {businessHours.map((hour) => (
-              <div key={hour.day_of_week} className="flex justify-between text-xs xs:text-sm">
-                <span className="text-white/90">{dayNames[hour.day_of_week]}</span>
-                <span className={hour.is_working ? "text-green-400" : "text-red-400"}>
-                  {hour.is_working ? `${hour.start_time} - ${hour.end_time}` : 'Fechado'}
+              <div key={hour.day_of_week} className="flex justify-between items-center p-2 sm:p-3 rounded-lg bg-white/5 border border-white/10">
+                <span className="text-white font-medium text-sm xs:text-base">
+                  {dayNames[hour.day_of_week]}
                 </span>
+                <div className="flex items-center gap-2">
+                  <div className={`w-2 h-2 rounded-full ${hour.is_working ? 'bg-green-400' : 'bg-red-400'}`}></div>
+                  <span className={`text-sm xs:text-base font-medium ${hour.is_working ? "text-green-400" : "text-red-400"}`}>
+                    {hour.is_working ? `${hour.start_time} - ${hour.end_time}` : 'Fechado'}
+                  </span>
+                </div>
               </div>
             ))}
           </div>
