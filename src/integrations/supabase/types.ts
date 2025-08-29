@@ -119,6 +119,182 @@ export type Database = {
         }
         Relationships: []
       }
+      campaign_sends: {
+        Row: {
+          campaign_id: string
+          clicked_at: string | null
+          client_id: string
+          converted_at: string | null
+          id: string
+          opened_at: string | null
+          sent_at: string | null
+        }
+        Insert: {
+          campaign_id: string
+          clicked_at?: string | null
+          client_id: string
+          converted_at?: string | null
+          id?: string
+          opened_at?: string | null
+          sent_at?: string | null
+        }
+        Update: {
+          campaign_id?: string
+          clicked_at?: string | null
+          client_id?: string
+          converted_at?: string | null
+          id?: string
+          opened_at?: string | null
+          sent_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "campaign_sends_campaign_id_fkey"
+            columns: ["campaign_id"]
+            isOneToOne: false
+            referencedRelation: "campaigns"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "campaign_sends_client_id_fkey"
+            columns: ["client_id"]
+            isOneToOne: false
+            referencedRelation: "clients"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      campaigns: {
+        Row: {
+          created_at: string
+          discount_amount: number | null
+          discount_percentage: number | null
+          end_date: string | null
+          id: string
+          is_active: boolean | null
+          message_template: string | null
+          name: string
+          start_date: string | null
+          target_segment: Json | null
+          type: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          discount_amount?: number | null
+          discount_percentage?: number | null
+          end_date?: string | null
+          id?: string
+          is_active?: boolean | null
+          message_template?: string | null
+          name: string
+          start_date?: string | null
+          target_segment?: Json | null
+          type: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          discount_amount?: number | null
+          discount_percentage?: number | null
+          end_date?: string | null
+          id?: string
+          is_active?: boolean | null
+          message_template?: string | null
+          name?: string
+          start_date?: string | null
+          target_segment?: Json | null
+          type?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      cash_flow: {
+        Row: {
+          amount: number
+          category: string
+          created_at: string
+          date: string
+          description: string | null
+          id: string
+          reference_id: string | null
+          reference_type: string | null
+          type: string
+          user_id: string
+        }
+        Insert: {
+          amount: number
+          category: string
+          created_at?: string
+          date?: string
+          description?: string | null
+          id?: string
+          reference_id?: string | null
+          reference_type?: string | null
+          type: string
+          user_id: string
+        }
+        Update: {
+          amount?: number
+          category?: string
+          created_at?: string
+          date?: string
+          description?: string | null
+          id?: string
+          reference_id?: string | null
+          reference_type?: string | null
+          type?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      client_subscriptions: {
+        Row: {
+          benefits: Json | null
+          client_id: string
+          created_at: string
+          end_date: string | null
+          id: string
+          plan_type: string
+          price: number | null
+          start_date: string
+          status: string | null
+          updated_at: string
+        }
+        Insert: {
+          benefits?: Json | null
+          client_id: string
+          created_at?: string
+          end_date?: string | null
+          id?: string
+          plan_type: string
+          price?: number | null
+          start_date: string
+          status?: string | null
+          updated_at?: string
+        }
+        Update: {
+          benefits?: Json | null
+          client_id?: string
+          created_at?: string
+          end_date?: string | null
+          id?: string
+          plan_type?: string
+          price?: number | null
+          start_date?: string
+          status?: string | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "client_subscriptions_client_id_fkey"
+            columns: ["client_id"]
+            isOneToOne: false
+            referencedRelation: "clients"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       clients: {
         Row: {
           created_at: string
@@ -151,6 +327,179 @@ export type Database = {
           user_id?: string
         }
         Relationships: []
+      }
+      commissions: {
+        Row: {
+          amount: number
+          appointment_id: string
+          created_at: string
+          employee_id: string
+          id: string
+          paid_at: string | null
+          status: string | null
+        }
+        Insert: {
+          amount: number
+          appointment_id: string
+          created_at?: string
+          employee_id: string
+          id?: string
+          paid_at?: string | null
+          status?: string | null
+        }
+        Update: {
+          amount?: number
+          appointment_id?: string
+          created_at?: string
+          employee_id?: string
+          id?: string
+          paid_at?: string | null
+          status?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "commissions_appointment_id_fkey"
+            columns: ["appointment_id"]
+            isOneToOne: false
+            referencedRelation: "appointments"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "commissions_employee_id_fkey"
+            columns: ["employee_id"]
+            isOneToOne: false
+            referencedRelation: "employees"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      employees: {
+        Row: {
+          avatar_url: string | null
+          commission_rate: number | null
+          created_at: string
+          email: string | null
+          id: string
+          is_active: boolean | null
+          name: string
+          phone: string | null
+          position: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          avatar_url?: string | null
+          commission_rate?: number | null
+          created_at?: string
+          email?: string | null
+          id?: string
+          is_active?: boolean | null
+          name: string
+          phone?: string | null
+          position?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          avatar_url?: string | null
+          commission_rate?: number | null
+          created_at?: string
+          email?: string | null
+          id?: string
+          is_active?: boolean | null
+          name?: string
+          phone?: string | null
+          position?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      loyalty_points: {
+        Row: {
+          client_id: string
+          created_at: string
+          id: string
+          last_activity: string | null
+          points_balance: number | null
+          points_earned: number | null
+          points_spent: number | null
+          updated_at: string
+        }
+        Insert: {
+          client_id: string
+          created_at?: string
+          id?: string
+          last_activity?: string | null
+          points_balance?: number | null
+          points_earned?: number | null
+          points_spent?: number | null
+          updated_at?: string
+        }
+        Update: {
+          client_id?: string
+          created_at?: string
+          id?: string
+          last_activity?: string | null
+          points_balance?: number | null
+          points_earned?: number | null
+          points_spent?: number | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "loyalty_points_client_id_fkey"
+            columns: ["client_id"]
+            isOneToOne: false
+            referencedRelation: "clients"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      loyalty_transactions: {
+        Row: {
+          appointment_id: string | null
+          client_id: string
+          created_at: string
+          description: string | null
+          id: string
+          points: number
+          type: string
+        }
+        Insert: {
+          appointment_id?: string | null
+          client_id: string
+          created_at?: string
+          description?: string | null
+          id?: string
+          points: number
+          type: string
+        }
+        Update: {
+          appointment_id?: string | null
+          client_id?: string
+          created_at?: string
+          description?: string | null
+          id?: string
+          points?: number
+          type?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "loyalty_transactions_appointment_id_fkey"
+            columns: ["appointment_id"]
+            isOneToOne: false
+            referencedRelation: "appointments"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "loyalty_transactions_client_id_fkey"
+            columns: ["client_id"]
+            isOneToOne: false
+            referencedRelation: "clients"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       notifications: {
         Row: {
@@ -195,6 +544,51 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      products: {
+        Row: {
+          category: string | null
+          created_at: string
+          current_stock: number | null
+          description: string | null
+          id: string
+          is_active: boolean | null
+          min_stock: number | null
+          name: string
+          sku: string | null
+          unit_price: number | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          category?: string | null
+          created_at?: string
+          current_stock?: number | null
+          description?: string | null
+          id?: string
+          is_active?: boolean | null
+          min_stock?: number | null
+          name: string
+          sku?: string | null
+          unit_price?: number | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          category?: string | null
+          created_at?: string
+          current_stock?: number | null
+          description?: string | null
+          id?: string
+          is_active?: boolean | null
+          min_stock?: number | null
+          name?: string
+          sku?: string | null
+          unit_price?: number | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
       }
       profiles: {
         Row: {
@@ -313,6 +707,189 @@ export type Database = {
         }
         Relationships: []
       }
+      promotions: {
+        Row: {
+          created_at: string
+          current_uses: number | null
+          description: string | null
+          discount_type: string | null
+          discount_value: number | null
+          end_date: string
+          id: string
+          is_active: boolean | null
+          is_flash: boolean | null
+          max_uses: number | null
+          min_amount: number | null
+          start_date: string
+          title: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          current_uses?: number | null
+          description?: string | null
+          discount_type?: string | null
+          discount_value?: number | null
+          end_date: string
+          id?: string
+          is_active?: boolean | null
+          is_flash?: boolean | null
+          max_uses?: number | null
+          min_amount?: number | null
+          start_date: string
+          title: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          current_uses?: number | null
+          description?: string | null
+          discount_type?: string | null
+          discount_value?: number | null
+          end_date?: string
+          id?: string
+          is_active?: boolean | null
+          is_flash?: boolean | null
+          max_uses?: number | null
+          min_amount?: number | null
+          start_date?: string
+          title?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      referrals: {
+        Row: {
+          completed_at: string | null
+          created_at: string
+          id: string
+          referral_code: string | null
+          referred_id: string | null
+          referrer_id: string
+          reward_points: number | null
+          status: string | null
+        }
+        Insert: {
+          completed_at?: string | null
+          created_at?: string
+          id?: string
+          referral_code?: string | null
+          referred_id?: string | null
+          referrer_id: string
+          reward_points?: number | null
+          status?: string | null
+        }
+        Update: {
+          completed_at?: string | null
+          created_at?: string
+          id?: string
+          referral_code?: string | null
+          referred_id?: string | null
+          referrer_id?: string
+          reward_points?: number | null
+          status?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "referrals_referred_id_fkey"
+            columns: ["referred_id"]
+            isOneToOne: false
+            referencedRelation: "clients"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "referrals_referrer_id_fkey"
+            columns: ["referrer_id"]
+            isOneToOne: false
+            referencedRelation: "clients"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      satisfaction_surveys: {
+        Row: {
+          appointment_id: string
+          client_id: string
+          feedback: string | null
+          id: string
+          nps_score: number | null
+          rating: number | null
+          submitted_at: string | null
+        }
+        Insert: {
+          appointment_id: string
+          client_id: string
+          feedback?: string | null
+          id?: string
+          nps_score?: number | null
+          rating?: number | null
+          submitted_at?: string | null
+        }
+        Update: {
+          appointment_id?: string
+          client_id?: string
+          feedback?: string | null
+          id?: string
+          nps_score?: number | null
+          rating?: number | null
+          submitted_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "satisfaction_surveys_appointment_id_fkey"
+            columns: ["appointment_id"]
+            isOneToOne: false
+            referencedRelation: "appointments"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "satisfaction_surveys_client_id_fkey"
+            columns: ["client_id"]
+            isOneToOne: false
+            referencedRelation: "clients"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      service_products: {
+        Row: {
+          created_at: string
+          id: string
+          product_id: string
+          quantity_used: number | null
+          service_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          product_id: string
+          quantity_used?: number | null
+          service_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          product_id?: string
+          quantity_used?: number | null
+          service_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "service_products_product_id_fkey"
+            columns: ["product_id"]
+            isOneToOne: false
+            referencedRelation: "products"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "service_products_service_id_fkey"
+            columns: ["service_id"]
+            isOneToOne: false
+            referencedRelation: "services"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       services: {
         Row: {
           color: string | null
@@ -354,6 +931,47 @@ export type Database = {
           user_id?: string
         }
         Relationships: []
+      }
+      stock_movements: {
+        Row: {
+          created_at: string
+          id: string
+          notes: string | null
+          product_id: string
+          quantity: number
+          reference_id: string | null
+          reference_type: string | null
+          type: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          notes?: string | null
+          product_id: string
+          quantity: number
+          reference_id?: string | null
+          reference_type?: string | null
+          type: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          notes?: string | null
+          product_id?: string
+          quantity?: number
+          reference_id?: string | null
+          reference_type?: string | null
+          type?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "stock_movements_product_id_fkey"
+            columns: ["product_id"]
+            isOneToOne: false
+            referencedRelation: "products"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       subscriptions: {
         Row: {

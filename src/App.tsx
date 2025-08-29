@@ -16,6 +16,11 @@ import { Reports } from "./pages/Reports";
 import { Settings } from "./pages/Settings";
 import BioLink from "./pages/BioLink";
 import { BioLinkEditor } from "./pages/BioLinkEditor";
+import { Employees } from "./pages/Employees";
+import { Financial } from "./pages/Financial";
+import { Loyalty } from "./pages/Loyalty";
+import { Marketing } from "./pages/Marketing";
+import { Inventory } from "./pages/Inventory";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -38,6 +43,11 @@ const App = () => (
             <Route path="/reports" element={<ProtectedRoute><Reports /></ProtectedRoute>} />
             <Route path="/settings" element={<ProtectedRoute><Settings /></ProtectedRoute>} />
             <Route path="/biolink-editor" element={<ProtectedRoute><BioLinkEditor /></ProtectedRoute>} />
+            <Route path="/employees" element={<ProtectedRoute><Employees /></ProtectedRoute>} />
+            <Route path="/financial" element={<ProtectedRoute><Financial /></ProtectedRoute>} />
+            <Route path="/loyalty" element={<ProtectedRoute><Loyalty /></ProtectedRoute>} />
+            <Route path="/marketing" element={<ProtectedRoute><Marketing /></ProtectedRoute>} />
+            <Route path="/inventory" element={<ProtectedRoute><Inventory /></ProtectedRoute>} />
             <Route path="/bio/:username" element={<BioLink />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
