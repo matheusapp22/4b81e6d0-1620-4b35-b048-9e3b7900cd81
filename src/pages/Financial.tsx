@@ -81,7 +81,10 @@ export function Financial() {
 
       if (commissionsError) throw commissionsError;
 
-      setCashFlow(cashFlowData || []);
+      setCashFlow(cashFlowData?.map(entry => ({
+        ...entry,
+        type: entry.type as 'income' | 'expense'
+      })) || []);
       setCommissions(commissionsData?.map(c => ({
         id: c.id,
         amount: c.amount,

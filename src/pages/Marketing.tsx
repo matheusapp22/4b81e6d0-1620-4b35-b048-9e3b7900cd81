@@ -113,11 +113,7 @@ export function Marketing() {
       // Fetch referrals with client data
       const { data: referralsData, error: referralsError } = await supabase
         .from('referrals')
-        .select(`
-          *,
-          referrer:referrer_id (name),
-          referred:referred_id (name)
-        `)
+        .select('*')
         .order('created_at', { ascending: false });
 
       if (referralsError) throw referralsError;
@@ -126,9 +122,9 @@ export function Marketing() {
       setPromotions(promotionsData?.map(p => ({ ...p, discount_type: p.discount_type as any })) || []);
       setReferrals(referralsData?.map(r => ({
         id: r.id,
-        referrer_name: r.referrer?.name || 'N/A',
-        referred_name: r.referred?.name,
-        referral_code: r.referral_code,
+        referrer_name: 'Cliente',
+        referred_name: undefined,
+        referral_code: r.referral_code || '',
         status: r.status as 'pending' | 'completed' | 'rewarded',
         reward_points: r.reward_points,
         created_at: r.created_at,
