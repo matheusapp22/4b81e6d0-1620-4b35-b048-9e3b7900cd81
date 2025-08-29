@@ -5,7 +5,7 @@ import { GlassCard } from '@/components/ui/glass-card';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
-import { Calendar, Clock, MapPin, Phone, Mail, Star } from 'lucide-react';
+import { Calendar, Clock, Phone, Mail, Star, MessageCircle, Instagram, Globe, QrCode, Moon, Sun } from 'lucide-react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { BookingForm } from '@/components/booking/booking-form';
 
@@ -44,6 +44,8 @@ const BioLink = () => {
   const [businessHours, setBusinessHours] = useState<BusinessHours[]>([]);
   const [loading, setLoading] = useState(true);
   const [selectedService, setSelectedService] = useState<Service | null>(null);
+  const [darkMode, setDarkMode] = useState(false);
+  const [showHours, setShowHours] = useState(false);
 
   const dayNames = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'];
 
@@ -112,125 +114,151 @@ const BioLink = () => {
     );
   }
 
-  const workingHours = businessHours.filter(h => h.is_working);
+  const formatPhone = (phone: string) => {
+    return phone.replace(/\D/g, '').replace(/(\d{2})(\d{5})(\d{4})/, '($1) $2-$3');
+  };
+
+  const getWhatsAppLink = () => {
+    if (!profile?.phone) return '#';
+    const cleanPhone = profile.phone.replace(/\D/g, '');
+    return `https://wa.me/55${cleanPhone}?text=Olá! Gostaria de agendar um horário.`;
+  };
 
   return (
-    <div className="min-h-screen bg-gradient-hero">
-      <div className="container mx-auto px-4 py-6 max-w-lg">
-        {/* Banner */}
-        {profile.banner_url && (
-          <div className="mb-6 rounded-xl overflow-hidden shadow-lg">
-            <img
-              src={profile.banner_url}
-              alt="Banner do negócio"
-              className="w-full h-40 sm:h-52 object-cover"
-            />
+    <div className={`min-h-screen transition-all duration-300 ${darkMode ? 'bg-slate-900' : 'bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900'}`}>
+      {/* Theme Toggle */}
+      <div className="absolute top-4 right-4 z-10">
+        <Button
+          variant="ghost"
+          size="icon"
+          onClick={() => setDarkMode(!darkMode)}
+          className="glass hover:bg-white/20 text-white border border-white/20"
+        >
+          {darkMode ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
+        </Button>
+      </div>
+
+      <div className="container mx-auto px-4 py-8 max-w-md">
+        {/* Profile Section */}
+        <div className="text-center mb-8">
+          {/* Avatar */}
+          <div className="relative mb-6">
+            <Avatar className="w-28 h-28 mx-auto border-4 border-white/30 shadow-2xl">
+              <AvatarImage src={profile.avatar_url} className="object-cover" />
+              <AvatarFallback className="text-3xl font-bold bg-gradient-to-br from-purple-500 to-blue-500 text-white">
+                {profile.business_name ? profile.business_name[0] : profile.first_name[0]}
+              </AvatarFallback>
+            </Avatar>
           </div>
-        )}
-        
-        {/* Business Header */}
-        <GlassCard className="p-6 text-center mb-6 shadow-2xl">
-          <Avatar className="w-24 h-24 sm:w-32 sm:h-32 mx-auto mb-4 border-4 border-white/30 shadow-xl">
-            <AvatarImage src={profile.avatar_url} />
-            <AvatarFallback className="text-2xl sm:text-4xl font-bold bg-gradient-to-br from-primary to-primary/60 text-white">
-              {profile.business_name ? profile.business_name[0] : profile.first_name[0]}
-            </AvatarFallback>
-          </Avatar>
-          
-          {/* Business Name - Sempre visível e destacado */}
-          <div className="mb-6">
-            <h1 className="text-2xl sm:text-4xl font-bold text-white mb-3 leading-tight drop-shadow-lg">
-              {profile.business_name || `${profile.first_name} ${profile.last_name}`}
-            </h1>
-            {profile.business_name && profile.first_name && (
-              <p className="text-white/80 text-base sm:text-lg font-medium">
-                {profile.first_name} {profile.last_name}
-              </p>
-            )}
-          </div>
-          
-          {/* 5 Stars */}
+
+          {/* Business Name */}
+          <h1 className="text-3xl font-bold text-white mb-4 leading-tight">
+            {profile.business_name || `${profile.first_name} ${profile.last_name}`}
+          </h1>
+
+          {/* Stars Rating */}
           <div className="flex justify-center gap-1 mb-4">
             {[...Array(5)].map((_, i) => (
-              <Star key={i} className="w-6 h-6 sm:w-7 sm:h-7 fill-yellow-400 text-yellow-400 drop-shadow-md" />
+              <Star key={i} className="w-6 h-6 fill-yellow-400 text-yellow-400" />
             ))}
           </div>
-          
-          <div className="flex items-center justify-center gap-2 text-white/95 text-base sm:text-lg font-semibold">
-            <span>★ 5.0 • Avaliação perfeita</span>
-          </div>
-        </GlassCard>
 
-        {/* Contact Info */}
-        <GlassCard className="p-6 mb-6 shadow-xl">
-          <h2 className="text-xl sm:text-2xl font-bold text-white mb-4 text-center">Contato</h2>
-          <div className="space-y-4 max-w-sm mx-auto">
-            {profile.phone && (
-              <div className="flex items-center gap-3 text-white/95 text-base sm:text-lg bg-white/10 p-4 rounded-lg border border-white/20">
-                <Phone className="w-5 h-5 sm:w-6 sm:h-6 flex-shrink-0 text-primary" />
-                <span className="font-medium">{profile.phone}</span>
-              </div>
-            )}
-            {profile.email && (
-              <div className="flex items-center gap-3 text-white/95 text-base sm:text-lg bg-white/10 p-4 rounded-lg border border-white/20">
-                <Mail className="w-5 h-5 sm:w-6 sm:h-6 flex-shrink-0 text-primary" />
-                <span className="font-medium break-all">{profile.email}</span>
-              </div>
-            )}
-          </div>
-        </GlassCard>
+          {/* Description */}
+          <p className="text-white/80 text-lg mb-6 leading-relaxed max-w-xs mx-auto">
+            Excelência em atendimento. Agende seu horário e tenha a melhor experiência conosco.
+          </p>
+        </div>
 
-        {/* Business Hours - Centralizado e bem organizado */}
-        <GlassCard className="p-6 mb-6 shadow-xl">
-          <h2 className="text-xl sm:text-2xl font-bold text-white mb-6 text-center flex items-center justify-center gap-3">
-            <Clock className="w-6 h-6 sm:w-7 sm:h-7 text-primary" />
-            Horários de Funcionamento
-          </h2>
-          <div className="max-w-md mx-auto">
-            <div className="grid grid-cols-1 gap-3">
+        {/* Action Buttons */}
+        <div className="space-y-4 mb-8">
+          {/* WhatsApp Button */}
+          <a
+            href={getWhatsAppLink()}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="block"
+          >
+            <Button className="w-full bg-green-500 hover:bg-green-600 text-white text-lg py-6 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105">
+              <MessageCircle className="w-6 h-6 mr-3" />
+              Agendar pelo WhatsApp
+            </Button>
+          </a>
+
+          {/* View Hours Button */}
+          <Button
+            onClick={() => setShowHours(!showHours)}
+            variant="outline"
+            className="w-full glass-card border-white/30 text-white text-lg py-6 rounded-2xl hover:bg-white/20 transition-all duration-300"
+          >
+            <Clock className="w-6 h-6 mr-3" />
+            Ver horários disponíveis
+          </Button>
+
+          {/* Custom Links */}
+          <div className="grid grid-cols-2 gap-4">
+            <Button
+              variant="outline"
+              className="glass-card border-white/30 text-white py-4 rounded-2xl hover:bg-white/20 transition-all duration-300"
+            >
+              <Instagram className="w-5 h-5 mr-2" />
+              Instagram
+            </Button>
+            <Button
+              variant="outline"
+              className="glass-card border-white/30 text-white py-4 rounded-2xl hover:bg-white/20 transition-all duration-300"
+            >
+              <Globe className="w-5 h-5 mr-2" />
+              Site
+            </Button>
+          </div>
+        </div>
+
+        {/* Hours Section */}
+        {showHours && (
+          <GlassCard className="p-6 mb-8 animate-fade-in">
+            <h3 className="text-xl font-bold text-white mb-4 text-center">
+              Horários de Funcionamento
+            </h3>
+            <div className="space-y-3">
               {businessHours.map((hour) => (
-                <div key={hour.day_of_week} className="flex justify-between items-center p-4 rounded-lg bg-white/10 border border-white/20 backdrop-blur-sm hover:bg-white/15 transition-all duration-200">
-                  <span className="text-white font-semibold text-base sm:text-lg">
+                <div key={hour.day_of_week} className="flex justify-between items-center p-3 rounded-xl bg-white/10 border border-white/20">
+                  <span className="text-white font-medium">
                     {dayNames[hour.day_of_week]}
                   </span>
-                  <div className="flex items-center gap-3">
-                    <div className={`w-3 h-3 rounded-full ${hour.is_working ? 'bg-green-400 shadow-green-400/50 shadow-md' : 'bg-red-400 shadow-red-400/50 shadow-md'}`}></div>
-                    <span className={`text-base sm:text-lg font-semibold ${hour.is_working ? "text-green-300" : "text-red-300"}`}>
+                  <div className="flex items-center gap-2">
+                    <div className={`w-2 h-2 rounded-full ${hour.is_working ? 'bg-green-400' : 'bg-red-400'}`}></div>
+                    <span className={`font-medium ${hour.is_working ? "text-green-300" : "text-red-300"}`}>
                       {hour.is_working ? `${hour.start_time} - ${hour.end_time}` : 'Fechado'}
                     </span>
                   </div>
                 </div>
               ))}
             </div>
-          </div>
-        </GlassCard>
+          </GlassCard>
+        )}
 
-        {/* Services */}
-        <GlassCard className="p-6 mb-6 shadow-xl">
-          <h2 className="text-xl sm:text-2xl font-bold text-white mb-6 text-center">Serviços</h2>
-          <div className="space-y-3">
+        {/* Services Cards */}
+        {services.length > 0 && (
+          <div className="space-y-4 mb-8">
+            <h3 className="text-xl font-bold text-white text-center mb-4">
+              Nossos Serviços
+            </h3>
             {services.map((service) => (
-              <div key={service.id} className="border border-white/20 rounded-lg p-3">
-                <div className="flex flex-col gap-2 mb-2">
-                  <div className="flex justify-between items-start gap-2">
-                    <h3 className="font-medium text-white text-xs xs:text-sm sm:text-base flex-1 min-w-0">
-                      {service.name}
-                    </h3>
-                    <Badge 
-                      variant="secondary" 
-                      style={{ backgroundColor: service.color + '20', color: service.color }} 
-                      className="text-xs flex-shrink-0"
-                    >
-                      R$ {service.price}
-                    </Badge>
-                  </div>
+              <GlassCard key={service.id} className="p-4 hover:bg-white/10 transition-all duration-300 cursor-pointer">
+                <div className="flex justify-between items-start mb-2">
+                  <h4 className="font-semibold text-white text-lg">
+                    {service.name}
+                  </h4>
+                  <Badge className="bg-yellow-400/20 text-yellow-400 border-yellow-400/30">
+                    R$ {service.price}
+                  </Badge>
                 </div>
                 {service.description && (
-                  <p className="text-white/80 text-xs sm:text-sm mb-2 leading-relaxed">{service.description}</p>
+                  <p className="text-white/80 text-sm mb-3">{service.description}</p>
                 )}
-                <div className="flex flex-col xs:flex-row xs:justify-between xs:items-center gap-2">
-                  <span className="text-white/70 text-xs sm:text-sm flex items-center gap-1">
-                    <Clock className="w-3 h-3" />
+                <div className="flex justify-between items-center">
+                  <span className="text-white/70 text-sm flex items-center gap-1">
+                    <Clock className="w-4 h-4" />
                     {service.duration} min
                   </span>
                   <Dialog>
@@ -238,28 +266,44 @@ const BioLink = () => {
                       <Button
                         variant="neon"
                         size="sm"
-                        className="w-full xs:w-auto text-xs sm:text-sm px-3 sm:px-4 py-2"
                         onClick={() => setSelectedService(service)}
+                        className="hover:scale-105 transition-transform duration-200"
                       >
                         Agendar
                       </Button>
                     </DialogTrigger>
-                    <DialogContent className="glass-card border-neon mx-3 sm:mx-4 max-w-[calc(100vw-1.5rem)] sm:max-w-lg max-h-[90vh] overflow-y-auto">
+                    <DialogContent className="glass-card border-neon mx-4 max-w-[calc(100vw-2rem)]">
                       <DialogHeader>
-                        <DialogTitle className="text-white text-sm sm:text-base">Agendar {service.name}</DialogTitle>
+                        <DialogTitle className="text-white">Agendar {service.name}</DialogTitle>
                       </DialogHeader>
                       <BookingForm service={service} businessProfile={profile} />
                     </DialogContent>
                   </Dialog>
                 </div>
-              </div>
+              </GlassCard>
             ))}
           </div>
+        )}
+
+        {/* QR Code Section */}
+        <GlassCard className="p-6 text-center mb-8">
+          <QrCode className="w-12 h-12 text-white/80 mx-auto mb-3" />
+          <p className="text-white/80 text-sm">
+            Compartilhe este link com seus amigos
+          </p>
+          <Button
+            variant="outline"
+            size="sm"
+            className="mt-3 glass-card border-white/30 text-white hover:bg-white/20"
+            onClick={() => navigator.clipboard.writeText(window.location.href)}
+          >
+            Copiar Link
+          </Button>
         </GlassCard>
 
         {/* Footer */}
-        <div className="text-center text-white/60 text-xs sm:text-sm pb-4">
-          Powered by GoAgendas
+        <div className="text-center text-white/60 text-sm">
+          <p>Powered by <span className="font-semibold text-purple-300">GoAgendas</span></p>
         </div>
       </div>
     </div>
