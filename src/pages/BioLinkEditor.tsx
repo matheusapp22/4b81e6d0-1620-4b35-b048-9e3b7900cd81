@@ -10,7 +10,7 @@ import { useToast } from '@/hooks/use-toast';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
 import { Card } from '@/components/ui/card';
-import { Upload, Clock, Save, Eye, Image as ImageIcon, User, Link2 } from 'lucide-react';
+import { Upload, Clock, Save, Eye, Image as ImageIcon, User, Link2, Copy, Share2, QrCode } from 'lucide-react';
 
 interface BusinessHours {
   id: string;
@@ -155,7 +155,45 @@ export const BioLinkEditor = () => {
     }
   };
 
+  const copyToClipboard = async (text: string) => {
+    try {
+      await navigator.clipboard.writeText(text);
+      toast({
+        title: "Link copiado!",
+        description: "O link foi copiado para a área de transferência.",
+      });
+    } catch (error) {
+      toast({
+        title: "Erro",
+        description: "Não foi possível copiar o link.",
+        variant: "destructive",
+      });
+    }
+  };
+
+  const shareLink = async (url: string) => {
+    if (navigator.share) {
+      try {
+        await navigator.share({
+          title: `${formData.business_name || formData.first_name} - Agendamentos`,
+          text: 'Agende seu horário comigo!',
+          url: url,
+        });
+      } catch (error) {
+        console.log('Erro ao compartilhar:', error);
+      }
+    } else {
+      copyToClipboard(url);
+    }
+  };
+
+  const generateQRCode = (url: string) => {
+    const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(url)}`;
+    return qrUrl;
+  };
+
   const bioLinkUrl = formData.business_name ? `/bio/${formData.business_name}` : '';
+  const fullBioLinkUrl = formData.business_name ? `${window.location.origin}/bio/${formData.business_name}` : '';
 
   return (
     <div className="container mx-auto p-6 space-y-6">
@@ -352,6 +390,80 @@ export const BioLinkEditor = () => {
           </div>
         </GlassCard>
       </div>
+
+      {/* Link Generator */}
+      {formData.business_name && (
+        <GlassCard className="p-6">
+          <h2 className="text-xl font-semibold mb-4 flex items-center gap-2">
+            <Link2 className="w-5 h-5" />
+            Link do Cliente
+          </h2>
+          
+          <div className="space-y-4">
+            <div>
+              <Label className="text-sm font-medium">Link público para clientes</Label>
+              <div className="mt-2 flex items-center gap-2">
+                <Input
+                  value={fullBioLinkUrl}
+                  readOnly
+                  className="flex-1"
+                />
+                <Button
+                  variant="outline"
+                  size="icon"
+                  onClick={() => copyToClipboard(fullBioLinkUrl)}
+                >
+                  <Copy className="w-4 h-4" />
+                </Button>
+                <Button
+                  variant="outline"
+                  size="icon"
+                  onClick={() => shareLink(fullBioLinkUrl)}
+                >
+                  <Share2 className="w-4 h-4" />
+                </Button>
+              </div>
+              <p className="text-sm text-muted-foreground mt-1">
+                Compartilhe este link com seus clientes para eles agendarem
+              </p>
+            </div>
+
+            <div className="flex gap-3">
+              <Button
+                variant="outline"
+                className="flex-1"
+                onClick={() => copyToClipboard(fullBioLinkUrl)}
+              >
+                <Copy className="w-4 h-4 mr-2" />
+                Copiar Link
+              </Button>
+              <Button
+                variant="outline"
+                className="flex-1"
+                onClick={() => shareLink(fullBioLinkUrl)}
+              >
+                <Share2 className="w-4 h-4 mr-2" />
+                Compartilhar
+              </Button>
+            </div>
+
+            {/* QR Code */}
+            <div className="text-center">
+              <Label className="text-sm font-medium">QR Code</Label>
+              <div className="mt-2 flex justify-center">
+                <img
+                  src={generateQRCode(fullBioLinkUrl)}
+                  alt="QR Code do BioLink"
+                  className="w-32 h-32 border rounded-lg"
+                />
+              </div>
+              <p className="text-xs text-muted-foreground mt-2">
+                Clientes podem escanear para acessar diretamente
+              </p>
+            </div>
+          </div>
+        </GlassCard>
+      )}
 
       {/* Preview */}
       {bioLinkUrl && (
