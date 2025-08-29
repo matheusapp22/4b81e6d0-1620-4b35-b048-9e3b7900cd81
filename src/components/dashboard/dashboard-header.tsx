@@ -10,7 +10,12 @@ import {
   LogOut,
   Bell,
   User,
-  Link2
+  Link2,
+  DollarSign,
+  Gift,
+  Mail,
+  Package,
+  UserCheck
 } from 'lucide-react';
 import {
   DropdownMenu,
@@ -51,7 +56,7 @@ export function DashboardHeader() {
         </div>
         
         {/* Navigation Links */}
-        <div className="hidden md:flex items-center gap-1">
+        <div className="hidden lg:flex items-center gap-1">
           <Button variant="ghost" size="sm" asChild>
             <a href="/appointments">
               <Calendar className="w-4 h-4 mr-2" />
@@ -59,27 +64,45 @@ export function DashboardHeader() {
             </a>
           </Button>
           <Button variant="ghost" size="sm" asChild>
-            <a href="/calendar">
-              <BarChart3 className="w-4 h-4 mr-2" />
-              Agenda
+            <a href="/clients">
+              <Users className="w-4 h-4 mr-2" />
+              Clientes
+            </a>
+          </Button>
+          <Button variant="ghost" size="sm" asChild>
+            <a href="/employees">
+              <UserCheck className="w-4 h-4 mr-2" />
+              Funcionários
+            </a>
+          </Button>
+          <Button variant="ghost" size="sm" asChild>
+            <a href="/financial">
+              <DollarSign className="w-4 h-4 mr-2" />
+              Financeiro
+            </a>
+          </Button>
+          <Button variant="ghost" size="sm" asChild>
+            <a href="/loyalty">
+              <Gift className="w-4 h-4 mr-2" />
+              Fidelidade
+            </a>
+          </Button>
+          <Button variant="ghost" size="sm" asChild>
+            <a href="/marketing">
+              <Mail className="w-4 h-4 mr-2" />
+              Marketing
+            </a>
+          </Button>
+          <Button variant="ghost" size="sm" asChild>
+            <a href="/inventory">
+              <Package className="w-4 h-4 mr-2" />
+              Estoque
             </a>
           </Button>
           <Button variant="ghost" size="sm" asChild>
             <a href="/reports">
-              <Users className="w-4 h-4 mr-2" />
+              <BarChart3 className="w-4 h-4 mr-2" />
               Relatórios
-            </a>
-          </Button>
-          <Button variant="ghost" size="sm" asChild>
-            <a href="/settings">
-              <Settings className="w-4 h-4 mr-2" />
-              Configurações
-            </a>
-          </Button>
-          <Button variant="ghost" size="sm" asChild>
-            <a href="/biolink-editor">
-              <Link2 className="w-4 h-4 mr-2" />
-              BioLink
             </a>
           </Button>
         </div>
@@ -116,6 +139,18 @@ export function DashboardHeader() {
                 </div>
               </DropdownMenuLabel>
               <DropdownMenuSeparator />
+              <DropdownMenuItem asChild>
+                <a href="/services">
+                  <Package className="mr-2 h-4 w-4" />
+                  <span>Serviços</span>
+                </a>
+              </DropdownMenuItem>
+              <DropdownMenuItem asChild>
+                <a href="/calendar">
+                  <Calendar className="mr-2 h-4 w-4" />
+                  <span>Agenda</span>
+                </a>
+              </DropdownMenuItem>
               <DropdownMenuItem asChild>
                 <a href="/settings">
                   <User className="mr-2 h-4 w-4" />

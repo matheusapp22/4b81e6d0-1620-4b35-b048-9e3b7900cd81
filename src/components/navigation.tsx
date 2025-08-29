@@ -21,7 +21,12 @@ export function Navigation() {
     window.location.pathname === '/calendar' ||
     window.location.pathname === '/reports' ||
     window.location.pathname === '/settings' ||
-    window.location.pathname === '/biolink-editor'
+    window.location.pathname === '/biolink-editor' ||
+    window.location.pathname === '/employees' ||
+    window.location.pathname === '/financial' ||
+    window.location.pathname === '/loyalty' ||
+    window.location.pathname === '/marketing' ||
+    window.location.pathname === '/inventory'
   )) {
     return null;
   }
