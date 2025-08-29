@@ -25,7 +25,7 @@ export function QuickActions() {
       title: 'Adicionar Cliente',
       description: 'Cadastrar novo cliente',
       icon: Users,
-      color: 'text-neon-blue',
+      color: 'text-blue-500',
       bgColor: 'bg-blue-500/10',
       href: '/clients'
     },
@@ -33,7 +33,7 @@ export function QuickActions() {
       title: 'Ver Agenda',
       description: 'Visualizar agenda completa',
       icon: Calendar,
-      color: 'text-neon-green',
+      color: 'text-green-500',
       bgColor: 'bg-green-500/10',
       href: '/calendar'
     },
@@ -41,7 +41,7 @@ export function QuickActions() {
       title: 'Gerenciar Serviços',
       description: 'Configurar seus serviços',
       icon: Clock,
-      color: 'text-warning',
+      color: 'text-yellow-500',
       bgColor: 'bg-yellow-500/10',
       href: '/services'
     },
@@ -49,7 +49,7 @@ export function QuickActions() {
       title: 'Relatórios',
       description: 'Ver relatórios e métricas',
       icon: BarChart3,
-      color: 'text-neon-pink',
+      color: 'text-pink-500',
       bgColor: 'bg-pink-500/10',
       href: '/reports'
     },
