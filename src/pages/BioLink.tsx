@@ -21,8 +21,27 @@ interface BusinessProfile {
   timezone: string;
   whatsapp_link?: string;
   instagram_link?: string;
+  website_link?: string;
   font_color?: string;
   description?: string;
+  background_color?: string;
+  background_gradient_start?: string;
+  background_gradient_end?: string;
+  card_background_color?: string;
+  card_border_color?: string;
+  primary_color?: string;
+  secondary_color?: string;
+  accent_color?: string;
+  text_primary_color?: string;
+  text_secondary_color?: string;
+  button_background_color?: string;
+  button_text_color?: string;
+  section_header_color?: string;
+  font_family?: string;
+  font_size?: string;
+  border_radius?: string;
+  shadow_intensity?: string;
+  use_gradient_background?: boolean;
 }
 
 interface Service {
@@ -130,21 +149,75 @@ const BioLink = () => {
     return `https://wa.me/55${cleanPhone}?text=Olá! Gostaria de agendar um horário.`;
   };
 
+  const getBorderRadiusClass = () => {
+    switch (profile?.border_radius) {
+      case 'none': return 'rounded-none';
+      case 'small': return 'rounded-lg';
+      case 'large': return 'rounded-3xl';
+      default: return 'rounded-2xl';
+    }
+  };
+
+  const getShadowClass = () => {
+    switch (profile?.shadow_intensity) {
+      case 'none': return '';
+      case 'light': return 'shadow-sm';
+      case 'strong': return 'shadow-2xl';
+      default: return 'shadow-lg';
+    }
+  };
+
+  const getFontSizeClass = () => {
+    switch (profile?.font_size) {
+      case 'small': return 'text-sm';
+      case 'large': return 'text-lg';
+      default: return 'text-base';
+    }
+  };
+
+  const backgroundStyle = profile?.use_gradient_background 
+    ? {
+        background: `linear-gradient(135deg, ${profile.background_gradient_start || '#16213e'}, ${profile.background_gradient_end || '#0f172a'})`
+      }
+    : {
+        backgroundColor: profile?.background_color || '#1a1a2e'
+      };
+
   return (
-    <div className={`min-h-screen transition-all duration-300 ${darkMode ? 'bg-slate-900' : 'bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900'}`} style={{ color: profile.font_color || '#ffffff' }}>
+    <div 
+      className={`min-h-screen transition-all duration-300 ${darkMode ? 'bg-slate-900' : ''}`} 
+      style={{
+        ...(!darkMode ? backgroundStyle : {}),
+        color: profile?.text_primary_color || '#ffffff',
+        fontFamily: profile?.font_family || 'Inter'
+      }}
+    >
+      {/* Banner Section */}
+      {profile?.banner_url && (
+        <div className="w-full h-48 relative overflow-hidden">
+          <img
+            src={profile.banner_url}
+            alt="Banner"
+            className="w-full h-full object-cover"
+          />
+          <div className="absolute inset-0 bg-black/30"></div>
+        </div>
+      )}
+
       {/* Theme Toggle */}
       <div className="absolute top-4 right-4 z-10">
         <Button
           variant="ghost"
           size="icon"
           onClick={() => setDarkMode(!darkMode)}
-          className="glass hover:bg-white/20 text-white border border-white/20"
+          className="glass hover:bg-white/20 border border-white/20"
+          style={{ color: profile?.text_primary_color || '#ffffff' }}
         >
           {darkMode ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
         </Button>
       </div>
 
-      <div className="container mx-auto px-4 py-8 max-w-md">
+      <div className={`container mx-auto px-4 py-8 max-w-md ${getFontSizeClass()}`}>
         {/* Profile Section */}
         <div className="text-center mb-8">
           {/* Avatar */}
@@ -158,7 +231,7 @@ const BioLink = () => {
           </div>
 
           {/* Business Name */}
-          <h1 className="text-3xl font-bold text-white mb-4 leading-tight">
+          <h1 className="text-3xl font-bold mb-4 leading-tight" style={{ color: profile?.section_header_color || profile?.text_primary_color || '#ffffff' }}>
             {profile.business_name || `${profile.first_name} ${profile.last_name}`}
           </h1>
 
@@ -170,7 +243,7 @@ const BioLink = () => {
           </div>
 
           {/* Description */}
-          <p className="text-white/80 text-lg mb-6 leading-relaxed max-w-xs mx-auto">
+          <p className="text-lg mb-6 leading-relaxed max-w-xs mx-auto" style={{ color: profile?.text_secondary_color || 'rgba(255,255,255,0.8)' }}>
             {profile.description || 'Excelência em atendimento. Agende seu horário e tenha a melhor experiência conosco.'}
           </p>
         </div>
@@ -184,7 +257,13 @@ const BioLink = () => {
             rel="noopener noreferrer"
             className="block"
           >
-            <Button className="w-full bg-green-500 hover:bg-green-600 text-white text-lg py-6 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105">
+            <Button 
+              className={`w-full text-lg py-6 ${getBorderRadiusClass()} ${getShadowClass()} hover:shadow-xl transition-all duration-300 hover:scale-105`}
+              style={{
+                backgroundColor: profile?.button_background_color || '#10b981',
+                color: profile?.button_text_color || '#ffffff'
+              }}
+            >
               <MessageCircle className="w-6 h-6 mr-3" />
               Agendar pelo WhatsApp
             </Button>
@@ -194,7 +273,12 @@ const BioLink = () => {
           <Button
             onClick={() => setShowHours(!showHours)}
             variant="outline"
-            className="w-full glass-card border-white/30 text-white text-lg py-6 rounded-2xl hover:bg-white/20 transition-all duration-300"
+            className={`w-full text-lg py-6 ${getBorderRadiusClass()} hover:bg-white/20 transition-all duration-300`}
+            style={{
+              backgroundColor: profile?.card_background_color || 'rgba(255,255,255,0.1)',
+              borderColor: profile?.card_border_color || 'rgba(255,255,255,0.2)',
+              color: profile?.text_primary_color || '#ffffff'
+            }}
           >
             <Clock className="w-6 h-6 mr-3" />
             Ver horários disponíveis
@@ -206,35 +290,76 @@ const BioLink = () => {
               <a href={profile.instagram_link} target="_blank" rel="noopener noreferrer" className="block">
                 <Button
                   variant="outline"
-                  className="w-full glass-card border-white/30 text-white py-4 rounded-2xl hover:bg-white/20 transition-all duration-300"
+                  className={`w-full py-4 ${getBorderRadiusClass()} hover:bg-white/20 transition-all duration-300`}
+                  style={{
+                    backgroundColor: profile?.card_background_color || 'rgba(255,255,255,0.1)',
+                    borderColor: profile?.card_border_color || 'rgba(255,255,255,0.2)',
+                    color: profile?.text_primary_color || '#ffffff'
+                  }}
                 >
                   <Instagram className="w-5 h-5 mr-2" />
                   Instagram
                 </Button>
               </a>
             )}
-            {/* Placeholder for website link - can be added later */}
-            <Button
-              variant="outline"
-              className="glass-card border-white/30 text-white py-4 rounded-2xl hover:bg-white/20 transition-all duration-300 opacity-50 cursor-not-allowed"
-              disabled
-            >
-              <Globe className="w-5 h-5 mr-2" />
-              Site
-            </Button>
+            {profile.website_link ? (
+              <a href={profile.website_link} target="_blank" rel="noopener noreferrer" className="block">
+                <Button
+                  variant="outline"
+                  className={`w-full py-4 ${getBorderRadiusClass()} hover:bg-white/20 transition-all duration-300`}
+                  style={{
+                    backgroundColor: profile?.card_background_color || 'rgba(255,255,255,0.1)',
+                    borderColor: profile?.card_border_color || 'rgba(255,255,255,0.2)',
+                    color: profile?.text_primary_color || '#ffffff'
+                  }}
+                >
+                  <Globe className="w-5 h-5 mr-2" />
+                  Site
+                </Button>
+              </a>
+            ) : (
+              <Button
+                variant="outline"
+                className={`w-full py-4 ${getBorderRadiusClass()} transition-all duration-300 opacity-50 cursor-not-allowed`}
+                style={{
+                  backgroundColor: profile?.card_background_color || 'rgba(255,255,255,0.1)',
+                  borderColor: profile?.card_border_color || 'rgba(255,255,255,0.2)',
+                  color: profile?.text_primary_color || '#ffffff'
+                }}
+                disabled
+              >
+                <Globe className="w-5 h-5 mr-2" />
+                Site
+              </Button>
+            )}
           </div>
         </div>
 
         {/* Hours Section */}
         {showHours && (
-          <GlassCard className="p-6 mb-8 animate-fade-in">
-            <h3 className="text-xl font-bold text-white mb-4 text-center">
+          <div 
+            className={`p-6 mb-8 animate-fade-in ${getBorderRadiusClass()} ${getShadowClass()}`}
+            style={{
+              backgroundColor: profile?.card_background_color || 'rgba(255,255,255,0.1)',
+              borderColor: profile?.card_border_color || 'rgba(255,255,255,0.2)',
+              border: '1px solid'
+            }}
+          >
+            <h3 className="text-xl font-bold mb-4 text-center" style={{ color: profile?.section_header_color || profile?.text_primary_color || '#ffffff' }}>
               Horários de Funcionamento
             </h3>
             <div className="space-y-3">
               {businessHours.map((hour) => (
-                <div key={hour.day_of_week} className="flex justify-between items-center p-3 rounded-xl bg-white/10 border border-white/20">
-                  <span className="text-white font-medium">
+                <div 
+                  key={hour.day_of_week} 
+                  className={`flex justify-between items-center p-3 ${getBorderRadiusClass()}`}
+                  style={{
+                    backgroundColor: profile?.card_background_color || 'rgba(255,255,255,0.1)',
+                    borderColor: profile?.card_border_color || 'rgba(255,255,255,0.2)',
+                    border: '1px solid'
+                  }}
+                >
+                  <span className="font-medium" style={{ color: profile?.text_primary_color || '#ffffff' }}>
                     {dayNames[hour.day_of_week]}
                   </span>
                   <div className="flex items-center gap-2">
@@ -246,19 +371,27 @@ const BioLink = () => {
                 </div>
               ))}
             </div>
-          </GlassCard>
+          </div>
         )}
 
         {/* Services Cards */}
         {services.length > 0 && (
           <div className="space-y-4 mb-8">
-            <h3 className="text-xl font-bold text-white text-center mb-4">
+            <h3 className="text-xl font-bold text-center mb-4" style={{ color: profile?.section_header_color || profile?.text_primary_color || '#ffffff' }}>
               Nossos Serviços
             </h3>
             {services.map((service) => (
-              <GlassCard key={service.id} className="p-4 hover:bg-white/10 transition-all duration-300 cursor-pointer">
+              <div 
+                key={service.id} 
+                className={`p-4 hover:bg-white/10 transition-all duration-300 cursor-pointer ${getBorderRadiusClass()} ${getShadowClass()}`}
+                style={{
+                  backgroundColor: profile?.card_background_color || 'rgba(255,255,255,0.1)',
+                  borderColor: profile?.card_border_color || 'rgba(255,255,255,0.2)',
+                  border: '1px solid'
+                }}
+              >
                 <div className="flex justify-between items-start mb-2">
-                  <h4 className="font-semibold text-white text-lg">
+                  <h4 className="font-semibold text-lg" style={{ color: profile?.text_primary_color || '#ffffff' }}>
                     {service.name}
                   </h4>
                   <Badge className="bg-yellow-400/20 text-yellow-400 border-yellow-400/30">
@@ -266,56 +399,73 @@ const BioLink = () => {
                   </Badge>
                 </div>
                 {service.description && (
-                  <p className="text-white/80 text-sm mb-3">{service.description}</p>
+                  <p className="text-sm mb-3" style={{ color: profile?.text_secondary_color || 'rgba(255,255,255,0.8)' }}>
+                    {service.description}
+                  </p>
                 )}
                 <div className="flex justify-between items-center">
-                  <span className="text-white/70 text-sm flex items-center gap-1">
+                  <span className="text-sm flex items-center gap-1" style={{ color: profile?.text_secondary_color || 'rgba(255,255,255,0.7)' }}>
                     <Clock className="w-4 h-4" />
                     {service.duration} min
                   </span>
                   <Dialog>
                     <DialogTrigger asChild>
                       <Button
-                        variant="neon"
                         size="sm"
                         onClick={() => setSelectedService(service)}
-                        className="hover:scale-105 transition-transform duration-200"
+                        className={`hover:scale-105 transition-transform duration-200 ${getBorderRadiusClass()}`}
+                        style={{
+                          backgroundColor: profile?.button_background_color || '#10b981',
+                          color: profile?.button_text_color || '#ffffff'
+                        }}
                       >
                         Agendar
                       </Button>
                     </DialogTrigger>
-                    <DialogContent className="glass-card border-neon mx-4 max-w-[calc(100vw-2rem)]">
+                    <DialogContent className="mx-4 max-w-[calc(100vw-2rem)]" style={{ backgroundColor: profile?.card_background_color || 'rgba(255,255,255,0.1)' }}>
                       <DialogHeader>
-                        <DialogTitle className="text-white">Agendar {service.name}</DialogTitle>
+                        <DialogTitle style={{ color: profile?.text_primary_color || '#ffffff' }}>Agendar {service.name}</DialogTitle>
                       </DialogHeader>
                       <BookingForm service={service} businessProfile={profile} />
                     </DialogContent>
                   </Dialog>
                 </div>
-              </GlassCard>
+              </div>
             ))}
           </div>
         )}
 
         {/* QR Code Section */}
-        <GlassCard className="p-6 text-center mb-8">
-          <QrCode className="w-12 h-12 text-white/80 mx-auto mb-3" />
-          <p className="text-white/80 text-sm">
+        <div 
+          className={`p-6 text-center mb-8 ${getBorderRadiusClass()} ${getShadowClass()}`}
+          style={{
+            backgroundColor: profile?.card_background_color || 'rgba(255,255,255,0.1)',
+            borderColor: profile?.card_border_color || 'rgba(255,255,255,0.2)',
+            border: '1px solid'
+          }}
+        >
+          <QrCode className="w-12 h-12 mx-auto mb-3" style={{ color: profile?.text_secondary_color || 'rgba(255,255,255,0.8)' }} />
+          <p className="text-sm" style={{ color: profile?.text_secondary_color || 'rgba(255,255,255,0.8)' }}>
             Compartilhe este link com seus amigos
           </p>
           <Button
             variant="outline"
             size="sm"
-            className="mt-3 glass-card border-white/30 text-white hover:bg-white/20"
+            className={`mt-3 hover:bg-white/20 ${getBorderRadiusClass()}`}
+            style={{
+              backgroundColor: profile?.card_background_color || 'rgba(255,255,255,0.1)',
+              borderColor: profile?.card_border_color || 'rgba(255,255,255,0.2)',
+              color: profile?.text_primary_color || '#ffffff'
+            }}
             onClick={() => navigator.clipboard.writeText(window.location.href)}
           >
             Copiar Link
           </Button>
-        </GlassCard>
+        </div>
 
         {/* Footer */}
-        <div className="text-center text-white/60 text-sm">
-          <p>Powered by <span className="font-semibold text-purple-300">GoAgendas</span></p>
+        <div className="text-center text-sm" style={{ color: profile?.text_secondary_color || 'rgba(255,255,255,0.6)' }}>
+          <p>Powered by <span className="font-semibold" style={{ color: profile?.accent_color || '#8b5cf6' }}>GoAgendas</span></p>
         </div>
       </div>
     </div>

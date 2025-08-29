@@ -1,0 +1,21 @@
+-- Add comprehensive theming options to profiles table
+ALTER TABLE public.profiles 
+ADD COLUMN background_color TEXT DEFAULT '#1a1a2e',
+ADD COLUMN background_gradient_start TEXT DEFAULT '#16213e',
+ADD COLUMN background_gradient_end TEXT DEFAULT '#0f172a',
+ADD COLUMN card_background_color TEXT DEFAULT 'rgba(255,255,255,0.1)',
+ADD COLUMN card_border_color TEXT DEFAULT 'rgba(255,255,255,0.2)',
+ADD COLUMN primary_color TEXT DEFAULT '#6366f1',
+ADD COLUMN secondary_color TEXT DEFAULT '#8b5cf6',
+ADD COLUMN accent_color TEXT DEFAULT '#06b6d4',
+ADD COLUMN text_primary_color TEXT DEFAULT '#ffffff',
+ADD COLUMN text_secondary_color TEXT DEFAULT 'rgba(255,255,255,0.8)',
+ADD COLUMN button_background_color TEXT DEFAULT '#10b981',
+ADD COLUMN button_text_color TEXT DEFAULT '#ffffff',
+ADD COLUMN section_header_color TEXT DEFAULT '#ffffff',
+ADD COLUMN font_family TEXT DEFAULT 'Inter',
+ADD COLUMN font_size TEXT DEFAULT 'medium',
+ADD COLUMN border_radius TEXT DEFAULT 'medium',
+ADD COLUMN shadow_intensity TEXT DEFAULT 'medium',
+ADD COLUMN use_gradient_background BOOLEAN DEFAULT true,
+ADD COLUMN website_link TEXT;

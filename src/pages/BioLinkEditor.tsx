@@ -35,8 +35,27 @@ export const BioLinkEditor = () => {
     email: '',
     whatsapp_link: '',
     instagram_link: '',
+    website_link: '',
     font_color: '#ffffff',
     description: '',
+    background_color: '#1a1a2e',
+    background_gradient_start: '#16213e',
+    background_gradient_end: '#0f172a',
+    card_background_color: 'rgba(255,255,255,0.1)',
+    card_border_color: 'rgba(255,255,255,0.2)',
+    primary_color: '#6366f1',
+    secondary_color: '#8b5cf6',
+    accent_color: '#06b6d4',
+    text_primary_color: '#ffffff',
+    text_secondary_color: 'rgba(255,255,255,0.8)',
+    button_background_color: '#10b981',
+    button_text_color: '#ffffff',
+    section_header_color: '#ffffff',
+    font_family: 'Inter',
+    font_size: 'medium',
+    border_radius: 'medium',
+    shadow_intensity: 'medium',
+    use_gradient_background: true,
   });
 
   const dayNames = ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado'];
@@ -51,8 +70,27 @@ export const BioLinkEditor = () => {
         email: profile.email || '',
         whatsapp_link: profile.whatsapp_link || '',
         instagram_link: profile.instagram_link || '',
+        website_link: profile.website_link || '',
         font_color: profile.font_color || '#ffffff',
         description: profile.description || '',
+        background_color: profile.background_color || '#1a1a2e',
+        background_gradient_start: profile.background_gradient_start || '#16213e',
+        background_gradient_end: profile.background_gradient_end || '#0f172a',
+        card_background_color: profile.card_background_color || 'rgba(255,255,255,0.1)',
+        card_border_color: profile.card_border_color || 'rgba(255,255,255,0.2)',
+        primary_color: profile.primary_color || '#6366f1',
+        secondary_color: profile.secondary_color || '#8b5cf6',
+        accent_color: profile.accent_color || '#06b6d4',
+        text_primary_color: profile.text_primary_color || '#ffffff',
+        text_secondary_color: profile.text_secondary_color || 'rgba(255,255,255,0.8)',
+        button_background_color: profile.button_background_color || '#10b981',
+        button_text_color: profile.button_text_color || '#ffffff',
+        section_header_color: profile.section_header_color || '#ffffff',
+        font_family: profile.font_family || 'Inter',
+        font_size: profile.font_size || 'medium',
+        border_radius: profile.border_radius || 'medium',
+        shadow_intensity: profile.shadow_intensity || 'medium',
+        use_gradient_background: profile.use_gradient_background ?? true,
       });
     }
   }, [profile]);
@@ -124,8 +162,27 @@ export const BioLinkEditor = () => {
           email: formData.email,
           whatsapp_link: formData.whatsapp_link,
           instagram_link: formData.instagram_link,
+          website_link: formData.website_link,
           font_color: formData.font_color,
           description: formData.description,
+          background_color: formData.background_color,
+          background_gradient_start: formData.background_gradient_start,
+          background_gradient_end: formData.background_gradient_end,
+          card_background_color: formData.card_background_color,
+          card_border_color: formData.card_border_color,
+          primary_color: formData.primary_color,
+          secondary_color: formData.secondary_color,
+          accent_color: formData.accent_color,
+          text_primary_color: formData.text_primary_color,
+          text_secondary_color: formData.text_secondary_color,
+          button_background_color: formData.button_background_color,
+          button_text_color: formData.button_text_color,
+          section_header_color: formData.section_header_color,
+          font_family: formData.font_family,
+          font_size: formData.font_size,
+          border_radius: formData.border_radius,
+          shadow_intensity: formData.shadow_intensity,
+          use_gradient_background: formData.use_gradient_background,
           avatar_url: avatarUrl,
           banner_url: bannerUrl,
         })
@@ -373,47 +430,291 @@ export const BioLinkEditor = () => {
             Configurações do BioLink
           </h2>
           
-          <div className="space-y-4">
-            <div>
-              <Label htmlFor="font_color">Cor da Fonte</Label>
-              <div className="flex items-center gap-2 mt-2">
+          <div className="space-y-6">
+            {/* Links Sociais */}
+            <div className="space-y-4">
+              <h3 className="text-lg font-medium">Links Sociais</h3>
+              
+              <div>
+                <Label htmlFor="whatsapp_link">Link do WhatsApp</Label>
                 <Input
-                  id="font_color"
-                  type="color"
-                  value={formData.font_color}
-                  onChange={(e) => setFormData({...formData, font_color: e.target.value})}
-                  className="w-16 h-10 p-1 border rounded cursor-pointer"
+                  id="whatsapp_link"
+                  value={formData.whatsapp_link}
+                  onChange={(e) => setFormData({...formData, whatsapp_link: e.target.value})}
+                  placeholder="https://wa.me/5511999999999"
                 />
+                <p className="text-xs text-muted-foreground mt-1">
+                  Deixe vazio para usar automaticamente o telefone do perfil
+                </p>
+              </div>
+
+              <div>
+                <Label htmlFor="instagram_link">Link do Instagram</Label>
                 <Input
-                  value={formData.font_color}
-                  onChange={(e) => setFormData({...formData, font_color: e.target.value})}
-                  placeholder="#ffffff"
-                  className="flex-1"
+                  id="instagram_link"
+                  value={formData.instagram_link}
+                  onChange={(e) => setFormData({...formData, instagram_link: e.target.value})}
+                  placeholder="https://instagram.com/seunegocio"
+                />
+              </div>
+
+              <div>
+                <Label htmlFor="website_link">Link do Website</Label>
+                <Input
+                  id="website_link"
+                  value={formData.website_link}
+                  onChange={(e) => setFormData({...formData, website_link: e.target.value})}
+                  placeholder="https://seusite.com"
                 />
               </div>
             </div>
 
-            <div>
-              <Label htmlFor="whatsapp_link">Link do WhatsApp</Label>
-              <Input
-                id="whatsapp_link"
-                value={formData.whatsapp_link}
-                onChange={(e) => setFormData({...formData, whatsapp_link: e.target.value})}
-                placeholder="https://wa.me/5511999999999"
-              />
-              <p className="text-xs text-muted-foreground mt-1">
-                Deixe vazio para usar automaticamente o telefone do perfil
-              </p>
+            {/* Cores e Temas */}
+            <div className="space-y-4">
+              <h3 className="text-lg font-medium">Cores e Tema</h3>
+              
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <Label htmlFor="use_gradient_background">Tipo de Fundo</Label>
+                  <div className="flex items-center gap-2 mt-2">
+                    <input
+                      type="checkbox"
+                      id="use_gradient_background"
+                      checked={formData.use_gradient_background}
+                      onChange={(e) => setFormData({...formData, use_gradient_background: e.target.checked})}
+                      className="rounded"
+                    />
+                    <span className="text-sm">Usar gradiente</span>
+                  </div>
+                </div>
+              </div>
+
+              {formData.use_gradient_background ? (
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <Label htmlFor="background_gradient_start">Cor Inicial do Gradiente</Label>
+                    <div className="flex items-center gap-2 mt-2">
+                      <Input
+                        id="background_gradient_start"
+                        type="color"
+                        value={formData.background_gradient_start}
+                        onChange={(e) => setFormData({...formData, background_gradient_start: e.target.value})}
+                        className="w-16 h-10 p-1 border rounded cursor-pointer"
+                      />
+                      <Input
+                        value={formData.background_gradient_start}
+                        onChange={(e) => setFormData({...formData, background_gradient_start: e.target.value})}
+                        placeholder="#16213e"
+                        className="flex-1"
+                      />
+                    </div>
+                  </div>
+                  <div>
+                    <Label htmlFor="background_gradient_end">Cor Final do Gradiente</Label>
+                    <div className="flex items-center gap-2 mt-2">
+                      <Input
+                        id="background_gradient_end"
+                        type="color"
+                        value={formData.background_gradient_end}
+                        onChange={(e) => setFormData({...formData, background_gradient_end: e.target.value})}
+                        className="w-16 h-10 p-1 border rounded cursor-pointer"
+                      />
+                      <Input
+                        value={formData.background_gradient_end}
+                        onChange={(e) => setFormData({...formData, background_gradient_end: e.target.value})}
+                        placeholder="#0f172a"
+                        className="flex-1"
+                      />
+                    </div>
+                  </div>
+                </div>
+              ) : (
+                <div>
+                  <Label htmlFor="background_color">Cor de Fundo</Label>
+                  <div className="flex items-center gap-2 mt-2">
+                    <Input
+                      id="background_color"
+                      type="color"
+                      value={formData.background_color}
+                      onChange={(e) => setFormData({...formData, background_color: e.target.value})}
+                      className="w-16 h-10 p-1 border rounded cursor-pointer"
+                    />
+                    <Input
+                      value={formData.background_color}
+                      onChange={(e) => setFormData({...formData, background_color: e.target.value})}
+                      placeholder="#1a1a2e"
+                      className="flex-1"
+                    />
+                  </div>
+                </div>
+              )}
+
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <Label htmlFor="text_primary_color">Cor do Texto Principal</Label>
+                  <div className="flex items-center gap-2 mt-2">
+                    <Input
+                      id="text_primary_color"
+                      type="color"
+                      value={formData.text_primary_color}
+                      onChange={(e) => setFormData({...formData, text_primary_color: e.target.value})}
+                      className="w-16 h-10 p-1 border rounded cursor-pointer"
+                    />
+                    <Input
+                      value={formData.text_primary_color}
+                      onChange={(e) => setFormData({...formData, text_primary_color: e.target.value})}
+                      placeholder="#ffffff"
+                      className="flex-1"
+                    />
+                  </div>
+                </div>
+                <div>
+                  <Label htmlFor="text_secondary_color">Cor do Texto Secundário</Label>
+                  <div className="flex items-center gap-2 mt-2">
+                    <Input
+                      id="text_secondary_color"
+                      type="color"
+                      value={formData.text_secondary_color.replace('rgba(255,255,255,0.8)', '#cccccc')}
+                      onChange={(e) => setFormData({...formData, text_secondary_color: e.target.value})}
+                      className="w-16 h-10 p-1 border rounded cursor-pointer"
+                    />
+                    <Input
+                      value={formData.text_secondary_color}
+                      onChange={(e) => setFormData({...formData, text_secondary_color: e.target.value})}
+                      placeholder="rgba(255,255,255,0.8)"
+                      className="flex-1"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <Label htmlFor="button_background_color">Cor dos Botões</Label>
+                  <div className="flex items-center gap-2 mt-2">
+                    <Input
+                      id="button_background_color"
+                      type="color"
+                      value={formData.button_background_color}
+                      onChange={(e) => setFormData({...formData, button_background_color: e.target.value})}
+                      className="w-16 h-10 p-1 border rounded cursor-pointer"
+                    />
+                    <Input
+                      value={formData.button_background_color}
+                      onChange={(e) => setFormData({...formData, button_background_color: e.target.value})}
+                      placeholder="#10b981"
+                      className="flex-1"
+                    />
+                  </div>
+                </div>
+                <div>
+                  <Label htmlFor="button_text_color">Cor do Texto dos Botões</Label>
+                  <div className="flex items-center gap-2 mt-2">
+                    <Input
+                      id="button_text_color"
+                      type="color"
+                      value={formData.button_text_color}
+                      onChange={(e) => setFormData({...formData, button_text_color: e.target.value})}
+                      className="w-16 h-10 p-1 border rounded cursor-pointer"
+                    />
+                    <Input
+                      value={formData.button_text_color}
+                      onChange={(e) => setFormData({...formData, button_text_color: e.target.value})}
+                      placeholder="#ffffff"
+                      className="flex-1"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <Label htmlFor="card_background_color">Cor de Fundo dos Cards</Label>
+                  <Input
+                    id="card_background_color"
+                    value={formData.card_background_color}
+                    onChange={(e) => setFormData({...formData, card_background_color: e.target.value})}
+                    placeholder="rgba(255,255,255,0.1)"
+                  />
+                </div>
+                <div>
+                  <Label htmlFor="card_border_color">Cor da Borda dos Cards</Label>
+                  <Input
+                    id="card_border_color"
+                    value={formData.card_border_color}
+                    onChange={(e) => setFormData({...formData, card_border_color: e.target.value})}
+                    placeholder="rgba(255,255,255,0.2)"
+                  />
+                </div>
+              </div>
             </div>
 
-            <div>
-              <Label htmlFor="instagram_link">Link do Instagram</Label>
-              <Input
-                id="instagram_link"
-                value={formData.instagram_link}
-                onChange={(e) => setFormData({...formData, instagram_link: e.target.value})}
-                placeholder="https://instagram.com/seunegocio"
-              />
+            {/* Tipografia e Estilo */}
+            <div className="space-y-4">
+              <h3 className="text-lg font-medium">Tipografia e Estilo</h3>
+              
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <Label htmlFor="font_family">Fonte</Label>
+                  <select
+                    id="font_family"
+                    value={formData.font_family}
+                    onChange={(e) => setFormData({...formData, font_family: e.target.value})}
+                    className="w-full p-2 border rounded-lg bg-background"
+                  >
+                    <option value="Inter">Inter</option>
+                    <option value="Roboto">Roboto</option>
+                    <option value="Open Sans">Open Sans</option>
+                    <option value="Lato">Lato</option>
+                    <option value="Poppins">Poppins</option>
+                    <option value="Nunito">Nunito</option>
+                  </select>
+                </div>
+                <div>
+                  <Label htmlFor="font_size">Tamanho da Fonte</Label>
+                  <select
+                    id="font_size"
+                    value={formData.font_size}
+                    onChange={(e) => setFormData({...formData, font_size: e.target.value})}
+                    className="w-full p-2 border rounded-lg bg-background"
+                  >
+                    <option value="small">Pequeno</option>
+                    <option value="medium">Médio</option>
+                    <option value="large">Grande</option>
+                  </select>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <Label htmlFor="border_radius">Arredondamento</Label>
+                  <select
+                    id="border_radius"
+                    value={formData.border_radius}
+                    onChange={(e) => setFormData({...formData, border_radius: e.target.value})}
+                    className="w-full p-2 border rounded-lg bg-background"
+                  >
+                    <option value="none">Nenhum</option>
+                    <option value="small">Pequeno</option>
+                    <option value="medium">Médio</option>
+                    <option value="large">Grande</option>
+                  </select>
+                </div>
+                <div>
+                  <Label htmlFor="shadow_intensity">Intensidade da Sombra</Label>
+                  <select
+                    id="shadow_intensity"
+                    value={formData.shadow_intensity}
+                    onChange={(e) => setFormData({...formData, shadow_intensity: e.target.value})}
+                    className="w-full p-2 border rounded-lg bg-background"
+                  >
+                    <option value="none">Nenhuma</option>
+                    <option value="light">Leve</option>
+                    <option value="medium">Média</option>
+                    <option value="strong">Forte</option>
+                  </select>
+                </div>
+              </div>
             </div>
           </div>
         </GlassCard>

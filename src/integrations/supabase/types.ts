@@ -198,60 +198,117 @@ export type Database = {
       }
       profiles: {
         Row: {
+          accent_color: string | null
           avatar_url: string | null
+          background_color: string | null
+          background_gradient_end: string | null
+          background_gradient_start: string | null
           banner_url: string | null
+          border_radius: string | null
           business_name: string | null
+          button_background_color: string | null
+          button_text_color: string | null
+          card_background_color: string | null
+          card_border_color: string | null
           created_at: string
           description: string | null
           email: string
           first_name: string | null
           font_color: string | null
+          font_family: string | null
+          font_size: string | null
           id: string
           instagram_link: string | null
           language: string | null
           last_name: string | null
           phone: string | null
+          primary_color: string | null
+          secondary_color: string | null
+          section_header_color: string | null
+          shadow_intensity: string | null
+          text_primary_color: string | null
+          text_secondary_color: string | null
           timezone: string | null
           updated_at: string
+          use_gradient_background: boolean | null
           user_id: string
+          website_link: string | null
           whatsapp_link: string | null
         }
         Insert: {
+          accent_color?: string | null
           avatar_url?: string | null
+          background_color?: string | null
+          background_gradient_end?: string | null
+          background_gradient_start?: string | null
           banner_url?: string | null
+          border_radius?: string | null
           business_name?: string | null
+          button_background_color?: string | null
+          button_text_color?: string | null
+          card_background_color?: string | null
+          card_border_color?: string | null
           created_at?: string
           description?: string | null
           email: string
           first_name?: string | null
           font_color?: string | null
+          font_family?: string | null
+          font_size?: string | null
           id?: string
           instagram_link?: string | null
           language?: string | null
           last_name?: string | null
           phone?: string | null
+          primary_color?: string | null
+          secondary_color?: string | null
+          section_header_color?: string | null
+          shadow_intensity?: string | null
+          text_primary_color?: string | null
+          text_secondary_color?: string | null
           timezone?: string | null
           updated_at?: string
+          use_gradient_background?: boolean | null
           user_id: string
+          website_link?: string | null
           whatsapp_link?: string | null
         }
         Update: {
+          accent_color?: string | null
           avatar_url?: string | null
+          background_color?: string | null
+          background_gradient_end?: string | null
+          background_gradient_start?: string | null
           banner_url?: string | null
+          border_radius?: string | null
           business_name?: string | null
+          button_background_color?: string | null
+          button_text_color?: string | null
+          card_background_color?: string | null
+          card_border_color?: string | null
           created_at?: string
           description?: string | null
           email?: string
           first_name?: string | null
           font_color?: string | null
+          font_family?: string | null
+          font_size?: string | null
           id?: string
           instagram_link?: string | null
           language?: string | null
           last_name?: string | null
           phone?: string | null
+          primary_color?: string | null
+          secondary_color?: string | null
+          section_header_color?: string | null
+          shadow_intensity?: string | null
+          text_primary_color?: string | null
+          text_secondary_color?: string | null
           timezone?: string | null
           updated_at?: string
+          use_gradient_background?: boolean | null
           user_id?: string
+          website_link?: string | null
           whatsapp_link?: string | null
         }
         Relationships: []
