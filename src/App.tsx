@@ -14,6 +14,7 @@ import { Appointments } from "./pages/Appointments";
 import { Calendar } from "./pages/Calendar";
 import { Reports } from "./pages/Reports";
 import { Settings } from "./pages/Settings";
+import BioLink from "./pages/BioLink";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -35,6 +36,7 @@ const App = () => (
             <Route path="/calendar" element={<ProtectedRoute><Calendar /></ProtectedRoute>} />
             <Route path="/reports" element={<ProtectedRoute><Reports /></ProtectedRoute>} />
             <Route path="/settings" element={<ProtectedRoute><Settings /></ProtectedRoute>} />
+            <Route path="/bio/:username" element={<BioLink />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>
