@@ -202,45 +202,57 @@ export type Database = {
           banner_url: string | null
           business_name: string | null
           created_at: string
+          description: string | null
           email: string
           first_name: string | null
+          font_color: string | null
           id: string
+          instagram_link: string | null
           language: string | null
           last_name: string | null
           phone: string | null
           timezone: string | null
           updated_at: string
           user_id: string
+          whatsapp_link: string | null
         }
         Insert: {
           avatar_url?: string | null
           banner_url?: string | null
           business_name?: string | null
           created_at?: string
+          description?: string | null
           email: string
           first_name?: string | null
+          font_color?: string | null
           id?: string
+          instagram_link?: string | null
           language?: string | null
           last_name?: string | null
           phone?: string | null
           timezone?: string | null
           updated_at?: string
           user_id: string
+          whatsapp_link?: string | null
         }
         Update: {
           avatar_url?: string | null
           banner_url?: string | null
           business_name?: string | null
           created_at?: string
+          description?: string | null
           email?: string
           first_name?: string | null
+          font_color?: string | null
           id?: string
+          instagram_link?: string | null
           language?: string | null
           last_name?: string | null
           phone?: string | null
           timezone?: string | null
           updated_at?: string
           user_id?: string
+          whatsapp_link?: string | null
         }
         Relationships: []
       }

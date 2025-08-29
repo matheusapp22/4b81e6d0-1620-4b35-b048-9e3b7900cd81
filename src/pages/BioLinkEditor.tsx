@@ -33,6 +33,10 @@ export const BioLinkEditor = () => {
     last_name: '',
     phone: '',
     email: '',
+    whatsapp_link: '',
+    instagram_link: '',
+    font_color: '#ffffff',
+    description: '',
   });
 
   const dayNames = ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado'];
@@ -45,6 +49,10 @@ export const BioLinkEditor = () => {
         last_name: profile.last_name || '',
         phone: profile.phone || '',
         email: profile.email || '',
+        whatsapp_link: profile.whatsapp_link || '',
+        instagram_link: profile.instagram_link || '',
+        font_color: profile.font_color || '#ffffff',
+        description: profile.description || '',
       });
     }
   }, [profile]);
@@ -109,7 +117,15 @@ export const BioLinkEditor = () => {
       const { error } = await supabase
         .from('profiles')
         .update({
-          ...formData,
+          business_name: formData.business_name,
+          first_name: formData.first_name,
+          last_name: formData.last_name,
+          phone: formData.phone,
+          email: formData.email,
+          whatsapp_link: formData.whatsapp_link,
+          instagram_link: formData.instagram_link,
+          font_color: formData.font_color,
+          description: formData.description,
           avatar_url: avatarUrl,
           banner_url: bannerUrl,
         })
@@ -334,6 +350,69 @@ export const BioLinkEditor = () => {
                 type="email"
                 value={formData.email}
                 onChange={(e) => setFormData({...formData, email: e.target.value})}
+              />
+            </div>
+
+            <div>
+              <Label htmlFor="description">Descrição</Label>
+              <Textarea
+                id="description"
+                value={formData.description}
+                onChange={(e) => setFormData({...formData, description: e.target.value})}
+                placeholder="Excelência em atendimento. Agende seu horário e tenha a melhor experiência conosco."
+                rows={3}
+              />
+            </div>
+          </div>
+        </GlassCard>
+
+        {/* BioLink Configuration */}
+        <GlassCard className="p-6">
+          <h2 className="text-xl font-semibold mb-4 flex items-center gap-2">
+            <Link2 className="w-5 h-5" />
+            Configurações do BioLink
+          </h2>
+          
+          <div className="space-y-4">
+            <div>
+              <Label htmlFor="font_color">Cor da Fonte</Label>
+              <div className="flex items-center gap-2 mt-2">
+                <Input
+                  id="font_color"
+                  type="color"
+                  value={formData.font_color}
+                  onChange={(e) => setFormData({...formData, font_color: e.target.value})}
+                  className="w-16 h-10 p-1 border rounded cursor-pointer"
+                />
+                <Input
+                  value={formData.font_color}
+                  onChange={(e) => setFormData({...formData, font_color: e.target.value})}
+                  placeholder="#ffffff"
+                  className="flex-1"
+                />
+              </div>
+            </div>
+
+            <div>
+              <Label htmlFor="whatsapp_link">Link do WhatsApp</Label>
+              <Input
+                id="whatsapp_link"
+                value={formData.whatsapp_link}
+                onChange={(e) => setFormData({...formData, whatsapp_link: e.target.value})}
+                placeholder="https://wa.me/5511999999999"
+              />
+              <p className="text-xs text-muted-foreground mt-1">
+                Deixe vazio para usar automaticamente o telefone do perfil
+              </p>
+            </div>
+
+            <div>
+              <Label htmlFor="instagram_link">Link do Instagram</Label>
+              <Input
+                id="instagram_link"
+                value={formData.instagram_link}
+                onChange={(e) => setFormData({...formData, instagram_link: e.target.value})}
+                placeholder="https://instagram.com/seunegocio"
               />
             </div>
           </div>

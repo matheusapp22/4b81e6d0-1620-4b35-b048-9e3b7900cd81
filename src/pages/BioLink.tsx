@@ -19,6 +19,10 @@ interface BusinessProfile {
   avatar_url: string;
   banner_url?: string;
   timezone: string;
+  whatsapp_link?: string;
+  instagram_link?: string;
+  font_color?: string;
+  description?: string;
 }
 
 interface Service {
@@ -119,13 +123,15 @@ const BioLink = () => {
   };
 
   const getWhatsAppLink = () => {
+    // Use custom WhatsApp link if provided, otherwise use phone from profile
+    if (profile?.whatsapp_link) return profile.whatsapp_link;
     if (!profile?.phone) return '#';
     const cleanPhone = profile.phone.replace(/\D/g, '');
     return `https://wa.me/55${cleanPhone}?text=Olá! Gostaria de agendar um horário.`;
   };
 
   return (
-    <div className={`min-h-screen transition-all duration-300 ${darkMode ? 'bg-slate-900' : 'bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900'}`}>
+    <div className={`min-h-screen transition-all duration-300 ${darkMode ? 'bg-slate-900' : 'bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900'}`} style={{ color: profile.font_color || '#ffffff' }}>
       {/* Theme Toggle */}
       <div className="absolute top-4 right-4 z-10">
         <Button
@@ -165,7 +171,7 @@ const BioLink = () => {
 
           {/* Description */}
           <p className="text-white/80 text-lg mb-6 leading-relaxed max-w-xs mx-auto">
-            Excelência em atendimento. Agende seu horário e tenha a melhor experiência conosco.
+            {profile.description || 'Excelência em atendimento. Agende seu horário e tenha a melhor experiência conosco.'}
           </p>
         </div>
 
@@ -196,16 +202,22 @@ const BioLink = () => {
 
           {/* Custom Links */}
           <div className="grid grid-cols-2 gap-4">
+            {profile.instagram_link && (
+              <a href={profile.instagram_link} target="_blank" rel="noopener noreferrer" className="block">
+                <Button
+                  variant="outline"
+                  className="w-full glass-card border-white/30 text-white py-4 rounded-2xl hover:bg-white/20 transition-all duration-300"
+                >
+                  <Instagram className="w-5 h-5 mr-2" />
+                  Instagram
+                </Button>
+              </a>
+            )}
+            {/* Placeholder for website link - can be added later */}
             <Button
               variant="outline"
-              className="glass-card border-white/30 text-white py-4 rounded-2xl hover:bg-white/20 transition-all duration-300"
-            >
-              <Instagram className="w-5 h-5 mr-2" />
-              Instagram
-            </Button>
-            <Button
-              variant="outline"
-              className="glass-card border-white/30 text-white py-4 rounded-2xl hover:bg-white/20 transition-all duration-300"
+              className="glass-card border-white/30 text-white py-4 rounded-2xl hover:bg-white/20 transition-all duration-300 opacity-50 cursor-not-allowed"
+              disabled
             >
               <Globe className="w-5 h-5 mr-2" />
               Site
