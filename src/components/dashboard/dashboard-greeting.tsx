@@ -1,3 +1,4 @@
+import React from 'react';
 import { useAuth } from '@/contexts/auth-context';
 import { Card, CardContent } from '@/components/ui/card';
 import { Calendar, TrendingUp, Star } from 'lucide-react';
