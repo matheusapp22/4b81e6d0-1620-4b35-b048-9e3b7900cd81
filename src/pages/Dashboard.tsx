@@ -2,9 +2,13 @@ import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/contexts/auth-context';
 import { DashboardHeader } from '@/components/dashboard/dashboard-header';
+import { DashboardGreeting } from '@/components/dashboard/dashboard-greeting';
 import { DashboardStats } from '@/components/dashboard/dashboard-stats';
+import { StatsChart } from '@/components/dashboard/stats-chart';
 import { TodayAppointments } from '@/components/dashboard/today-appointments';
+import { NextAppointment } from '@/components/dashboard/next-appointment';
 import { QuickActions } from '@/components/dashboard/quick-actions';
+import { AppointmentModal } from '@/components/dashboard/appointment-modal';
 
 export default function Dashboard() {
   const { user, loading } = useAuth();
@@ -33,17 +37,24 @@ export default function Dashboard() {
       <DashboardHeader />
       
       <main className="container mx-auto px-4 py-8 space-y-8">
+        <DashboardGreeting />
+        
         <DashboardStats />
         
+        <StatsChart />
+        
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          <div className="lg:col-span-2">
+          <div className="lg:col-span-2 space-y-8">
             <TodayAppointments />
           </div>
-          <div>
+          <div className="space-y-8">
+            <NextAppointment />
             <QuickActions />
           </div>
         </div>
       </main>
+      
+      <AppointmentModal />
     </div>
   );
 }

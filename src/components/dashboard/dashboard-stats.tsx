@@ -96,28 +96,36 @@ export function DashboardStats() {
       value: stats.todayAppointments,
       icon: Calendar,
       color: 'text-primary',
-      bgColor: 'bg-primary/10'
+      bgColor: 'bg-primary/10',
+      trend: '+12%',
+      trendColor: 'text-green-500'
     },
     {
       title: 'Total de Clientes',
       value: stats.totalClients,
       icon: Users,
-      color: 'text-neon-blue',
-      bgColor: 'bg-blue-500/10'
+      color: 'text-blue-500',
+      bgColor: 'bg-blue-500/10',
+      trend: '+8%',
+      trendColor: 'text-green-500'
     },
     {
       title: 'Receita do Mês',
       value: `R$ ${stats.monthlyRevenue.toFixed(2)}`,
       icon: DollarSign,
-      color: 'text-neon-green',
-      bgColor: 'bg-green-500/10'
+      color: 'text-green-500',
+      bgColor: 'bg-green-500/10',
+      trend: '+24%',
+      trendColor: 'text-green-500'
     },
     {
       title: 'Taxa de Conclusão',
       value: `${stats.completionRate}%`,
       icon: stats.completionRate >= 80 ? TrendingUp : TrendingDown,
-      color: stats.completionRate >= 80 ? 'text-neon-green' : 'text-warning',
-      bgColor: stats.completionRate >= 80 ? 'bg-green-500/10' : 'bg-yellow-500/10'
+      color: stats.completionRate >= 80 ? 'text-green-500' : 'text-yellow-500',
+      bgColor: stats.completionRate >= 80 ? 'bg-green-500/10' : 'bg-yellow-500/10',
+      trend: stats.completionRate >= 80 ? '+5%' : '-2%',
+      trendColor: stats.completionRate >= 80 ? 'text-green-500' : 'text-yellow-500'
     }
   ];
 
@@ -141,20 +149,24 @@ export function DashboardStats() {
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
       {statsData.map((stat) => (
-        <Card key={stat.title} className="glass-card hover-glow transition-all duration-300">
+        <Card key={stat.title} className="glass-card hover-glow transition-all duration-300 group">
           <CardContent className="p-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm font-medium text-muted-foreground mb-1">
-                  {stat.title}
-                </p>
-                <p className="text-2xl font-bold">
-                  {stat.value}
-                </p>
+            <div className="flex items-center justify-between mb-4">
+              <div className={`p-3 rounded-lg ${stat.bgColor} group-hover:scale-110 transition-transform duration-300`}>
+                <stat.icon className={`w-6 h-6 ${stat.color} animate-pulse`} />
               </div>
-              <div className={`p-3 rounded-full ${stat.bgColor}`}>
-                <stat.icon className={`w-6 h-6 ${stat.color}`} />
+              <div className={`text-sm font-medium ${stat.trendColor} flex items-center gap-1`}>
+                <TrendingUp className="w-3 h-3" />
+                {stat.trend}
               </div>
+            </div>
+            <div>
+              <p className="text-sm font-medium text-muted-foreground mb-1">
+                {stat.title}
+              </p>
+              <p className="text-3xl font-bold gradient-text">
+                {stat.value}
+              </p>
             </div>
           </CardContent>
         </Card>

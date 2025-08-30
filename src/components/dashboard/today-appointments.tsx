@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Clock, User, Phone, CheckCircle, XCircle, Plus } from 'lucide-react';
+import { Clock, User, Phone, CheckCircle, XCircle, Plus, Calendar as CalendarIcon, Users } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/auth-context';
 import { useToast } from '@/hooks/use-toast';
@@ -151,13 +151,24 @@ export function TodayAppointments() {
       </CardHeader>
       <CardContent>
         {appointments.length === 0 ? (
-          <div className="text-center py-8">
-            <Clock className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
-            <p className="text-muted-foreground">Nenhum agendamento para hoje</p>
-            <Button variant="outline" className="mt-4">
-              <Plus className="w-4 h-4 mr-2" />
-              Criar Agendamento
-            </Button>
+          <div className="text-center py-12">
+            <div className="w-24 h-24 mx-auto mb-6 bg-primary/10 rounded-full flex items-center justify-center">
+              <CalendarIcon className="w-12 h-12 text-primary/50" />
+            </div>
+            <h3 className="text-lg font-semibold mb-2">Nenhum agendamento para hoje!</h3>
+            <p className="text-muted-foreground mb-6 max-w-sm mx-auto">
+              Que tal aproveitar para revisar seus clientes ou configurar novos serviços?
+            </p>
+            <div className="flex flex-col sm:flex-row gap-3 justify-center">
+              <Button variant="default">
+                <Plus className="w-4 h-4 mr-2" />
+                Novo Agendamento
+              </Button>
+              <Button variant="outline">
+                <Users className="w-4 h-4 mr-2" />
+                Ver Clientes
+              </Button>
+            </div>
           </div>
         ) : (
           <div className="space-y-4">

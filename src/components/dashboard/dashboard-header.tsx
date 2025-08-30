@@ -41,15 +41,18 @@ export function DashboardHeader() {
     <GlassCard className="sticky top-0 z-50 mx-4 mt-4 px-6 py-4">
       <nav className="flex items-center justify-between">
         {/* Logo */}
-        <div className="flex items-center gap-2">
-          <a href="/dashboard" className="flex items-center gap-2">
-            <div className="w-8 h-8 bg-gradient-primary rounded-lg flex items-center justify-center">
-              <Zap className="w-5 h-5 text-white" />
+        <div className="flex items-center gap-3">
+          <a href="/dashboard" className="flex items-center gap-3">
+            <div className="relative">
+              <div className="w-10 h-10 bg-gradient-primary rounded-xl flex items-center justify-center shadow-lg">
+                <Zap className="w-6 h-6 text-white" />
+              </div>
+              <div className="absolute -top-1 -right-1 w-3 h-3 bg-green-400 rounded-full animate-pulse"></div>
             </div>
             <div>
-              <span className="font-bold text-lg gradient-text">GoAgendas</span>
+              <span className="font-bold text-xl gradient-text tracking-tight">GoAgendas</span>
               {profile?.business_name && (
-                <p className="text-xs text-muted-foreground">{profile.business_name}</p>
+                <p className="text-xs text-muted-foreground font-medium">{profile.business_name}</p>
               )}
             </div>
           </a>
