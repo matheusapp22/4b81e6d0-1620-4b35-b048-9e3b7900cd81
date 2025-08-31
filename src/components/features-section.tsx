@@ -30,8 +30,8 @@ const features = [
     title: "Notificações Inteligentes",
     description: "WhatsApp, email e push notifications automáticas para lembrar clientes",
     badge: "AUTOMATIZADO",
-    color: "text-neon-blue",
-    bgColor: "bg-neon-blue/10"
+    color: "text-info",
+    bgColor: "bg-info/10"
   },
   {
     icon: CreditCard,
@@ -46,8 +46,8 @@ const features = [
     title: "Analytics Avançados",
     description: "Relatórios em tempo real e insights para crescer seu negócio",
     badge: "PRO",
-    color: "text-neon-purple",
-    bgColor: "bg-neon-purple/10"
+    color: "text-primary",
+    bgColor: "bg-primary/10"
   },
   {
     icon: Users,
@@ -62,8 +62,8 @@ const features = [
     title: "App Mobile Nativo",
     description: "Gerencie tudo pelo celular com sincronização em tempo real",
     badge: "MOBILE",
-    color: "text-neon-blue",
-    bgColor: "bg-neon-blue/10"
+    color: "text-info",
+    bgColor: "bg-info/10"
   },
   {
     icon: Clock,
@@ -78,8 +78,8 @@ const features = [
     title: "Automações IA",
     description: "Workflows inteligentes para follow-up e reativação de clientes",
     badge: "IA",
-    color: "text-neon-purple",
-    bgColor: "bg-neon-purple/10"
+    color: "text-primary",
+    bgColor: "bg-primary/10"
   },
   {
     icon: Shield,
@@ -93,97 +93,77 @@ const features = [
 
 export function FeaturesSection() {
   return (
-    <section className="py-32 px-6 bg-gradient-to-b from-background to-muted/30 relative overflow-hidden">
-      {/* Background Elements */}
-      <div className="absolute inset-0 dot-pattern opacity-20"></div>
-      
-      <div className="max-w-7xl mx-auto relative z-10">
-        <div className="text-center space-y-8 mb-24">
-          <Badge variant="secondary" className="glass-card px-8 py-4 text-sm font-bold border border-primary/20">
-            <Sparkles className="w-4 h-4 mr-2" />
-            Funcionalidades Completas
-          </Badge>
-          <h2 className="text-display">
-            Tudo que você precisa<br />
-            <span className="gradient-text">em uma plataforma</span>
+    <section className="py-24 bg-secondary/30 px-6">
+      <div className="max-w-6xl mx-auto">
+        <div className="text-center space-y-6 mb-16">
+          <div className="inline-flex items-center gap-2 bg-primary/10 text-primary px-4 py-2 rounded-full text-sm font-medium border border-primary/20">
+            <Sparkles className="w-4 h-4" />
+            Recursos Premium
+          </div>
+          <h2 className="text-hero">
+            <span className="block text-foreground">Tudo que você precisa</span>
+            <span className="block gradient-text">em uma plataforma</span>
           </h2>
-          <p className="text-body text-muted-foreground max-w-3xl mx-auto leading-relaxed">
-            Do agendamento ao pagamento, da notificação aos relatórios. 
-            Uma solução completa para profissionais modernos que buscam excelência.
+          <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+            Desde agendamentos até pagamentos, tenha controle total do seu negócio
+            com as ferramentas mais avançadas do mercado.
           </p>
         </div>
         
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-10">
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
           {features.map((feature, index) => (
-            <GlassCard 
+            <div 
               key={index} 
-              variant="premium" 
-              hover 
-              className="p-8 space-y-6 animate-scale-in group"
-              style={{ animationDelay: `${index * 0.1}s` }}
+              className="bg-card border border-border rounded-xl p-6 space-y-4 hover:shadow-card transition-shadow"
             >
               <div className="flex items-start justify-between">
-                <div className={`w-16 h-16 rounded-3xl ${feature.bgColor} flex items-center justify-center group-hover:scale-110 transition-all duration-400 shadow-card`}>
-                  <feature.icon className={`w-8 h-8 ${feature.color}`} />
+                <div className={`w-12 h-12 rounded-lg ${feature.bgColor} flex items-center justify-center`}>
+                  <feature.icon className={`w-6 h-6 ${feature.color}`} />
                 </div>
-                <Badge 
-                  className="status-indicator info px-3 py-1"
-                >
+                <div className="bg-primary/10 text-primary px-2 py-1 rounded-full text-xs font-medium border border-primary/20">
                   {feature.badge}
-                </Badge>
+                </div>
               </div>
               
-              <div className="space-y-4">
-                <h3 className="text-title font-bold">{feature.title}</h3>
-                <p className="text-caption leading-relaxed">{feature.description}</p>
+              <div className="space-y-2">
+                <h3 className="text-lg font-semibold">{feature.title}</h3>
+                <p className="text-sm text-muted-foreground leading-relaxed">{feature.description}</p>
               </div>
-
-              {/* Hover Effect Indicator */}
-              <div className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-primary opacity-0 group-hover:opacity-100 transition-opacity duration-400 rounded-b-2xl"></div>
-            </GlassCard>
+            </div>
           ))}
         </div>
         
         {/* Integration Highlights */}
-        <div className="mt-24 grid md:grid-cols-3 gap-10">
-          <GlassCard variant="elevated" className="p-8 text-center space-y-6 group hover:scale-105 transition-all duration-500">
-            <div className="relative">
-              <Globe className="w-16 h-16 text-primary mx-auto" />
-              <div className="absolute -top-2 -right-2 w-6 h-6 bg-success rounded-full flex items-center justify-center animate-bounce-subtle">
-                <Star className="w-3 h-3 text-white" />
-              </div>
+        <div className="mt-16 grid md:grid-cols-3 gap-8">
+          <div className="bg-card border border-border rounded-xl p-6 text-center space-y-4">
+            <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mx-auto">
+              <Globe className="w-6 h-6 text-primary" />
             </div>
-            <h3 className="text-title font-bold">Integrações Nativas</h3>
-            <p className="text-caption leading-relaxed">
+            <h3 className="text-lg font-semibold">Integrações Nativas</h3>
+            <p className="text-sm text-muted-foreground">
               Google Agenda, Zoom, WhatsApp Business, Mercado Pago e muito mais
             </p>
-          </GlassCard>
+          </div>
           
-          <GlassCard variant="elevated" className="p-8 text-center space-y-6 group hover:scale-105 transition-all duration-500">
-            <div className="relative">
-              <Zap className="w-16 h-16 text-neon-blue mx-auto" />
-              <div className="absolute -top-2 -right-2 w-6 h-6 bg-warning rounded-full flex items-center justify-center animate-bounce-subtle">
-                <TrendingUp className="w-3 h-3 text-white" />
-              </div>
+          <div className="bg-card border border-border rounded-xl p-6 text-center space-y-4">
+            <div className="w-12 h-12 bg-info/10 rounded-lg flex items-center justify-center mx-auto">
+              <Zap className="w-6 h-6 text-info" />
             </div>
-            <h3 className="text-title font-bold">Deploy Instantâneo</h3>
-            <p className="text-caption leading-relaxed">
+            <h3 className="text-lg font-semibold">Deploy Instantâneo</h3>
+            <p className="text-sm text-muted-foreground">
               Sua página de agendamento no ar em menos de 5 minutos
             </p>
-          </GlassCard>
+          </div>
           
-          <GlassCard variant="elevated" className="p-8 text-center space-y-6 group hover:scale-105 transition-all duration-500">
-            <div className="relative">
-              <Shield className="w-16 h-16 text-success mx-auto" />
-              <div className="absolute -top-2 -right-2 w-6 h-6 bg-primary rounded-full flex items-center justify-center animate-bounce-subtle">
-                <Sparkles className="w-3 h-3 text-white" />
-              </div>
+          <div className="bg-card border border-border rounded-xl p-6 text-center space-y-4">
+            <div className="w-12 h-12 bg-success/10 rounded-lg flex items-center justify-center mx-auto">
+              <Shield className="w-6 h-6 text-success" />
             </div>
-            <h3 className="text-title font-bold">Suporte 24/7</h3>
-            <p className="text-caption leading-relaxed">
+            <h3 className="text-lg font-semibold">Suporte 24/7</h3>
+            <p className="text-sm text-muted-foreground">
               Chat ao vivo, tutoriais em vídeo e onboarding personalizado
             </p>
-          </GlassCard>
+          </div>
         </div>
       </div>
     </section>

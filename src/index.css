@@ -159,10 +159,10 @@
 
   /* Modern Glass Effects */
   .glass-card {
-    background: hsl(var(--glass-bg));
-    border: 1px solid hsl(var(--glass-border));
-    backdrop-filter: blur(var(--backdrop-blur));
-    -webkit-backdrop-filter: blur(var(--backdrop-blur));
+    background: rgb(255 255 255 / 0.9);
+    border: 1px solid rgb(240 240 240 / 0.8);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
     box-shadow: var(--shadow-card);
   }
 
