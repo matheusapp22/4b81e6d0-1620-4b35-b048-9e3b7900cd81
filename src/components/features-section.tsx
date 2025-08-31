@@ -1,4 +1,5 @@
 import { Badge } from "@/components/ui/badge";
+import { GlassCard } from "@/components/ui/glass-card";
 import { 
   Calendar, 
   Bell, 
@@ -92,12 +93,16 @@ const features = [
 
 export function FeaturesSection() {
   return (
-    <section className="py-24 bg-secondary/30 px-6">
-      <div className="max-w-6xl mx-auto">
+    <section className="py-24 glass-surface px-6 relative overflow-hidden">
+      {/* Background Effects */}
+      <div className="absolute top-0 left-1/4 w-64 h-64 bg-primary/5 rounded-full blur-3xl animate-cosmic-drift"></div>
+      <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-neon-purple/5 rounded-full blur-3xl animate-float"></div>
+      
+      <div className="max-w-6xl mx-auto relative z-10">
         <div className="text-center space-y-6 mb-16">
-          <div className="inline-flex items-center gap-2 bg-primary/10 text-primary px-4 py-2 rounded-full text-sm font-medium border border-primary/20">
-            <Sparkles className="w-4 h-4" />
-            Recursos Premium
+          <div className="inline-flex items-center gap-2 glass-neon px-6 py-3 rounded-full text-sm font-semibold animate-neon-pulse">
+            <Sparkles className="w-4 h-4 text-primary" />
+            <span className="gradient-text">Recursos Premium</span>
           </div>
           <h2 className="text-hero">
             <span className="block text-foreground">Tudo que você precisa</span>
@@ -111,58 +116,64 @@ export function FeaturesSection() {
         
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
           {features.map((feature, index) => (
-            <div 
+            <GlassCard 
               key={index} 
-              className="bg-card border border-border rounded-xl p-6 space-y-4 hover:shadow-card transition-shadow"
+              variant="premium"
+              hover
+              className="p-6 space-y-4 group animate-scale-in"
+              style={{ animationDelay: `${index * 0.1}s` }}
             >
               <div className="flex items-start justify-between">
-                <div className={`w-12 h-12 rounded-lg ${feature.bgColor} flex items-center justify-center`}>
-                  <feature.icon className={`w-6 h-6 ${feature.color}`} />
+                <div className={`w-14 h-14 rounded-2xl ${feature.bgColor} flex items-center justify-center group-hover:scale-110 transition-all duration-500 shadow-card`}>
+                  <feature.icon className={`w-7 h-7 ${feature.color}`} />
                 </div>
-                <div className="bg-primary/10 text-primary px-2 py-1 rounded-full text-xs font-medium border border-primary/20">
-                  {feature.badge}
+                <div className="glass-neon px-3 py-1.5 rounded-full text-xs font-semibold">
+                  <span className="gradient-text">{feature.badge}</span>
                 </div>
               </div>
               
-              <div className="space-y-2">
-                <h3 className="text-lg font-semibold">{feature.title}</h3>
+              <div className="space-y-3">
+                <h3 className="text-lg font-semibold gradient-text">{feature.title}</h3>
                 <p className="text-sm text-muted-foreground leading-relaxed">{feature.description}</p>
               </div>
-            </div>
+              
+              {/* Hover Effect Indicator */}
+              <div className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-primary opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+            </GlassCard>
           ))}
         </div>
         
         {/* Integration Highlights */}
         <div className="mt-16 grid md:grid-cols-3 gap-8">
-          <div className="bg-card border border-border rounded-xl p-6 text-center space-y-4">
-            <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mx-auto">
-              <Globe className="w-6 h-6 text-primary" />
+          <GlassCard variant="premium" hover className="p-8 text-center space-y-6 group">
+            <div className="w-16 h-16 bg-gradient-primary rounded-3xl flex items-center justify-center mx-auto shadow-glow group-hover:scale-110 transition-all duration-500">
+              <Globe className="w-8 h-8 text-primary-foreground" />
             </div>
-            <h3 className="text-lg font-semibold">Integrações Nativas</h3>
-            <p className="text-sm text-muted-foreground">
+            <h3 className="text-lg font-semibold gradient-text">Integrações Nativas</h3>
+            <p className="text-sm text-muted-foreground leading-relaxed">
               Google Agenda, Zoom, WhatsApp Business, Mercado Pago e muito mais
             </p>
-          </div>
+          </GlassCard>
           
-          <div className="bg-card border border-border rounded-xl p-6 text-center space-y-4">
-            <div className="w-12 h-12 bg-info/10 rounded-lg flex items-center justify-center mx-auto">
-              <Zap className="w-6 h-6 text-info" />
+          <GlassCard variant="premium" hover className="p-8 text-center space-y-6 group">
+            <div className="w-16 h-16 bg-gradient-to-r from-info to-neon-blue rounded-3xl flex items-center justify-center mx-auto shadow-glow group-hover:scale-110 transition-all duration-500">
+              <Zap className="w-8 h-8 text-white" />
             </div>
-            <h3 className="text-lg font-semibold">Deploy Instantâneo</h3>
-            <p className="text-sm text-muted-foreground">
+            <h3 className="text-lg font-semibold gradient-text">Deploy Instantâneo</h3>
+            <p className="text-sm text-muted-foreground leading-relaxed">
               Sua página de agendamento no ar em menos de 5 minutos
             </p>
-          </div>
+          </GlassCard>
           
-          <div className="bg-card border border-border rounded-xl p-6 text-center space-y-4">
-            <div className="w-12 h-12 bg-success/10 rounded-lg flex items-center justify-center mx-auto">
-              <Shield className="w-6 h-6 text-success" />
+          <GlassCard variant="premium" hover className="p-8 text-center space-y-6 group">
+            <div className="w-16 h-16 bg-gradient-to-r from-success to-neon-green rounded-3xl flex items-center justify-center mx-auto shadow-glow group-hover:scale-110 transition-all duration-500">
+              <Shield className="w-8 h-8 text-white" />
             </div>
-            <h3 className="text-lg font-semibold">Suporte 24/7</h3>
-            <p className="text-sm text-muted-foreground">
+            <h3 className="text-lg font-semibold gradient-text">Suporte 24/7</h3>
+            <p className="text-sm text-muted-foreground leading-relaxed">
               Chat ao vivo, tutoriais em vídeo e onboarding personalizado
             </p>
-          </div>
+          </GlassCard>
         </div>
       </div>
     </section>
