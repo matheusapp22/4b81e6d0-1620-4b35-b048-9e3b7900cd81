@@ -32,8 +32,8 @@ interface BookingFormProps {
   businessProfile: {
     user_id: string;
     business_name: string;
-    first_name: string;
-    last_name: string;
+    first_name?: string;
+    last_name?: string;
     timezone: string;
   };
 }

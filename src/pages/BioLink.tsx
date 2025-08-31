@@ -12,10 +12,10 @@ import { BookingForm } from '@/components/booking/booking-form';
 interface BusinessProfile {
   user_id: string;
   business_name: string;
-  first_name: string;
-  last_name: string;
-  phone: string;
-  email: string;
+  first_name?: string;
+  last_name?: string;
+  phone?: string;
+  email?: string;
   avatar_url: string;
   banner_url?: string;
   timezone: string;
@@ -82,7 +82,7 @@ const BioLink = () => {
     try {
       // Fetch business profile by business_name (using as username)
       const { data: profileData, error: profileError } = await supabase
-        .from('profiles')
+        .from('public_profiles')
         .select('*')
         .eq('business_name', username)
         .maybeSingle();
@@ -225,14 +225,14 @@ const BioLink = () => {
             <Avatar className="w-28 h-28 mx-auto border-4 border-white/30 shadow-2xl">
               <AvatarImage src={profile.avatar_url} className="object-cover" />
               <AvatarFallback className="text-3xl font-bold bg-gradient-to-br from-purple-500 to-blue-500 text-white">
-                {profile.business_name ? profile.business_name[0] : profile.first_name[0]}
+                {profile.business_name ? profile.business_name[0] : (profile.first_name?.[0] || 'U')}
               </AvatarFallback>
             </Avatar>
           </div>
 
           {/* Business Name */}
           <h1 className="text-3xl font-bold mb-4 leading-tight" style={{ color: profile?.section_header_color || profile?.text_primary_color || '#ffffff' }}>
-            {profile.business_name || `${profile.first_name} ${profile.last_name}`}
+            {profile.business_name || `${profile.first_name || ''} ${profile.last_name || ''}`.trim() || 'Profissional'}
           </h1>
 
           {/* Stars Rating */}
