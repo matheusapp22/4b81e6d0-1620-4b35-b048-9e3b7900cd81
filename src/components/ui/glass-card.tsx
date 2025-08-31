@@ -14,22 +14,22 @@ const GlassCard = forwardRef<HTMLDivElement, GlassCardProps>(
       <div
         ref={ref}
         className={cn(
-          "rounded-2xl border transition-all duration-500 ease-out relative overflow-hidden",
+          "rounded-2xl border transition-all duration-500 ease-out",
           {
             // Default glass card with subtle backdrop blur
             "glass-card": variant === "default",
             
             // Premium card with enhanced shadows and borders
-            "glass-premium": variant === "premium",
+            "premium-card": variant === "premium",
             
-            // Neon variant with glowing borders and pulse animation
-            "glass-neon animate-neon-pulse": variant === "neon",
+            // Neon variant with glowing borders
+            "glass neon-border animate-pulse-glow": variant === "neon",
             
             // Minimal variant for subtle backgrounds
-            "glass-surface border-border/40 shadow-subtle": variant === "minimal",
+            "bg-card/90 border-border/60 backdrop-blur-sm shadow-sm": variant === "minimal",
             
-            // Elevated variant with stronger shadows and cosmic drift
-            "glass-premium shadow-elevated animate-cosmic-drift": variant === "elevated",
+            // Elevated variant with stronger shadows
+            "bg-card border-border shadow-elevated backdrop-blur-md": variant === "elevated",
             
             // Hover effects
             "hover-glow cursor-pointer": hover,

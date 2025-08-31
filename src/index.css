@@ -5,41 +5,35 @@
 
 @layer base {
   :root {
-    /* Futuristic Primary Colors - Inspired by Apple/Starlink */
-    --primary: 200 100% 55%; /* #00BFFF - Neon Cyan */
-    --primary-hover: 200 100% 50%;
-    --primary-foreground: 220 20% 8%;
-    --primary-glow: 200 100% 70%;
+    /* Modern Primary Colors - Inspired by contemporary SaaS */
+    --primary: 250 84% 60%; /* #6366F1 - Indigo */
+    --primary-hover: 250 84% 55%;
+    --primary-foreground: 0 0% 100%;
+    --primary-glow: 250 84% 70%;
     
-    /* Neon Accent Colors */
-    --neon-blue: 200 100% 55%; /* Electric Blue */
-    --neon-purple: 270 100% 60%; /* Electric Purple */
-    --neon-green: 120 100% 50%; /* Electric Green */
-    --neon-pink: 320 100% 60%; /* Electric Pink */
+    /* Neutral Secondary Colors */
+    --secondary: 240 5% 96%; /* #F8FAFC - Very Light Gray */
+    --secondary-hover: 240 5% 92%;
+    --secondary-foreground: 240 6% 10%;
     
-    /* Neutral Glass Colors */
-    --secondary: 220 20% 95%; /* Light Glass */
-    --secondary-hover: 220 20% 90%;
-    --secondary-foreground: 220 20% 10%;
+    /* Clean Backgrounds */
+    --background: 0 0% 100%; /* Pure White */
+    --background-alt: 240 5% 96%; /* #F8FAFC */
+    --foreground: 240 6% 10%; /* #1E293B - Dark Gray */
     
-    /* Glass Backgrounds */
-    --background: 220 25% 98%; /* Pure Glass White */
-    --background-alt: 220 20% 95%; /* Glass Alt */
-    --foreground: 220 20% 8%; /* Deep Dark */
+    /* Card Surfaces */
+    --card: 0 0% 100%;
+    --card-foreground: 240 6% 10%;
+    --surface: 0 0% 100%;
+    --surface-alt: 240 5% 96%;
     
-    /* Glass Card Surfaces */
-    --card: 220 20% 98% / 0.7; /* Semi-transparent */
-    --card-foreground: 220 20% 8%;
-    --surface: 220 20% 98% / 0.8;
-    --surface-alt: 220 20% 95% / 0.6;
+    /* Text Colors */
+    --muted: 240 5% 96%;
+    --muted-foreground: 240 4% 46%; /* #64748B - Slate Gray */
     
-    /* Glass Text Colors */
-    --muted: 220 20% 95% / 0.8;
-    --muted-foreground: 220 15% 40%; /* Glass Gray */
-    
-    /* Glass Borders */
-    --border: 220 20% 85% / 0.6; /* Semi-transparent */
-    --border-muted: 220 20% 90% / 0.4;
+    /* Borders */
+    --border: 240 6% 90%; /* #E2E8F0 */
+    --border-muted: 240 5% 94%;
     
     /* Interactive States */
     --accent: 240 5% 96%;
@@ -55,27 +49,22 @@
     --info: 217 91% 60%; /* #3B82F6 - Blue */
     --info-foreground: 0 0% 100%;
 
-    /* Futuristic Glass & Effects */
-    --glass-bg: 220 20% 98% / 0.1;
-    --glass-border: 220 20% 85% / 0.2;
-    --glass-border-strong: 220 20% 70% / 0.3;
-    --backdrop-blur: 16px;
-    --backdrop-blur-strong: 24px;
+    /* Glass & Effects */
+    --glass-bg: 255 255 255 / 0.9;
+    --glass-border: 240 6% 90% / 0.8;
+    --backdrop-blur: 12px;
     
-    /* Futuristic Shadows with Glow */
+    /* Modern Shadows */
     --shadow-subtle: 0 1px 2px 0 rgb(0 0 0 / 0.05);
-    --shadow-card: 0 4px 12px 0 rgb(0 0 0 / 0.08), 0 0 0 1px hsl(var(--border));
-    --shadow-elevated: 0 8px 24px 0 rgb(0 0 0 / 0.12), 0 0 0 1px hsl(var(--border));
-    --shadow-premium: 0 16px 48px 0 rgb(0 0 0 / 0.16), 0 0 24px hsl(var(--primary) / 0.1);
-    --shadow-glow: 0 0 32px hsl(var(--primary) / 0.3);
-    --shadow-neon: 0 0 20px hsl(var(--neon-blue) / 0.5);
+    --shadow-card: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+    --shadow-elevated: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+    --shadow-premium: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
     
-    /* Futuristic Gradients */
-    --gradient-primary: linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(var(--primary-glow)) 100%);
-    --gradient-cosmic: linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(var(--neon-purple)) 50%, hsl(var(--neon-pink)) 100%);
-    --gradient-glass: linear-gradient(135deg, hsl(var(--glass-bg)) 0%, hsl(220 20% 100% / 0.05) 100%);
-    --gradient-hero: linear-gradient(135deg, hsl(var(--background)) 0%, hsl(var(--background-alt)) 100%);
-    --gradient-neon: linear-gradient(90deg, hsl(var(--neon-blue)) 0%, hsl(var(--neon-purple)) 50%, hsl(var(--neon-pink)) 100%);
+    /* Modern Gradients */
+    --gradient-primary: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--primary-glow)));
+    --gradient-secondary: linear-gradient(135deg, hsl(var(--secondary)), hsl(var(--secondary-hover)));
+    --gradient-hero: linear-gradient(135deg, hsl(var(--background)) 0%, hsl(var(--background-alt)) 50%, hsl(var(--background)) 100%);
+    --gradient-glass: linear-gradient(135deg, hsl(var(--glass-bg)), hsl(var(--glass-bg)));
     
     /* Border Radius */
     --radius-sm: 0.375rem; /* 6px */
@@ -91,34 +80,28 @@
   }
 
   .dark {
-    /* Futuristic Dark Mode - Space-like */
-    --background: 220 25% 3%; /* Deep Space Black */
-    --background-alt: 220 20% 6%; /* Dark Glass */
-    --foreground: 220 20% 95%; /* Bright Glass White */
+    /* Modern Dark Mode */
+    --background: 240 10% 4%; /* #0F172A - Very Dark Blue */
+    --background-alt: 240 6% 8%; /* #1E293B - Dark Blue Gray */
+    --foreground: 0 0% 98%; /* #FAFAFA - Off White */
     
-    --card: 220 20% 8% / 0.6; /* Dark Glass Card */
-    --card-foreground: 220 20% 95%;
-    --surface: 220 20% 6% / 0.8;
-    --surface-alt: 220 25% 3% / 0.9;
+    --card: 240 6% 8%;
+    --card-foreground: 0 0% 98%;
+    --surface: 240 6% 8%;
+    --surface-alt: 240 10% 4%;
     
-    --primary: 200 100% 60%; /* Brighter Neon in Dark */
-    --primary-glow: 200 100% 80%;
-    --secondary: 220 20% 8%;
-    --secondary-foreground: 220 20% 95%;
+    --primary: 250 84% 60%; /* Same indigo but brighter for dark */
+    --secondary: 240 6% 8%;
+    --secondary-foreground: 0 0% 98%;
     
-    --muted: 220 20% 8% / 0.8;
-    --muted-foreground: 220 15% 65%; /* Glass Light Slate */
+    --muted: 240 6% 8%;
+    --muted-foreground: 240 5% 65%; /* #94A3B8 - Light Slate */
     
-    --border: 220 20% 15% / 0.6;
-    --border-muted: 220 20% 10% / 0.4;
+    --border: 240 6% 12%;
+    --border-muted: 240 6% 8%;
     
-    --glass-bg: 220 20% 8% / 0.1;
-    --glass-border: 220 20% 20% / 0.3;
-    --glass-border-strong: 220 20% 30% / 0.5;
-    
-    /* Enhanced glow effects in dark mode */
-    --shadow-glow: 0 0 40px hsl(var(--primary) / 0.4);
-    --shadow-neon: 0 0 32px hsl(var(--neon-blue) / 0.6);
+    --glass-bg: 240 6% 8% / 0.9;
+    --glass-border: 240 6% 20% / 0.8;
   }
 
   * {
@@ -174,29 +157,13 @@
     @apply text-xs font-medium text-muted-foreground;
   }
 
-  /* Futuristic Glass Effects */
+  /* Modern Glass Effects */
   .glass-card {
-    background: hsl(var(--glass-bg));
-    border: 1px solid hsl(var(--glass-border));
-    backdrop-filter: blur(var(--backdrop-blur));
-    -webkit-backdrop-filter: blur(var(--backdrop-blur));
+    background: rgb(255 255 255 / 0.9);
+    border: 1px solid rgb(240 240 240 / 0.8);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
     box-shadow: var(--shadow-card);
-  }
-
-  .glass-premium {
-    background: hsl(var(--card));
-    border: 1px solid hsl(var(--glass-border-strong));
-    backdrop-filter: blur(var(--backdrop-blur-strong));
-    -webkit-backdrop-filter: blur(var(--backdrop-blur-strong));
-    box-shadow: var(--shadow-premium);
-  }
-
-  .glass-neon {
-    background: hsl(var(--glass-bg));
-    border: 1px solid hsl(var(--primary) / 0.3);
-    backdrop-filter: blur(var(--backdrop-blur));
-    -webkit-backdrop-filter: blur(var(--backdrop-blur));
-    box-shadow: var(--shadow-neon);
   }
 
   /* Gradients */
@@ -233,30 +200,13 @@
     box-shadow: var(--shadow-premium);
   }
 
-  /* Futuristic Interactive Elements */
+  /* Interactive Elements */
   .hover-lift {
-    @apply transition-all duration-500 hover:scale-105 hover:shadow-elevated;
+    @apply transition-all duration-300 hover:scale-105 hover:shadow-elevated;
   }
   
   .hover-glow {
-    @apply transition-all duration-500;
-  }
-  
-  .hover-glow:hover {
-    box-shadow: var(--shadow-glow);
-  }
-
-  .interactive-card {
-    @apply transition-all duration-500 hover:scale-[1.02] hover:shadow-premium cursor-pointer;
-  }
-
-  .neon-border {
-    border: 1px solid hsl(var(--primary) / 0.5);
-    box-shadow: 0 0 16px hsl(var(--primary) / 0.2), inset 0 0 16px hsl(var(--primary) / 0.05);
-  }
-
-  .neon-glow {
-    box-shadow: var(--shadow-glow);
+    @apply transition-all duration-300 hover:shadow-lg hover:shadow-primary/20;
   }
 
   /* Status Indicators */
@@ -280,28 +230,13 @@
     @apply bg-destructive/10 text-destructive border border-destructive/20;
   }
 
-  /* Futuristic Premium Components */
+  /* Premium Components */
   .premium-card {
-    @apply rounded-2xl backdrop-blur-md;
-    background: hsl(var(--card));
-    border: 1px solid hsl(var(--glass-border-strong));
-    box-shadow: var(--shadow-premium);
+    @apply bg-card border border-border rounded-xl shadow-card backdrop-blur-sm;
   }
   
   .nav-premium {
-    @apply backdrop-blur-md border-b;
-    background: hsl(var(--background) / 0.8);
-    border-color: hsl(var(--glass-border));
-  }
-
-  .cosmic-background {
-    background: var(--gradient-cosmic);
-  }
-
-  .glass-surface {
-    background: hsl(var(--surface));
-    backdrop-filter: blur(var(--backdrop-blur));
-    -webkit-backdrop-filter: blur(var(--backdrop-blur));
+    @apply bg-background/95 backdrop-blur-sm border-b border-border;
   }
 
   /* Progress Bars */
@@ -335,31 +270,8 @@
   }
   
   @keyframes pulse-glow {
-    0%, 100% { 
-      box-shadow: 0 0 20px hsl(var(--primary) / 0.4), 0 0 40px hsl(var(--primary) / 0.2); 
-      transform: scale(1);
-    }
-    50% { 
-      box-shadow: 0 0 30px hsl(var(--primary) / 0.6), 0 0 60px hsl(var(--primary) / 0.3);
-      transform: scale(1.02);
-    }
-  }
-
-  @keyframes cosmic-drift {
-    0%, 100% { transform: translateY(0px) rotate(0deg); }
-    33% { transform: translateY(-10px) rotate(1deg); }
-    66% { transform: translateY(5px) rotate(-1deg); }
-  }
-
-  @keyframes neon-pulse {
-    0%, 100% { 
-      border-color: hsl(var(--primary) / 0.3);
-      box-shadow: 0 0 16px hsl(var(--primary) / 0.2);
-    }
-    50% { 
-      border-color: hsl(var(--primary) / 0.6);
-      box-shadow: 0 0 24px hsl(var(--primary) / 0.4);
-    }
+    0%, 100% { box-shadow: 0 0 20px hsl(var(--primary) / 0.4); }
+    50% { box-shadow: 0 0 30px hsl(var(--primary) / 0.6); }
   }
   
   @keyframes bounce-subtle {
@@ -406,14 +318,6 @@
     animation: tech-pulse 2s ease-in-out infinite;
   }
 
-  .animate-cosmic-drift {
-    animation: cosmic-drift 6s ease-in-out infinite;
-  }
-
-  .animate-neon-pulse {
-    animation: neon-pulse 3s ease-in-out infinite;
-  }
-
   /* Hover Utilities */
   .hover-scale {
     @apply transition-transform duration-300 hover:scale-105;
@@ -426,38 +330,5 @@
   /* Focus Utilities */
   .focus-ring {
     @apply focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2;
-  }
-
-  /* Neon Color Utilities */
-  .text-neon-blue {
-    color: hsl(var(--neon-blue));
-  }
-
-  .text-neon-purple {
-    color: hsl(var(--neon-purple));
-  }
-
-  .text-neon-green {
-    color: hsl(var(--neon-green));
-  }
-
-  .text-neon-pink {
-    color: hsl(var(--neon-pink));
-  }
-
-  .bg-neon-blue {
-    background-color: hsl(var(--neon-blue));
-  }
-
-  .bg-neon-purple {
-    background-color: hsl(var(--neon-purple));
-  }
-
-  .bg-neon-green {
-    background-color: hsl(var(--neon-green));
-  }
-
-  .bg-neon-pink {
-    background-color: hsl(var(--neon-pink));
   }
 }
