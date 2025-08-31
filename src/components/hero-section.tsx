@@ -1,11 +1,12 @@
-import { Button } from "@/components/ui/button";
-import { GlassCard } from "@/components/ui/glass-card";
-import { Badge } from "@/components/ui/badge";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
-import { Calendar, Clock, Bell, CreditCard, BarChart3, Users, Play, Sparkles, Zap, Star, Activity } from "lucide-react";
-import { useNavigate } from "react-router-dom";
+import { useState } from 'react';
+import { Button } from '@/components/ui/button';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import { GlassCard } from '@/components/ui/glass-card';
+import { Calendar, Clock, DollarSign, Users, Play, Star, Zap, ArrowRight, Sparkles } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
-export function HeroSection() {
+export const HeroSection = () => {
+  const [isVideoOpen, setIsVideoOpen] = useState(false);
   const navigate = useNavigate();
 
   const handleStartFree = () => {
@@ -13,190 +14,123 @@ export function HeroSection() {
   };
 
   return (
-    <section className="min-h-screen cosmic-background flex items-center justify-center px-6 md:px-8 relative overflow-hidden">
-      {/* Futuristic Background Elements */}
-      <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-primary/10 rounded-full blur-3xl animate-pulse-glow"></div>
-      <div className="absolute bottom-1/4 right-1/4 w-64 h-64 bg-neon-purple/10 rounded-full blur-2xl animate-cosmic-drift"></div>
-      <div className="absolute top-1/2 right-1/3 w-32 h-32 bg-neon-blue/5 rounded-full blur-xl animate-float"></div>
+    <section className="relative min-h-screen bg-background overflow-hidden">
+      {/* Cosmic background */}
+      <div className="absolute inset-0">
+        <div className="absolute inset-0 bg-gradient-to-br from-background via-background/95 to-background/90"></div>
+        <div className="absolute top-0 left-1/4 w-96 h-96 bg-gradient-to-r from-primary/20 to-neon-purple/20 rounded-full blur-3xl animate-cosmic-drift"></div>
+        <div className="absolute bottom-0 right-1/4 w-72 h-72 bg-gradient-to-r from-neon-blue/15 to-primary/15 rounded-full blur-3xl animate-pulse-glow"></div>
+        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-gradient-cosmic opacity-10 rounded-full blur-3xl animate-cosmic-drift"></div>
+      </div>
+
+      {/* Grid pattern overlay */}
+      <div className="absolute inset-0 bg-dot-pattern opacity-20"></div>
       
-      {/* Ambient Light Effects */}
-      <div className="absolute inset-0 bg-gradient-to-r from-transparent via-primary/[0.02] to-transparent"></div>
-      
-      <div className="max-w-7xl mx-auto grid lg:grid-cols-2 gap-16 lg:gap-20 items-center relative z-10">
-        {/* Left Side - Content */}
-        <div className="space-y-10 text-center lg:text-left">
-          <div className="space-y-8">
-            <div className="inline-flex items-center gap-2 glass-neon px-6 py-3 rounded-full text-sm font-medium animate-neon-pulse">
-              <Sparkles className="w-4 h-4 text-primary" />
-              <span className="gradient-text font-semibold">Novo: IA + WhatsApp + Pagamentos</span>
-            </div>
-            
-            <h1 className="text-display">
-              <span className="block text-foreground">Agendamento</span>
-              <span className="block gradient-text">Inteligente</span>
-              <span className="block text-foreground">para Profissionais</span>
+      {/* Main content */}
+      <div className="relative container mx-auto px-4 pt-40 pb-32">
+        <div className="max-w-4xl mx-auto text-center space-y-12">
+          {/* Badge */}
+          <div className="inline-flex items-center gap-3 glass-card px-6 py-3 rounded-full animate-fade-in">
+            <Sparkles className="w-4 h-4 text-primary animate-pulse" />
+            <span className="text-sm font-medium bg-gradient-to-r from-primary to-neon-purple bg-clip-text text-transparent">
+              Agendamentos Inteligentes
+            </span>
+            <div className="w-2 h-2 bg-primary rounded-full animate-pulse"></div>
+          </div>
+
+          {/* Main headline */}
+          <div className="space-y-6 animate-slide-up">
+            <h1 className="text-display leading-[1.1] tracking-tight">
+              <span className="block">Agendamentos</span>
+              <span className="block bg-gradient-to-r from-primary via-neon-blue to-neon-purple bg-clip-text text-transparent">
+                inteligentes
+              </span>
+              <span className="block">para negócios</span>
+              <span className="relative inline-block">
+                modernos
+                <div className="absolute -inset-2 bg-gradient-neon opacity-20 blur-xl rounded-full animate-pulse"></div>
+              </span>
             </h1>
             
-            <p className="text-lg text-muted-foreground max-w-xl mx-auto lg:mx-0 leading-relaxed">
-              Automatize agendamentos, receba pagamentos e tenha relatórios em tempo real.
-              A plataforma mais avançada para seu negócio.
+            <p className="text-subtitle text-muted-foreground max-w-2xl mx-auto leading-relaxed">
+              O GoAgendas é a plataforma completa para gestão de clientes, agendamentos, 
+              equipe e financeiro. Transforme sua empresa com tecnologia de ponta.
             </p>
           </div>
-          
-          <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
+
+          {/* CTA buttons */}
+          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center animate-scale-in">
             <Button 
-              size="lg" 
-              className="w-full sm:w-auto bg-gradient-primary hover:shadow-glow text-primary-foreground px-8 py-4 rounded-2xl font-semibold shadow-premium transition-all duration-500 hover:scale-105"
               onClick={handleStartFree}
+              size="lg" 
+              className="bg-gradient-primary hover:scale-105 transition-all duration-500 shadow-premium hover:shadow-glow px-10 py-6 text-lg font-semibold rounded-2xl group relative overflow-hidden"
             >
-              Começar Grátis
-              <Zap className="w-5 h-5 ml-2" />
+              <span className="relative z-10 flex items-center gap-2">
+                Criar Conta Gratuita
+                <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+              </span>
+              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
             </Button>
-            <Dialog>
+            
+            <Dialog open={isVideoOpen} onOpenChange={setIsVideoOpen}>
               <DialogTrigger asChild>
-                <Button variant="outline" size="lg" className="w-full sm:w-auto glass-card hover:glass-neon px-8 py-4 rounded-2xl font-semibold border-primary/30 hover:border-primary/60 transition-all duration-500">
-                  <Play className="w-5 h-5 mr-2" />
-                  Ver Demo
+                <Button 
+                  variant="outline" 
+                  size="lg"
+                  className="glass-card border-primary/30 hover:border-primary/60 hover:bg-primary/10 px-10 py-6 text-lg font-semibold rounded-2xl group backdrop-blur-md"
+                >
+                  <Play className="mr-2 h-5 w-5 group-hover:scale-110 transition-transform text-primary" />
+                  Ver Demonstração
                 </Button>
               </DialogTrigger>
-              <DialogContent className="max-w-6xl h-[90vh]">
+              <DialogContent className="max-w-5xl glass-premium">
                 <DialogHeader>
-                  <DialogTitle className="text-xl font-semibold flex items-center gap-3">
-                    <Sparkles className="w-5 h-5 text-primary" />
-                    Demo - GoAgendas
-                  </DialogTitle>
+                  <DialogTitle className="text-center text-xl">Demonstração do GoAgendas</DialogTitle>
                 </DialogHeader>
-                <div className="w-full h-full rounded-lg overflow-hidden border border-border">
+                <div className="aspect-video rounded-xl overflow-hidden">
                   <iframe
-                    src="/dashboard"
-                    className="w-full h-full border-0"
-                    title="Demo GoAgendas"
+                    src="https://www.youtube.com/embed/dQw4w9WgXcQ"
+                    title="GoAgendas Demo"
+                    className="w-full h-full"
+                    allowFullScreen
                   />
                 </div>
               </DialogContent>
             </Dialog>
           </div>
-          
-          <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-8 text-sm text-muted-foreground">
-            <div className="flex items-center gap-2">
-              <div className="w-2 h-2 bg-success rounded-full"></div>
-              <span>Grátis até 20 agendamentos</span>
+
+          {/* Social proof */}
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-8 pt-8 animate-fade-in">
+            <div className="flex items-center gap-3">
+              <div className="flex -space-x-3">
+                {[1, 2, 3, 4, 5].map((i) => (
+                  <div 
+                    key={i} 
+                    className="w-10 h-10 rounded-full bg-gradient-primary border-3 border-background shadow-lg animate-bounce-subtle"
+                    style={{ animationDelay: `${i * 0.1}s` }}
+                  ></div>
+                ))}
+              </div>
+              <div className="text-left">
+                <p className="font-semibold text-sm">+2.000 empresas</p>
+                <p className="text-xs text-muted-foreground">confiam no GoAgendas</p>
+              </div>
             </div>
+            
             <div className="flex items-center gap-2">
-              <div className="w-2 h-2 bg-primary rounded-full"></div>
-              <span>Sem taxa de instalação</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <div className="w-2 h-2 bg-info rounded-full"></div>
-              <span>Suporte em português</span>
+              <div className="flex items-center gap-1">
+                {[1, 2, 3, 4, 5].map((i) => (
+                  <Star key={i} className="w-5 h-5 fill-primary text-primary" />
+                ))}
+              </div>
+              <div className="text-left">
+                <p className="font-semibold text-sm">4.9/5 estrelas</p>
+                <p className="text-xs text-muted-foreground">avaliação média</p>
+              </div>
             </div>
           </div>
-        </div>
-        
-        {/* Right Side - Dashboard Preview */}
-        <div className="relative order-first lg:order-last animate-scale-in">
-          <GlassCard variant="premium" className="p-8 space-y-8 hover-lift">
-            {/* Header */}
-            <div className="flex items-center justify-between">
-              <h3 className="text-xl font-semibold">Dashboard</h3>
-              <div className="inline-flex items-center gap-2 glass-neon px-4 py-2 rounded-full text-xs font-semibold animate-pulse-glow">
-                <Activity className="w-3 h-3 text-primary" />
-                <span className="gradient-text">Sistema Online</span>
-              </div>
-            </div>
-            
-            {/* Stats Cards */}
-            <div className="grid grid-cols-2 gap-6">
-              <GlassCard variant="minimal" className="p-6 space-y-4 hover-glow">
-                <div className="flex items-center gap-3">
-                  <div className="w-12 h-12 bg-gradient-primary rounded-2xl flex items-center justify-center shadow-glow">
-                    <Calendar className="w-6 h-6 text-primary-foreground" />
-                  </div>
-                  <span className="text-sm font-semibold text-muted-foreground">Hoje</span>
-                </div>
-                <div className="text-3xl font-bold gradient-text">12</div>
-                <div className="text-sm text-muted-foreground">agendamentos</div>
-              </GlassCard>
-              
-              <GlassCard variant="minimal" className="p-6 space-y-4 hover-glow">
-                <div className="flex items-center gap-3">
-                  <div className="w-12 h-12 bg-gradient-to-r from-success to-neon-green rounded-2xl flex items-center justify-center shadow-glow">
-                    <CreditCard className="w-6 h-6 text-white" />
-                  </div>
-                  <span className="text-sm font-semibold text-muted-foreground">Receita</span>
-                </div>
-                <div className="text-3xl font-bold gradient-text">R$ 1.240</div>
-                <div className="text-sm text-muted-foreground">este mês</div>
-              </GlassCard>
-            </div>
-            
-            {/* Recent Appointments */}
-            <div className="space-y-6 hidden md:block">
-              <h4 className="font-semibold text-foreground">Próximos Agendamentos</h4>
-              <div className="space-y-4">
-                {[
-                  { time: "14:30", client: "João Silva", service: "Corte + Barba", status: "confirmed" },
-                  { time: "15:00", client: "Maria Santos", service: "Manicure", status: "scheduled" },
-                  { time: "16:30", client: "Pedro Costa", service: "Massagem", status: "confirmed" },
-                ].map((appointment, index) => (
-                  <GlassCard 
-                    key={index} 
-                    variant="minimal"
-                    className="p-4 flex items-center gap-4 hover-glow cursor-pointer"
-                  >
-                    <div className="w-12 h-12 bg-gradient-primary rounded-2xl flex items-center justify-center shadow-card">
-                      <Clock className="w-5 h-5 text-primary-foreground" />
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <div className="font-medium text-sm text-foreground truncate">{appointment.client}</div>
-                      <div className="text-xs text-muted-foreground truncate">{appointment.service}</div>
-                    </div>
-                    <div className="text-right space-y-1">
-                      <div className="text-sm font-semibold text-foreground">{appointment.time}</div>
-                      <div className={`inline-flex items-center px-3 py-1.5 rounded-full text-xs font-medium glass-card ${
-                        appointment.status === 'confirmed' 
-                          ? 'text-success border-success/30' 
-                          : 'text-info border-info/30'
-                      }`}>
-                        {appointment.status === 'confirmed' ? 'Confirmado' : 'Agendado'}
-                      </div>
-                    </div>
-                  </GlassCard>
-                ))}
-              </div>
-            </div>
-            
-            {/* Quick Actions */}
-            <div className="grid grid-cols-3 gap-4">
-              <Button variant="outline" size="sm" className="flex-col h-20 gap-2 p-4 glass-card hover:glass-neon border-primary/20">
-                <Bell className="w-5 h-5 text-primary" />
-                <span className="text-xs font-medium">Notificar</span>
-              </Button>
-              <Button variant="outline" size="sm" className="flex-col h-20 gap-2 p-4 glass-card hover:glass-neon border-primary/20">
-                <BarChart3 className="w-5 h-5 text-primary" />
-                <span className="text-xs font-medium">Relatório</span>
-              </Button>
-              <Button variant="outline" size="sm" className="flex-col h-20 gap-2 p-4 glass-card hover:glass-neon border-primary/20">
-                <Users className="w-5 h-5 text-primary" />
-                <span className="text-xs font-medium">Clientes</span>
-              </Button>
-            </div>
-
-            {/* Rating Section */}
-            <div className="flex items-center justify-center gap-3 pt-6 border-t border-border">
-              <div className="flex items-center gap-1">
-                {[...Array(5)].map((_, i) => (
-                  <Star 
-                    key={i} 
-                    className="w-4 h-4 fill-yellow-400 text-yellow-400" 
-                  />
-                ))}
-              </div>
-              <span className="text-sm font-medium text-muted-foreground">5.0 • Excelente</span>
-            </div>
-          </GlassCard>
         </div>
       </div>
     </section>
   );
-}
+};

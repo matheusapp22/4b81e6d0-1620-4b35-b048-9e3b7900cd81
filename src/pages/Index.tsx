@@ -3,8 +3,10 @@ import { useAuth } from '@/contexts/auth-context';
 import { useNavigate } from 'react-router-dom';
 import { Navigation } from '@/components/navigation';
 import { HeroSection } from '@/components/hero-section';
-import { FeaturesSection } from '@/components/features-section';
-import { PricingSection } from '@/components/pricing-section';
+import { FeaturesSection } from '@/components/features-section-modern';
+import { BenefitsSection } from '@/components/benefits-section';
+import { PricingSection } from '@/components/pricing-section-modern';
+import { CtaSection } from '@/components/cta-section';
 
 const Index = () => {
   const { user, loading } = useAuth();
@@ -35,7 +37,9 @@ const Index = () => {
       <Navigation />
       <HeroSection />
       <FeaturesSection />
+      <BenefitsSection />
       <PricingSection />
+      <CtaSection />
     </div>
   );
 };
