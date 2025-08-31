@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { GlassCard } from '@/components/ui/glass-card';
+import { Badge } from '@/components/ui/badge';
 import { LineChart, Line, XAxis, YAxis, ResponsiveContainer, Tooltip, BarChart, Bar, Area, AreaChart } from 'recharts';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/auth-context';
-import { TrendingUp, Calendar, DollarSign, Activity } from 'lucide-react';
+import { TrendingUp, Calendar, DollarSign, Activity, Users, Sparkles } from 'lucide-react';
 
 interface ChartData {
   day: string;
@@ -81,13 +82,24 @@ export function StatsChart() {
   const CustomTooltip = ({ active, payload, label }: any) => {
     if (active && payload && payload.length) {
       return (
-        <GlassCard variant="minimal" className="p-3 border-0 shadow-elevated">
-          <p className="text-xs font-medium text-muted-foreground mb-2">{label}</p>
-          {payload.map((entry: any, index: number) => (
-            <p key={index} className="text-sm font-semibold" style={{ color: entry.color }}>
-              {entry.name}: {entry.name === 'Receita' ? `R$ ${entry.value.toFixed(2)}` : entry.value}
-            </p>
-          ))}
+        <GlassCard variant="elevated" className="p-4 border-0 shadow-elevated">
+          <p className="text-caption font-bold text-muted-foreground mb-3">{label}</p>
+          <div className="space-y-2">
+            {payload.map((entry: any, index: number) => (
+              <div key={index} className="flex items-center justify-between gap-4">
+                <div className="flex items-center gap-2">
+                  <div 
+                    className="w-3 h-3 rounded-full" 
+                    style={{ backgroundColor: entry.color }}
+                  ></div>
+                  <span className="text-caption font-medium">{entry.name}</span>
+                </div>
+                <span className="text-caption font-bold" style={{ color: entry.color }}>
+                  {entry.name === 'Receita' ? `R$ ${entry.value.toFixed(2)}` : entry.value}
+                </span>
+              </div>
+            ))}
+          </div>
         </GlassCard>
       );
     }
@@ -96,11 +108,16 @@ export function StatsChart() {
 
   if (loading) {
     return (
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         {[...Array(3)].map((_, i) => (
-          <GlassCard key={i} variant="premium" className="p-6">
-            <div className="loading-skeleton h-4 w-3/4 mb-4 rounded"></div>
-            <div className="loading-skeleton h-32 rounded-xl"></div>
+          <GlassCard key={i} variant="premium" className="p-8">
+            <div className="space-y-4">
+              <div className="flex items-center gap-4">
+                <div className="loading-skeleton w-6 h-6 rounded-xl"></div>
+                <div className="loading-skeleton h-6 w-32 rounded"></div>
+              </div>
+              <div className="loading-skeleton h-40 rounded-2xl"></div>
+            </div>
           </GlassCard>
         ))}
       </div>
@@ -108,45 +125,52 @@ export function StatsChart() {
   }
 
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+    <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
       {/* Revenue Chart */}
-      <GlassCard variant="premium" hover className="group">
-        <div className="p-6 space-y-4">
-          <div className="flex items-center gap-3">
-            <div className="p-2 rounded-xl bg-neon-green/10 group-hover:bg-neon-green/20 transition-colors duration-300">
-              <DollarSign className="w-5 h-5 text-neon-green" />
+      <GlassCard variant="premium" hover className="group chart-premium">
+        <div className="p-8 space-y-6">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-4">
+              <div className="p-3 rounded-2xl bg-success/10 group-hover:bg-success/20 transition-all duration-400 shadow-card">
+                <DollarSign className="w-6 h-6 text-success" />
+              </div>
+              <div>
+                <h4 className="font-bold text-body">Receita</h4>
+                <p className="text-caption">Últimos 7 dias</p>
+              </div>
             </div>
-            <div>
-              <h4 className="font-semibold text-body">Receita</h4>
-              <p className="text-caption">Últimos 7 dias</p>
-            </div>
+            <Badge className="status-indicator success px-3 py-1">
+              <TrendingUp className="w-3 h-3" />
+              +24%
+            </Badge>
           </div>
           
-          <div className="h-32">
+          <div className="h-40">
             <ResponsiveContainer width="100%" height="100%">
               <AreaChart data={data}>
                 <defs>
                   <linearGradient id="revenueGradient" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="5%" stopColor="hsl(120 60% 45%)" stopOpacity={0.3}/>
-                    <stop offset="95%" stopColor="hsl(120 60% 45%)" stopOpacity={0}/>
+                    <stop offset="5%" stopColor="hsl(var(--success))" stopOpacity={0.3}/>
+                    <stop offset="95%" stopColor="hsl(var(--success))" stopOpacity={0}/>
                   </linearGradient>
                 </defs>
                 <XAxis 
                   dataKey="day" 
                   axisLine={false}
                   tickLine={false}
-                  tick={{ fontSize: 11, fill: 'hsl(var(--muted-foreground))' }}
+                  tick={{ fontSize: 12, fill: 'hsl(var(--muted-foreground))', fontWeight: 500 }}
                 />
                 <YAxis hide />
                 <Tooltip content={<CustomTooltip />} />
                 <Area
                   type="monotone"
                   dataKey="revenue"
-                  stroke="hsl(120 60% 45%)"
-                  strokeWidth={2}
+                  stroke="hsl(var(--success))"
+                  strokeWidth={3}
                   fill="url(#revenueGradient)"
-                  dot={{ fill: 'hsl(120 60% 45%)', strokeWidth: 0, r: 3 }}
-                  activeDot={{ r: 5, stroke: 'hsl(120 60% 45%)', strokeWidth: 2, fill: 'white' }}
+                  dot={{ fill: 'hsl(var(--success))', strokeWidth: 0, r: 4 }}
+                  activeDot={{ r: 6, stroke: 'hsl(var(--success))', strokeWidth: 2, fill: 'white' }}
+                  name="Receita"
                 />
               </AreaChart>
             </ResponsiveContainer>
@@ -155,34 +179,41 @@ export function StatsChart() {
       </GlassCard>
 
       {/* Appointments Chart */}
-      <GlassCard variant="premium" hover className="group">
-        <div className="p-6 space-y-4">
-          <div className="flex items-center gap-3">
-            <div className="p-2 rounded-xl bg-neon-blue/10 group-hover:bg-neon-blue/20 transition-colors duration-300">
-              <Calendar className="w-5 h-5 text-neon-blue" />
+      <GlassCard variant="premium" hover className="group chart-premium">
+        <div className="p-8 space-y-6">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-4">
+              <div className="p-3 rounded-2xl bg-primary/10 group-hover:bg-primary/20 transition-all duration-400 shadow-card">
+                <Calendar className="w-6 h-6 text-primary" />
+              </div>
+              <div>
+                <h4 className="font-bold text-body">Agendamentos</h4>
+                <p className="text-caption">Últimos 7 dias</p>
+              </div>
             </div>
-            <div>
-              <h4 className="font-semibold text-body">Agendamentos</h4>
-              <p className="text-caption">Últimos 7 dias</p>
-            </div>
+            <Badge className="status-indicator info px-3 py-1">
+              <Activity className="w-3 h-3" />
+              +12%
+            </Badge>
           </div>
           
-          <div className="h-32">
+          <div className="h-40">
             <ResponsiveContainer width="100%" height="100%">
-              <BarChart data={data} barCategoryGap="20%">
+              <BarChart data={data} barCategoryGap="30%">
                 <XAxis 
                   dataKey="day" 
                   axisLine={false}
                   tickLine={false}
-                  tick={{ fontSize: 11, fill: 'hsl(var(--muted-foreground))' }}
+                  tick={{ fontSize: 12, fill: 'hsl(var(--muted-foreground))', fontWeight: 500 }}
                 />
                 <YAxis hide />
                 <Tooltip content={<CustomTooltip />} />
                 <Bar 
                   dataKey="appointments" 
-                  fill="hsl(220 100% 50%)"
-                  radius={[6, 6, 0, 0]}
+                  fill="hsl(var(--primary))"
+                  radius={[8, 8, 0, 0]}
                   className="data-point"
+                  name="Agendamentos"
                 />
               </BarChart>
             </ResponsiveContainer>
@@ -191,37 +222,44 @@ export function StatsChart() {
       </GlassCard>
 
       {/* Clients Chart */}
-      <GlassCard variant="premium" hover className="group">
-        <div className="p-6 space-y-4">
-          <div className="flex items-center gap-3">
-            <div className="p-2 rounded-xl bg-neon-purple/10 group-hover:bg-neon-purple/20 transition-colors duration-300">
-              <TrendingUp className="w-5 h-5 text-neon-purple" />
+      <GlassCard variant="premium" hover className="group chart-premium">
+        <div className="p-8 space-y-6">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-4">
+              <div className="p-3 rounded-2xl bg-neon-purple/10 group-hover:bg-neon-purple/20 transition-all duration-400 shadow-card">
+                <Users className="w-6 h-6 text-neon-purple" />
+              </div>
+              <div>
+                <h4 className="font-bold text-body">Novos Clientes</h4>
+                <p className="text-caption">Últimos 7 dias</p>
+              </div>
             </div>
-            <div>
-              <h4 className="font-semibold text-body">Novos Clientes</h4>
-              <p className="text-caption">Últimos 7 dias</p>
-            </div>
+            <Badge className="status-indicator success px-3 py-1">
+              <TrendingUp className="w-3 h-3" />
+              +8%
+            </Badge>
           </div>
           
-          <div className="h-32">
+          <div className="h-40">
             <ResponsiveContainer width="100%" height="100%">
               <LineChart data={data}>
                 <XAxis 
                   dataKey="day" 
                   axisLine={false}
                   tickLine={false}
-                  tick={{ fontSize: 11, fill: 'hsl(var(--muted-foreground))' }}
+                  tick={{ fontSize: 12, fill: 'hsl(var(--muted-foreground))', fontWeight: 500 }}
                 />
                 <YAxis hide />
                 <Tooltip content={<CustomTooltip />} />
                 <Line 
                   type="monotone" 
                   dataKey="clients" 
-                  stroke="hsl(270 100% 60%)" 
+                  stroke="hsl(var(--neon-purple))" 
                   strokeWidth={3}
-                  dot={{ fill: 'hsl(270 100% 60%)', strokeWidth: 0, r: 4 }}
-                  activeDot={{ r: 6, stroke: 'hsl(270 100% 60%)', strokeWidth: 2, fill: 'white' }}
+                  dot={{ fill: 'hsl(var(--neon-purple))', strokeWidth: 0, r: 4 }}
+                  activeDot={{ r: 6, stroke: 'hsl(var(--neon-purple))', strokeWidth: 2, fill: 'white' }}
                   className="data-point"
+                  name="Clientes"
                 />
               </LineChart>
             </ResponsiveContainer>

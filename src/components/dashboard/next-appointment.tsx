@@ -3,7 +3,7 @@ import { GlassCard } from '@/components/ui/glass-card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
-import { Clock, User, MapPin, Phone, Calendar as CalendarIcon, CheckCircle, RotateCcw } from 'lucide-react';
+import { Clock, User, MapPin, Phone, Calendar as CalendarIcon, CheckCircle, RotateCcw, Activity, Sparkles } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/auth-context';
 
@@ -78,12 +78,12 @@ export function NextAppointment() {
   if (loading) {
     return (
       <GlassCard variant="premium">
-        <div className="p-6 space-y-4">
-          <div className="flex items-center gap-3 mb-4">
-            <div className="loading-skeleton w-5 h-5 rounded"></div>
-            <div className="loading-skeleton h-5 w-32 rounded"></div>
+        <div className="p-8 space-y-6">
+          <div className="flex items-center gap-4 mb-6">
+            <div className="loading-skeleton w-6 h-6 rounded-xl"></div>
+            <div className="loading-skeleton h-6 w-48 rounded"></div>
           </div>
-          <div className="loading-skeleton h-20 rounded-xl"></div>
+          <div className="loading-skeleton h-32 rounded-2xl"></div>
         </div>
       </GlassCard>
     );
@@ -92,30 +92,45 @@ export function NextAppointment() {
   if (!nextAppointment) {
     return (
       <GlassCard variant="premium" className="group">
-        <div className="p-6">
-          <div className="flex items-center gap-3 mb-6">
-            <div className="p-2 rounded-xl bg-primary/10">
-              <Clock className="w-5 h-5 text-primary" />
+        <div className="p-8">
+          <div className="flex items-center gap-4 mb-8">
+            <div className="p-3 rounded-2xl bg-primary/10 group-hover:bg-primary/20 transition-colors duration-400">
+              <Clock className="w-6 h-6 text-primary" />
             </div>
-            <h3 className="text-headline font-semibold">Próximo Agendamento</h3>
+            <h3 className="text-title font-bold">Próximo Agendamento</h3>
           </div>
           
-          <div className="text-center py-8 space-y-4">
-            <div className="w-16 h-16 bg-muted rounded-3xl flex items-center justify-center mx-auto group-hover:scale-110 transition-transform duration-300">
-              <CalendarIcon className="w-8 h-8 text-muted-foreground" />
+          <div className="text-center py-12 space-y-6">
+            <div className="relative">
+              <div className="w-24 h-24 bg-muted rounded-full flex items-center justify-center mx-auto group-hover:scale-110 transition-all duration-500">
+                <CalendarIcon className="w-12 h-12 text-muted-foreground" />
+              </div>
+              <div className="absolute -top-2 -right-2 w-8 h-8 bg-success rounded-full flex items-center justify-center animate-bounce-subtle">
+                <Sparkles className="w-4 h-4 text-white" />
+              </div>
             </div>
-            <div className="space-y-2">
-              <p className="text-body font-medium">Agenda livre</p>
-              <p className="text-caption">
-                Que tal aproveitar para organizar sua agenda?
+            
+            <div className="space-y-3">
+              <h4 className="text-body font-bold">Agenda livre!</h4>
+              <p className="text-caption max-w-xs mx-auto leading-relaxed">
+                Momento perfeito para organizar sua agenda ou revisar seus clientes.
               </p>
             </div>
-            <Button variant="minimal" size="sm" asChild>
-              <a href="/calendar">
-                <CalendarIcon className="w-4 h-4" />
-                Ver Agenda
-              </a>
-            </Button>
+            
+            <div className="flex flex-col gap-3 max-w-xs mx-auto">
+              <Button variant="futuristic" size="default" asChild className="w-full">
+                <a href="/appointments">
+                  <CalendarIcon className="w-4 h-4" />
+                  Novo Agendamento
+                </a>
+              </Button>
+              <Button variant="elegant" size="default" asChild className="w-full">
+                <a href="/calendar">
+                  <Activity className="w-4 h-4" />
+                  Ver Agenda Completa
+                </a>
+              </Button>
+            </div>
           </div>
         </div>
       </GlassCard>
@@ -160,85 +175,91 @@ export function NextAppointment() {
 
   return (
     <GlassCard variant="premium" hover className="group">
-      <div className="p-6 space-y-6">
+      <div className="p-8 space-y-8">
         {/* Header */}
         <div className="flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <div className="p-2 rounded-xl bg-primary/10 group-hover:bg-primary/20 transition-colors duration-300">
-              <Clock className="w-5 h-5 text-primary" />
+          <div className="flex items-center gap-4">
+            <div className="p-3 rounded-2xl bg-primary/10 group-hover:bg-primary/20 transition-all duration-400 shadow-card">
+              <Clock className="w-6 h-6 text-primary" />
             </div>
-            <h3 className="text-headline font-semibold">Próximo Agendamento</h3>
+            <h3 className="text-title font-bold">Próximo Agendamento</h3>
           </div>
           <Badge 
-            variant={isToday(nextAppointment.appointment_date) ? "default" : "secondary"}
-            className="status-badge"
+            className={`status-indicator ${isToday(nextAppointment.appointment_date) ? 'info' : 'success'} px-4 py-2`}
           >
+            <CalendarIcon className="w-3 h-3" />
             {isToday(nextAppointment.appointment_date) ? 'Hoje' : formatDate(nextAppointment.appointment_date)}
           </Badge>
         </div>
 
-        {/* Client Info */}
-        <div className="flex items-center gap-4">
-          <Avatar className="h-14 w-14 border-2 border-border group-hover:border-primary/30 transition-colors duration-300">
-            <AvatarFallback className="bg-gradient-primary text-primary-foreground font-semibold text-lg">
-              {getInitials(nextAppointment.client_name)}
-            </AvatarFallback>
-          </Avatar>
+        {/* Client Profile */}
+        <div className="flex items-center gap-6">
+          <div className="relative">
+            <Avatar className="h-16 w-16 border-3 border-border group-hover:border-primary/30 transition-all duration-400 shadow-card">
+              <AvatarFallback className="bg-gradient-primary text-primary-foreground font-bold text-xl">
+                {getInitials(nextAppointment.client_name)}
+              </AvatarFallback>
+            </Avatar>
+            <div className="absolute -bottom-1 -right-1 w-5 h-5 bg-success rounded-full border-2 border-background animate-pulse"></div>
+          </div>
           
-          <div className="flex-1 min-w-0 space-y-2">
-            <div className="flex items-center gap-2">
+          <div className="flex-1 min-w-0 space-y-3">
+            <div className="flex items-center gap-3">
               <User className="w-4 h-4 text-muted-foreground" />
-              <span className="font-semibold text-lg truncate">
+              <span className="font-bold text-body truncate">
                 {nextAppointment.client_name}
               </span>
             </div>
             
-            <div className="flex items-center gap-2 text-caption">
-              <Phone className="w-3 h-3 text-muted-foreground" />
-              <span>{nextAppointment.client_phone}</span>
+            <div className="flex items-center gap-3 text-caption">
+              <Phone className="w-4 h-4 text-muted-foreground" />
+              <span className="font-medium">{nextAppointment.client_phone}</span>
             </div>
           </div>
         </div>
 
         {/* Service Details */}
-        <div className="premium-card p-4 space-y-3">
+        <div className="premium-card p-6 space-y-4 bg-gradient-tech">
           <div className="flex items-center justify-between">
-            <span className="font-semibold text-body">{nextAppointment.services.name}</span>
-            <span className="metric-display text-lg text-primary">
+            <span className="font-bold text-body">{nextAppointment.services.name}</span>
+            <span className="metric-display text-xl text-primary font-bold">
               R$ {nextAppointment.services.price.toFixed(2)}
             </span>
           </div>
           
-          <div className="flex items-center gap-6 text-caption">
+          <div className="flex items-center gap-8 text-caption">
             <div className="flex items-center gap-2">
-              <Clock className="w-3 h-3 text-muted-foreground" />
-              <span>
+              <Clock className="w-4 h-4 text-muted-foreground" />
+              <span className="font-medium">
                 {formatTime(nextAppointment.start_time)} - {formatTime(nextAppointment.end_time)}
               </span>
             </div>
             <div className="flex items-center gap-2">
-              <MapPin className="w-3 h-3 text-muted-foreground" />
-              <span>{nextAppointment.services.duration}min</span>
+              <MapPin className="w-4 h-4 text-muted-foreground" />
+              <span className="font-medium">{nextAppointment.services.duration}min</span>
             </div>
           </div>
 
-          {/* Time until appointment */}
-          <div className="flex items-center gap-2 pt-2 border-t border-border/50">
-            <Activity className="w-3 h-3 text-primary animate-pulse" />
-            <span className="text-xs font-medium text-primary">
-              {getTimeUntil()}
+          {/* Countdown */}
+          <div className="flex items-center gap-3 pt-4 border-t border-border/50">
+            <Activity className="w-4 h-4 text-primary animate-pulse" />
+            <span className="text-sm font-bold text-primary">
+              Começa {getTimeUntil()}
             </span>
+            <div className="flex-1 h-2 bg-muted rounded-full overflow-hidden">
+              <div className="h-full bg-gradient-primary rounded-full w-3/4 animate-shimmer"></div>
+            </div>
           </div>
         </div>
 
-        {/* Actions */}
-        <div className="flex gap-3">
-          <Button size="sm" className="flex-1 group/btn">
-            <CheckCircle className="w-4 h-4 group-hover/btn:scale-110 transition-transform duration-200" />
+        {/* Action Buttons */}
+        <div className="flex gap-4">
+          <Button size="default" className="flex-1 group/btn" variant="futuristic">
+            <CheckCircle className="w-4 h-4 group-hover/btn:scale-110 transition-transform duration-300" />
             Confirmar
           </Button>
-          <Button size="sm" variant="outline" className="flex-1 group/btn">
-            <RotateCcw className="w-4 h-4 group-hover/btn:rotate-180 transition-transform duration-300" />
+          <Button size="default" variant="elegant" className="flex-1 group/btn">
+            <RotateCcw className="w-4 h-4 group-hover/btn:rotate-180 transition-transform duration-400" />
             Reagendar
           </Button>
         </div>

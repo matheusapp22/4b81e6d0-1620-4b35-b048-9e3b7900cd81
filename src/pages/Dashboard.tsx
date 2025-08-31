@@ -23,7 +23,13 @@ export default function Dashboard() {
   if (loading) {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+        <div className="flex flex-col items-center gap-6">
+          <div className="relative">
+            <div className="w-16 h-16 border-4 border-primary/20 border-t-primary rounded-full animate-spin"></div>
+            <div className="absolute inset-0 w-16 h-16 border-4 border-transparent border-t-secondary rounded-full animate-spin" style={{ animationDirection: 'reverse', animationDuration: '1.5s' }}></div>
+          </div>
+          <p className="text-caption font-medium">Carregando dashboard...</p>
+        </div>
       </div>
     );
   }
@@ -36,18 +42,18 @@ export default function Dashboard() {
     <div className="min-h-screen bg-background">
       <DashboardHeader />
       
-      <main className="container mx-auto px-4 py-8 space-y-8">
+      <main className="container mx-auto px-6 lg:px-8 py-12 space-y-12">
         <DashboardGreeting />
         
         <DashboardStats />
         
         <StatsChart />
         
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          <div className="lg:col-span-2 space-y-8">
+        <div className="grid grid-cols-1 xl:grid-cols-3 gap-12">
+          <div className="xl:col-span-2 space-y-12">
             <TodayAppointments />
           </div>
-          <div className="space-y-8">
+          <div className="space-y-12">
             <NextAppointment />
             <QuickActions />
           </div>

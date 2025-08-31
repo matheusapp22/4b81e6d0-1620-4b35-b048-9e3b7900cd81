@@ -1,7 +1,8 @@
 import React from 'react';
 import { useAuth } from '@/contexts/auth-context';
 import { GlassCard } from '@/components/ui/glass-card';
-import { Calendar, TrendingUp, Star, Sparkles } from 'lucide-react';
+import { Badge } from '@/components/ui/badge';
+import { Calendar, TrendingUp, Star, Sparkles, Zap, Activity } from 'lucide-react';
 
 export function DashboardGreeting() {
   const { profile } = useAuth();
@@ -30,55 +31,82 @@ export function DashboardGreeting() {
   return (
     <GlassCard variant="premium" className="overflow-hidden relative group">
       {/* Subtle background pattern */}
-      <div className="absolute inset-0 matrix-pattern opacity-30"></div>
+      <div className="absolute inset-0 dot-pattern opacity-20"></div>
       
       {/* Floating elements */}
-      <div className="absolute top-4 right-4 w-16 h-16 bg-gradient-primary rounded-full opacity-10 animate-float"></div>
-      <div className="absolute bottom-4 left-4 w-8 h-8 bg-neon-cyan rounded-full opacity-20 animate-pulse"></div>
+      <div className="absolute top-6 right-6 w-20 h-20 bg-gradient-primary rounded-full opacity-8 animate-float"></div>
+      <div className="absolute bottom-6 left-6 w-12 h-12 bg-neon-cyan rounded-full opacity-15 animate-pulse"></div>
+      <div className="absolute top-1/2 right-1/4 w-6 h-6 bg-neon-purple rounded-full opacity-20 animate-bounce-subtle"></div>
       
-      <div className="relative z-10 p-8">
+      <div className="relative z-10 p-10">
         <div className="flex items-center justify-between">
-          <div className="space-y-4 flex-1">
-            {/* Greeting */}
-            <div className="space-y-2">
-              <div className="flex items-center gap-2">
-                <Sparkles className="w-5 h-5 text-primary animate-pulse" />
-                <span className="text-sm font-medium text-muted-foreground uppercase tracking-wider">
-                  Dashboard
-                </span>
-              </div>
-              <h1 className="text-display gradient-text">
+          <div className="space-y-6 flex-1">
+            {/* Status Badge */}
+            <div className="flex items-center gap-3">
+              <Badge className="status-indicator success px-4 py-2">
+                <Activity className="w-3 h-3" />
+                Sistema Online
+              </Badge>
+              <Badge variant="secondary" className="px-4 py-2 bg-secondary/10 text-secondary border border-secondary/20">
+                <Sparkles className="w-3 h-3 mr-1" />
+                Premium Dashboard
+              </Badge>
+            </div>
+            
+            {/* Main Greeting */}
+            <div className="space-y-3">
+              <h1 className="text-display gradient-text leading-none">
                 {getGreeting()}, {getName()}
               </h1>
-              <p className="text-body text-muted-foreground max-w-md">
-                Aqui está o resumo do seu negócio hoje. Tudo funcionando perfeitamente.
+              <p className="text-body text-muted-foreground max-w-lg leading-relaxed">
+                Bem-vindo ao seu centro de comando. Aqui você tem controle total do seu negócio 
+                com insights em tempo real e automações inteligentes.
               </p>
             </div>
             
-            {/* Date */}
-            <div className="flex items-center gap-3 text-caption">
-              <Calendar className="w-4 h-4 text-muted-foreground" />
-              <span className="capitalize font-medium">{today}</span>
+            {/* Date and Quick Info */}
+            <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
+              <div className="flex items-center gap-3 text-caption">
+                <Calendar className="w-4 h-4 text-muted-foreground" />
+                <span className="capitalize font-medium">{today}</span>
+              </div>
+              
+              <div className="flex items-center gap-2">
+                <div className="w-2 h-2 bg-success rounded-full animate-pulse"></div>
+                <span className="text-micro text-success font-medium">
+                  Tudo funcionando perfeitamente
+                </span>
+              </div>
             </div>
           </div>
           
           {/* Right side decoration */}
-          <div className="hidden md:flex flex-col items-center gap-4">
-            <div className="w-20 h-20 bg-gradient-primary rounded-3xl flex items-center justify-center backdrop-blur-sm group-hover:scale-110 transition-transform duration-500">
-              <TrendingUp className="w-10 h-10 text-white animate-pulse" />
+          <div className="hidden lg:flex flex-col items-center gap-6">
+            <div className="relative">
+              <div className="w-24 h-24 bg-gradient-primary rounded-full flex items-center justify-center backdrop-blur-sm group-hover:scale-110 transition-all duration-500 shadow-elevated">
+                <TrendingUp className="w-12 h-12 text-white animate-pulse" />
+              </div>
+              <div className="absolute -top-2 -right-2 w-8 h-8 bg-neon-green rounded-full flex items-center justify-center animate-bounce-subtle">
+                <Zap className="w-4 h-4 text-white" />
+              </div>
             </div>
             
-            {/* Rating stars */}
-            <div className="flex items-center gap-1">
-              {[...Array(5)].map((_, i) => (
-                <Star 
-                  key={i} 
-                  className="w-3 h-3 fill-yellow-400 text-yellow-400 animate-pulse" 
-                  style={{ animationDelay: `${i * 0.1}s` }}
-                />
-              ))}
+            {/* Rating Display */}
+            <div className="text-center space-y-2">
+              <div className="flex items-center gap-1">
+                {[...Array(5)].map((_, i) => (
+                  <Star 
+                    key={i} 
+                    className="w-4 h-4 fill-yellow-400 text-yellow-400 animate-pulse" 
+                    style={{ animationDelay: `${i * 0.1}s` }}
+                  />
+                ))}
+              </div>
+              <div className="space-y-1">
+                <p className="text-micro font-bold">Excelência</p>
+                <p className="text-micro text-muted-foreground">5.0 de satisfação</p>
+              </div>
             </div>
-            <span className="text-xs font-medium text-muted-foreground">Excelente!</span>
           </div>
         </div>
       </div>

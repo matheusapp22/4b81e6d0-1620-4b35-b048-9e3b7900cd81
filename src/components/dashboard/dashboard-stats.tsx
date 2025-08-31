@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { GlassCard } from '@/components/ui/glass-card';
-import { Calendar, Clock, DollarSign, Users, TrendingUp, TrendingDown, Activity } from 'lucide-react';
+import { Badge } from '@/components/ui/badge';
+import { Calendar, Clock, DollarSign, Users, TrendingUp, TrendingDown, Activity, Zap } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/auth-context';
 
@@ -96,51 +97,67 @@ export function DashboardStats() {
       value: stats.todayAppointments,
       icon: Calendar,
       color: 'text-primary',
-      bgColor: 'bg-primary/8',
+      bgColor: 'bg-primary/10',
       trend: '+12%',
-      trendColor: 'text-neon-green',
-      description: 'vs. ontem'
+      trendIcon: TrendingUp,
+      trendColor: 'text-success',
+      description: 'vs. ontem',
+      isPositive: true
     },
     {
       title: 'Total de Clientes',
       value: stats.totalClients,
       icon: Users,
       color: 'text-neon-blue',
-      bgColor: 'bg-neon-blue/8',
+      bgColor: 'bg-neon-blue/10',
       trend: '+8%',
-      trendColor: 'text-neon-green',
-      description: 'este mês'
+      trendIcon: TrendingUp,
+      trendColor: 'text-success',
+      description: 'este mês',
+      isPositive: true
     },
     {
       title: 'Receita do Mês',
       value: `R$ ${stats.monthlyRevenue.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`,
       icon: DollarSign,
-      color: 'text-neon-green',
-      bgColor: 'bg-neon-green/8',
+      color: 'text-success',
+      bgColor: 'bg-success/10',
       trend: '+24%',
-      trendColor: 'text-neon-green',
-      description: 'vs. mês anterior'
+      trendIcon: TrendingUp,
+      trendColor: 'text-success',
+      description: 'vs. mês anterior',
+      isPositive: true
     },
     {
       title: 'Taxa de Conclusão',
       value: `${stats.completionRate}%`,
-      icon: stats.completionRate >= 80 ? TrendingUp : Activity,
-      color: stats.completionRate >= 80 ? 'text-neon-green' : 'text-warning',
-      bgColor: stats.completionRate >= 80 ? 'bg-neon-green/8' : 'bg-warning/8',
+      icon: stats.completionRate >= 80 ? Activity : Clock,
+      color: stats.completionRate >= 80 ? 'text-success' : 'text-warning',
+      bgColor: stats.completionRate >= 80 ? 'bg-success/10' : 'bg-warning/10',
       trend: stats.completionRate >= 80 ? '+5%' : '-2%',
-      trendColor: stats.completionRate >= 80 ? 'text-neon-green' : 'text-warning',
-      description: 'este mês'
+      trendIcon: stats.completionRate >= 80 ? TrendingUp : TrendingDown,
+      trendColor: stats.completionRate >= 80 ? 'text-success' : 'text-warning',
+      description: 'este mês',
+      isPositive: stats.completionRate >= 80
     }
   ];
 
   if (loading) {
     return (
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
         {[...Array(4)].map((_, i) => (
-          <GlassCard key={i} variant="premium" className="p-6">
-            <div className="loading-skeleton h-4 w-3/4 mb-3 rounded"></div>
-            <div className="loading-skeleton h-8 w-1/2 mb-2 rounded"></div>
-            <div className="loading-skeleton h-3 w-2/3 rounded"></div>
+          <GlassCard key={i} variant="premium" className="p-8">
+            <div className="space-y-4">
+              <div className="flex items-center justify-between">
+                <div className="loading-skeleton w-12 h-12 rounded-2xl"></div>
+                <div className="loading-skeleton w-16 h-6 rounded-full"></div>
+              </div>
+              <div className="space-y-3">
+                <div className="loading-skeleton h-4 w-3/4 rounded"></div>
+                <div className="loading-skeleton h-10 w-1/2 rounded"></div>
+                <div className="loading-skeleton h-3 w-2/3 rounded"></div>
+              </div>
+            </div>
           </GlassCard>
         ))}
       </div>
@@ -148,7 +165,7 @@ export function DashboardStats() {
   }
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
       {statsData.map((stat, index) => (
         <GlassCard 
           key={stat.title} 
@@ -157,30 +174,35 @@ export function DashboardStats() {
           className="group animate-scale-in"
           style={{ animationDelay: `${index * 0.1}s` }}
         >
-          <div className="p-6 space-y-4">
-            {/* Header */}
+          <div className="p-8 space-y-6">
+            {/* Header with Icon and Trend */}
             <div className="flex items-center justify-between">
-              <div className={`p-3 rounded-2xl ${stat.bgColor} group-hover:scale-110 transition-transform duration-300`}>
-                <stat.icon className={`w-5 h-5 ${stat.color}`} />
+              <div className={`p-4 rounded-3xl ${stat.bgColor} group-hover:scale-110 transition-all duration-400 shadow-card`}>
+                <stat.icon className={`w-6 h-6 ${stat.color}`} />
               </div>
-              <div className={`status-badge ${stat.trendColor.includes('green') ? 'success' : 'warning'}`}>
-                <TrendingUp className="w-3 h-3" />
+              
+              <Badge className={`status-indicator ${stat.isPositive ? 'success' : 'warning'} px-3 py-1`}>
+                <stat.trendIcon className="w-3 h-3" />
                 {stat.trend}
-              </div>
+              </Badge>
             </div>
             
             {/* Content */}
-            <div className="space-y-2">
-              <p className="text-caption text-muted-foreground">
+            <div className="space-y-3">
+              <p className="text-caption text-muted-foreground font-medium">
                 {stat.title}
               </p>
               <p className="metric-display gradient-text">
                 {stat.value}
               </p>
-              <p className="text-xs text-muted-foreground">
+              <p className="text-micro text-muted-foreground flex items-center gap-2">
+                <div className={`w-2 h-2 rounded-full ${stat.isPositive ? 'bg-success' : 'bg-warning'} animate-pulse`}></div>
                 {stat.description}
               </p>
             </div>
+
+            {/* Hover Effect Indicator */}
+            <div className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-primary opacity-0 group-hover:opacity-100 transition-opacity duration-400"></div>
           </div>
         </GlassCard>
       ))}
