@@ -2,9 +2,13 @@ import { useEffect } from 'react';
 import { useAuth } from '@/contexts/auth-context';
 import { useNavigate } from 'react-router-dom';
 import { Navigation } from '@/components/navigation';
-import { HeroSection } from '@/components/hero-section';
-import { FeaturesSection } from '@/components/features-section';
+import { FuturisticHero } from '@/components/futuristic-hero';
+import { InteractiveFeatures } from '@/components/interactive-features';
+import { DashboardShowcase } from '@/components/dashboard-showcase';
+import { BenefitsSection } from '@/components/benefits-section';
+import { SocialProof } from '@/components/social-proof';
 import { PricingSection } from '@/components/pricing-section';
+import { FinalCTA } from '@/components/final-cta';
 
 const Index = () => {
   const { user, loading } = useAuth();
@@ -33,9 +37,13 @@ const Index = () => {
   return (
     <div className="min-h-screen bg-background">
       <Navigation />
-      <HeroSection />
-      <FeaturesSection />
+      <FuturisticHero />
+      <InteractiveFeatures />
+      <DashboardShowcase />
+      <BenefitsSection />
+      <SocialProof />
       <PricingSection />
+      <FinalCTA />
     </div>
   );
 };
