@@ -1047,7 +1047,102 @@ export type Database = {
       }
     }
     Views: {
-      [_ in never]: never
+      public_profiles: {
+        Row: {
+          accent_color: string | null
+          avatar_url: string | null
+          background_color: string | null
+          background_gradient_end: string | null
+          background_gradient_start: string | null
+          banner_url: string | null
+          border_radius: string | null
+          business_name: string | null
+          button_background_color: string | null
+          button_text_color: string | null
+          card_background_color: string | null
+          card_border_color: string | null
+          description: string | null
+          font_color: string | null
+          font_family: string | null
+          font_size: string | null
+          instagram_link: string | null
+          language: string | null
+          primary_color: string | null
+          secondary_color: string | null
+          section_header_color: string | null
+          shadow_intensity: string | null
+          text_primary_color: string | null
+          text_secondary_color: string | null
+          timezone: string | null
+          use_gradient_background: boolean | null
+          user_id: string | null
+          website_link: string | null
+          whatsapp_link: string | null
+        }
+        Insert: {
+          accent_color?: string | null
+          avatar_url?: string | null
+          background_color?: string | null
+          background_gradient_end?: string | null
+          background_gradient_start?: string | null
+          banner_url?: string | null
+          border_radius?: string | null
+          business_name?: string | null
+          button_background_color?: string | null
+          button_text_color?: string | null
+          card_background_color?: string | null
+          card_border_color?: string | null
+          description?: string | null
+          font_color?: string | null
+          font_family?: string | null
+          font_size?: string | null
+          instagram_link?: string | null
+          language?: string | null
+          primary_color?: string | null
+          secondary_color?: string | null
+          section_header_color?: string | null
+          shadow_intensity?: string | null
+          text_primary_color?: string | null
+          text_secondary_color?: string | null
+          timezone?: string | null
+          use_gradient_background?: boolean | null
+          user_id?: string | null
+          website_link?: string | null
+          whatsapp_link?: string | null
+        }
+        Update: {
+          accent_color?: string | null
+          avatar_url?: string | null
+          background_color?: string | null
+          background_gradient_end?: string | null
+          background_gradient_start?: string | null
+          banner_url?: string | null
+          border_radius?: string | null
+          business_name?: string | null
+          button_background_color?: string | null
+          button_text_color?: string | null
+          card_background_color?: string | null
+          card_border_color?: string | null
+          description?: string | null
+          font_color?: string | null
+          font_family?: string | null
+          font_size?: string | null
+          instagram_link?: string | null
+          language?: string | null
+          primary_color?: string | null
+          secondary_color?: string | null
+          section_header_color?: string | null
+          shadow_intensity?: string | null
+          text_primary_color?: string | null
+          text_secondary_color?: string | null
+          timezone?: string | null
+          use_gradient_background?: boolean | null
+          user_id?: string | null
+          website_link?: string | null
+          whatsapp_link?: string | null
+        }
+        Relationships: []
+      }
     }
     Functions: {
       [_ in never]: never
