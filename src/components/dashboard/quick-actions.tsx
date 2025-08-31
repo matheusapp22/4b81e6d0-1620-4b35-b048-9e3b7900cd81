@@ -1,5 +1,7 @@
 import { GlassCard } from '@/components/ui/glass-card';
 import { Button } from '@/components/ui/button';
+import { Link } from 'react-router-dom';
+import { useScrollAnimation } from '@/hooks/use-scroll-animation';
 import { Badge } from '@/components/ui/badge';
 import { 
   Plus, 
@@ -108,15 +110,15 @@ export function QuickActions() {
               style={{ animationDelay: `${index * 0.05}s` }}
               asChild
             >
-              <a href={action.href}>
-                <div className={`p-4 rounded-3xl ${action.bgColor} group-hover/action:scale-110 transition-all duration-400 shadow-card`}>
-                  <action.icon className={`w-6 h-6 ${action.color}`} />
+              <Link to={action.href}>
+                <div className={`p-4 rounded-3xl ${action.bgColor} group-hover/action:scale-110 transition-all duration-400 shadow-card group-hover/action:rotate-6`}>
+                  <action.icon className={`w-6 h-6 ${action.color} group-hover/action:scale-110 transition-transform duration-300`} />
                 </div>
                 <div className="text-center space-y-1">
                   <p className="text-sm font-bold leading-tight">{action.title}</p>
                   <p className="text-micro text-muted-foreground leading-tight">{action.description}</p>
                 </div>
-              </a>
+              </Link>
             </Button>
           ))}
         </div>

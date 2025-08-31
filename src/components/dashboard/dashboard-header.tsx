@@ -1,6 +1,8 @@
 import { Button } from '@/components/ui/button';
 import { GlassCard } from '@/components/ui/glass-card';
 import { useAuth } from '@/contexts/auth-context';
+import { Link } from 'react-router-dom';
+import { useScrollAnimation } from '@/hooks/use-scroll-animation';
 import { 
   Calendar, 
   BarChart3, 
@@ -41,6 +43,7 @@ export function DashboardHeader() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [darkMode, setDarkMode] = useState(false);
   const location = useLocation();
+  useScrollAnimation();
 
   const getInitials = () => {
     if (profile?.first_name && profile?.last_name) {
@@ -73,23 +76,23 @@ export function DashboardHeader() {
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
         <div className="flex items-center justify-between h-20">
           {/* Logo Section */}
-          <div className="flex items-center gap-4">
-            <a href="/dashboard" className="flex items-center gap-4 group">
+          <div className="flex items-center gap-4 animate-slide-up" style={{ animationDelay: '0.3s' }}>
+            <Link to="/dashboard" className="flex items-center gap-4 group hover:scale-105 transition-transform duration-300">
               <div className="relative">
-                <div className="w-12 h-12 bg-gradient-primary rounded-3xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-all duration-400">
-                  <Zap className="w-7 h-7 text-white" />
+                <div className="w-12 h-12 bg-gradient-primary rounded-3xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-all duration-400 group-hover:rotate-3">
+                  <Zap className="w-7 h-7 text-white group-hover:scale-110 transition-transform duration-300" />
                 </div>
                 <div className="absolute -top-1 -right-1 w-4 h-4 bg-neon-green rounded-full animate-tech-pulse"></div>
               </div>
               <div className="hidden sm:block">
-                <span className="font-bold text-2xl gradient-text tracking-tight">GoAgendas</span>
+                <span className="font-bold text-2xl gradient-text tracking-tight group-hover:scale-105 transition-transform duration-300">GoAgendas</span>
                 {profile?.business_name && (
                   <p className="text-micro text-muted-foreground font-medium leading-tight">
                     {profile.business_name}
                   </p>
                 )}
               </div>
-            </a>
+            </Link>
           </div>
           
           {/* Desktop Navigation */}
@@ -105,10 +108,10 @@ export function DashboardHeader() {
                   isActive(item.href) && "active bg-primary/10 text-primary border border-primary/20"
                 )}
               >
-                <a href={item.href} className="flex items-center gap-2">
-                  <item.icon className="w-4 h-4" />
+                <Link to={item.href} className="flex items-center gap-2 group-hover:scale-105 transition-transform duration-300">
+                  <item.icon className="w-4 h-4 group-hover:rotate-6 transition-transform duration-300" />
                   <span className="font-medium">{item.label}</span>
-                </a>
+                </Link>
               </Button>
             ))}
             
@@ -122,11 +125,11 @@ export function DashboardHeader() {
               </DropdownMenuTrigger>
               <DropdownMenuContent className="glass-card border-0 w-56" align="end">
                 {navigationItems.slice(6).map((item) => (
-                  <DropdownMenuItem key={item.href} asChild className="cursor-pointer">
-                    <a href={item.href} className="flex items-center gap-3 p-3">
-                      <item.icon className="w-4 h-4 text-muted-foreground" />
+                  <DropdownMenuItem key={item.href} asChild className="cursor-pointer hover:bg-muted/50 transition-colors duration-300">
+                    <Link to={item.href} className="flex items-center gap-3 p-3 group-hover:scale-105 transition-transform duration-300">
+                      <item.icon className="w-4 h-4 text-muted-foreground group-hover:text-primary transition-colors duration-300" />
                       <span>{item.label}</span>
-                    </a>
+                    </Link>
                   </DropdownMenuItem>
                 ))}
               </DropdownMenuContent>
@@ -180,7 +183,7 @@ export function DashboardHeader() {
                   <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-success rounded-full border-2 border-background"></div>
                 </Button>
               </DropdownMenuTrigger>
-              <DropdownMenuContent className="glass-card border-0 w-72" align="end" forceMount>
+              <DropdownMenuContent className="glass-card border-0 w-72 animate-scale-in" align="end" forceMount>
                 <DropdownMenuLabel className="font-normal p-6">
                   <div className="flex items-center gap-4">
                     <Avatar className="h-12 w-12 border-2 border-border">
@@ -211,35 +214,35 @@ export function DashboardHeader() {
                 <DropdownMenuSeparator className="bg-border/50" />
                 
                 <div className="p-2 space-y-1">
-                  <DropdownMenuItem asChild className="cursor-pointer rounded-xl p-3">
-                    <a href="/services" className="flex items-center gap-3">
-                      <Package className="w-4 h-4 text-muted-foreground" />
+                  <DropdownMenuItem asChild className="cursor-pointer rounded-xl p-3 hover:bg-muted/50 transition-colors duration-300">
+                    <Link to="/services" className="flex items-center gap-3 group">
+                      <Package className="w-4 h-4 text-muted-foreground group-hover:text-primary transition-colors duration-300" />
                       <span className="font-medium">Serviços</span>
-                    </a>
+                    </Link>
                   </DropdownMenuItem>
-                  <DropdownMenuItem asChild className="cursor-pointer rounded-xl p-3">
-                    <a href="/calendar" className="flex items-center gap-3">
-                      <Calendar className="w-4 h-4 text-muted-foreground" />
+                  <DropdownMenuItem asChild className="cursor-pointer rounded-xl p-3 hover:bg-muted/50 transition-colors duration-300">
+                    <Link to="/calendar" className="flex items-center gap-3 group">
+                      <Calendar className="w-4 h-4 text-muted-foreground group-hover:text-primary transition-colors duration-300" />
                       <span className="font-medium">Agenda</span>
-                    </a>
+                    </Link>
                   </DropdownMenuItem>
-                  <DropdownMenuItem asChild className="cursor-pointer rounded-xl p-3">
-                    <a href="/settings" className="flex items-center gap-3">
-                      <User className="w-4 h-4 text-muted-foreground" />
+                  <DropdownMenuItem asChild className="cursor-pointer rounded-xl p-3 hover:bg-muted/50 transition-colors duration-300">
+                    <Link to="/settings" className="flex items-center gap-3 group">
+                      <User className="w-4 h-4 text-muted-foreground group-hover:text-primary transition-colors duration-300" />
                       <span className="font-medium">Perfil</span>
-                    </a>
+                    </Link>
                   </DropdownMenuItem>
-                  <DropdownMenuItem asChild className="cursor-pointer rounded-xl p-3">
-                    <a href="/biolink-editor" className="flex items-center gap-3">
-                      <Link2 className="w-4 h-4 text-muted-foreground" />
+                  <DropdownMenuItem asChild className="cursor-pointer rounded-xl p-3 hover:bg-muted/50 transition-colors duration-300">
+                    <Link to="/biolink-editor" className="flex items-center gap-3 group">
+                      <Link2 className="w-4 h-4 text-muted-foreground group-hover:text-primary transition-colors duration-300" />
                       <span className="font-medium">Editor BioLink</span>
-                    </a>
+                    </Link>
                   </DropdownMenuItem>
-                  <DropdownMenuItem asChild className="cursor-pointer rounded-xl p-3">
-                    <a href="/settings" className="flex items-center gap-3">
-                      <Settings className="w-4 h-4 text-muted-foreground" />
+                  <DropdownMenuItem asChild className="cursor-pointer rounded-xl p-3 hover:bg-muted/50 transition-colors duration-300">
+                    <Link to="/settings" className="flex items-center gap-3 group">
+                      <Settings className="w-4 h-4 text-muted-foreground group-hover:text-primary transition-colors duration-300" />
                       <span className="font-medium">Configurações</span>
-                    </a>
+                    </Link>
                   </DropdownMenuItem>
                 </div>
                 
@@ -274,10 +277,10 @@ export function DashboardHeader() {
                   )}
                   onClick={() => setMobileMenuOpen(false)}
                 >
-                  <a href={item.href} className="flex items-center gap-3">
-                    <item.icon className="w-4 h-4" />
+                  <Link to={item.href} className="flex items-center gap-3 group-hover:scale-105 transition-transform duration-300">
+                    <item.icon className="w-4 h-4 group-hover:rotate-6 transition-transform duration-300" />
                     <span className="font-medium">{item.label}</span>
-                  </a>
+                  </Link>
                 </Button>
               ))}
             </nav>

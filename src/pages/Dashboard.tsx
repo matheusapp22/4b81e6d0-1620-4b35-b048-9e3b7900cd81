@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/contexts/auth-context';
+import { useScrollAnimation } from '@/hooks/use-scroll-animation';
 import { DashboardHeader } from '@/components/dashboard/dashboard-header';
 import { DashboardGreeting } from '@/components/dashboard/dashboard-greeting';
 import { DashboardStats } from '@/components/dashboard/dashboard-stats';
@@ -13,6 +14,7 @@ import { AppointmentModal } from '@/components/dashboard/appointment-modal';
 export default function Dashboard() {
   const { user, loading } = useAuth();
   const navigate = useNavigate();
+  useScrollAnimation();
 
   useEffect(() => {
     if (!loading && !user) {
@@ -39,23 +41,39 @@ export default function Dashboard() {
   }
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background relative overflow-hidden">
+      {/* Animated Background Elements */}
+      <div className="absolute top-20 right-20 w-64 h-64 bg-primary/3 rounded-full blur-3xl animate-float"></div>
+      <div className="absolute bottom-40 left-20 w-48 h-48 bg-info/3 rounded-full blur-2xl animate-pulse"></div>
+      
       <DashboardHeader />
       
-      <main className="container mx-auto px-6 lg:px-8 py-12 space-y-12">
-        <DashboardGreeting />
+      <main className="container mx-auto px-6 lg:px-8 py-12 space-y-12 relative z-10">
+        <div className="animate-slide-up">
+          <DashboardGreeting />
+        </div>
         
-        <DashboardStats />
+        <div className="animate-slide-up" style={{ animationDelay: '0.1s' }}>
+          <DashboardStats />
+        </div>
         
-        <StatsChart />
+        <div className="animate-slide-up" style={{ animationDelay: '0.2s' }}>
+          <StatsChart />
+        </div>
         
-        <div className="grid grid-cols-1 xl:grid-cols-3 gap-12">
+        <div className="grid grid-cols-1 xl:grid-cols-3 gap-12 animate-slide-up" style={{ animationDelay: '0.3s' }}>
           <div className="xl:col-span-2 space-y-12">
-            <TodayAppointments />
+            <div className="animate-scale-in" style={{ animationDelay: '0.4s' }}>
+              <TodayAppointments />
+            </div>
           </div>
           <div className="space-y-12">
-            <NextAppointment />
-            <QuickActions />
+            <div className="animate-scale-in" style={{ animationDelay: '0.5s' }}>
+              <NextAppointment />
+            </div>
+            <div className="animate-scale-in" style={{ animationDelay: '0.6s' }}>
+              <QuickActions />
+            </div>
           </div>
         </div>
       </main>

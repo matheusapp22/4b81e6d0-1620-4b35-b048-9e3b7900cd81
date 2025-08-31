@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import { GlassCard } from '@/components/ui/glass-card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -6,6 +7,7 @@ import { Clock, User, Phone, CheckCircle, XCircle, Plus, Calendar as CalendarIco
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/auth-context';
 import { useToast } from '@/hooks/use-toast';
+import { useScrollAnimation } from '@/hooks/use-scroll-animation';
 
 interface Appointment {
   id: string;
@@ -25,6 +27,7 @@ export function TodayAppointments() {
   const [loading, setLoading] = useState(true);
   const { user } = useAuth();
   const { toast } = useToast();
+  useScrollAnimation();
 
   useEffect(() => {
     if (!user) return;
@@ -148,11 +151,11 @@ export function TodayAppointments() {
               </Badge>
             </div>
           </div>
-          <Button size="sm" variant="elegant" asChild>
-            <a href="/appointments">
-              <Plus className="w-4 h-4" />
+          <Button size="sm" variant="elegant" asChild className="group hover:scale-105 transition-all duration-300">
+            <Link to="/appointments">
+              <Plus className="w-4 h-4 group-hover:rotate-90 transition-transform duration-300" />
               Novo
-            </a>
+            </Link>
           </Button>
         </div>
 
@@ -176,17 +179,17 @@ export function TodayAppointments() {
             </div>
             
             <div className="flex flex-col sm:flex-row gap-4 justify-center max-w-md mx-auto">
-              <Button variant="futuristic" size="default" asChild className="flex-1">
-                <a href="/appointments">
-                  <Plus className="w-4 h-4" />
+              <Button variant="futuristic" size="default" asChild className="flex-1 group hover:scale-105 transition-all duration-300">
+                <Link to="/appointments">
+                  <Plus className="w-4 h-4 group-hover:rotate-90 transition-transform duration-300" />
                   Novo Agendamento
-                </a>
+                </Link>
               </Button>
-              <Button variant="elegant" size="default" asChild className="flex-1">
-                <a href="/clients">
-                  <Users className="w-4 h-4" />
+              <Button variant="elegant" size="default" asChild className="flex-1 group hover:scale-105 transition-all duration-300">
+                <Link to="/clients">
+                  <Users className="w-4 h-4 group-hover:scale-110 transition-transform duration-300" />
                   Ver Clientes
-                </a>
+                </Link>
               </Button>
             </div>
           </div>
