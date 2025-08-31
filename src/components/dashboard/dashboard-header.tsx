@@ -2,7 +2,6 @@ import { Button } from '@/components/ui/button';
 import { GlassCard } from '@/components/ui/glass-card';
 import { useAuth } from '@/contexts/auth-context';
 import { Link } from 'react-router-dom';
-import { useScrollAnimation } from '@/hooks/use-scroll-animation';
 import { 
   Calendar, 
   BarChart3, 
@@ -43,7 +42,6 @@ export function DashboardHeader() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [darkMode, setDarkMode] = useState(false);
   const location = useLocation();
-  useScrollAnimation();
 
   const getInitials = () => {
     if (profile?.first_name && profile?.last_name) {
