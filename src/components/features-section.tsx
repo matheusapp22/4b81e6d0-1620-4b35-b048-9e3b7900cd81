@@ -1,4 +1,5 @@
 import { Badge } from "@/components/ui/badge";
+import { useScrollAnimation } from "@/hooks/use-scroll-animation";
 import { 
   Calendar, 
   Bell, 
@@ -91,10 +92,17 @@ const features = [
 ];
 
 export function FeaturesSection() {
+  useScrollAnimation();
+  
   return (
-    <section className="py-24 bg-secondary/30 px-6">
-      <div className="max-w-6xl mx-auto">
-        <div className="text-center space-y-6 mb-16">
+    <section className="py-24 bg-secondary/30 px-6 relative overflow-hidden">
+      {/* Animated Background */}
+      <div className="absolute inset-0 dot-pattern opacity-15"></div>
+      <div className="absolute top-10 right-10 w-32 h-32 bg-primary/5 rounded-full blur-2xl animate-float"></div>
+      <div className="absolute bottom-10 left-10 w-24 h-24 bg-info/5 rounded-full blur-xl animate-pulse"></div>
+      
+      <div className="max-w-6xl mx-auto relative z-10">
+        <div className="text-center space-y-6 mb-16 scroll-reveal">
           <div className="inline-flex items-center gap-2 bg-primary/10 text-primary px-4 py-2 rounded-full text-sm font-medium border border-primary/20">
             <Sparkles className="w-4 h-4" />
             Recursos Premium
@@ -113,11 +121,12 @@ export function FeaturesSection() {
           {features.map((feature, index) => (
             <div 
               key={index} 
-              className="bg-card border border-border rounded-xl p-6 space-y-4 hover:shadow-card transition-shadow"
+              className="bg-card border border-border rounded-xl p-6 space-y-4 hover:shadow-card transition-all duration-500 group hover:scale-105 hover:-translate-y-2 animate-slide-up"
+              style={{ animationDelay: `${index * 0.1}s` }}
             >
               <div className="flex items-start justify-between">
-                <div className={`w-12 h-12 rounded-lg ${feature.bgColor} flex items-center justify-center`}>
-                  <feature.icon className={`w-6 h-6 ${feature.color}`} />
+                <div className={`w-12 h-12 rounded-lg ${feature.bgColor} flex items-center justify-center group-hover:scale-110 transition-transform duration-300`}>
+                  <feature.icon className={`w-6 h-6 ${feature.color} group-hover:rotate-6 transition-transform duration-300`} />
                 </div>
                 <div className="bg-primary/10 text-primary px-2 py-1 rounded-full text-xs font-medium border border-primary/20">
                   {feature.badge}
@@ -134,9 +143,9 @@ export function FeaturesSection() {
         
         {/* Integration Highlights */}
         <div className="mt-16 grid md:grid-cols-3 gap-8">
-          <div className="bg-card border border-border rounded-xl p-6 text-center space-y-4">
-            <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mx-auto">
-              <Globe className="w-6 h-6 text-primary" />
+          <div className="bg-card border border-border rounded-xl p-6 text-center space-y-4 hover:scale-105 transition-all duration-300 group animate-slide-up" style={{ animationDelay: '0.2s' }}>
+            <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mx-auto group-hover:scale-110 transition-transform duration-300">
+              <Globe className="w-6 h-6 text-primary group-hover:rotate-12 transition-transform duration-300" />
             </div>
             <h3 className="text-lg font-semibold">Integrações Nativas</h3>
             <p className="text-sm text-muted-foreground">
@@ -144,9 +153,9 @@ export function FeaturesSection() {
             </p>
           </div>
           
-          <div className="bg-card border border-border rounded-xl p-6 text-center space-y-4">
-            <div className="w-12 h-12 bg-info/10 rounded-lg flex items-center justify-center mx-auto">
-              <Zap className="w-6 h-6 text-info" />
+          <div className="bg-card border border-border rounded-xl p-6 text-center space-y-4 hover:scale-105 transition-all duration-300 group animate-slide-up" style={{ animationDelay: '0.4s' }}>
+            <div className="w-12 h-12 bg-info/10 rounded-lg flex items-center justify-center mx-auto group-hover:scale-110 transition-transform duration-300">
+              <Zap className="w-6 h-6 text-info group-hover:rotate-12 transition-transform duration-300" />
             </div>
             <h3 className="text-lg font-semibold">Deploy Instantâneo</h3>
             <p className="text-sm text-muted-foreground">
@@ -154,9 +163,9 @@ export function FeaturesSection() {
             </p>
           </div>
           
-          <div className="bg-card border border-border rounded-xl p-6 text-center space-y-4">
-            <div className="w-12 h-12 bg-success/10 rounded-lg flex items-center justify-center mx-auto">
-              <Shield className="w-6 h-6 text-success" />
+          <div className="bg-card border border-border rounded-xl p-6 text-center space-y-4 hover:scale-105 transition-all duration-300 group animate-slide-up" style={{ animationDelay: '0.6s' }}>
+            <div className="w-12 h-12 bg-success/10 rounded-lg flex items-center justify-center mx-auto group-hover:scale-110 transition-transform duration-300">
+              <Shield className="w-6 h-6 text-success group-hover:rotate-12 transition-transform duration-300" />
             </div>
             <h3 className="text-lg font-semibold">Suporte 24/7</h3>
             <p className="text-sm text-muted-foreground">

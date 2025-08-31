@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { GlassCard } from "@/components/ui/glass-card";
 import { Badge } from "@/components/ui/badge";
+import { useScrollAnimation } from "@/hooks/use-scroll-animation";
 import { Check, Star, Zap, Crown, Sparkles, TrendingUp } from "lucide-react";
 
 const plans = [
@@ -63,6 +64,8 @@ const plans = [
 ];
 
 export function PricingSection() {
+  useScrollAnimation();
+  
   return (
     <section className="py-32 px-6 bg-gradient-to-b from-muted/30 to-background relative overflow-hidden">
       {/* Background Elements */}
@@ -71,7 +74,7 @@ export function PricingSection() {
       <div className="absolute bottom-20 right-20 w-32 h-32 bg-secondary/2 rounded-full blur-2xl animate-pulse"></div>
       
       <div className="max-w-7xl mx-auto relative z-10">
-        <div className="text-center space-y-8 mb-24">
+        <div className="text-center space-y-8 mb-24 scroll-reveal">
           <Badge variant="secondary" className="glass-card px-8 py-4 text-sm font-bold border border-primary/20">
             <Crown className="w-4 h-4 mr-2" />
             Planos Transparentes

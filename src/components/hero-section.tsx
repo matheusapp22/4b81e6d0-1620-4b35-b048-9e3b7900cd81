@@ -14,44 +14,53 @@ export function HeroSection() {
 
   return (
     <section className="min-h-screen bg-gradient-to-br from-background via-secondary/20 to-background flex items-center justify-center px-6 md:px-8 relative overflow-hidden">
-      {/* Subtle Background Elements */}
-      <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-primary/5 rounded-full blur-3xl"></div>
-      <div className="absolute bottom-1/4 right-1/4 w-64 h-64 bg-info/5 rounded-full blur-2xl"></div>
+      {/* Animated Background Elements */}
+      <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-primary/5 rounded-full blur-3xl animate-float"></div>
+      <div className="absolute bottom-1/4 right-1/4 w-64 h-64 bg-info/5 rounded-full blur-2xl animate-pulse-glow"></div>
+      <div className="absolute top-1/3 right-1/3 w-32 h-32 bg-primary/3 rounded-full blur-xl animate-bounce-subtle"></div>
+      
+      {/* Floating Particles */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute top-20 left-10 w-2 h-2 bg-primary/40 rounded-full animate-float" style={{ animationDelay: '0s', animationDuration: '4s' }}></div>
+        <div className="absolute top-40 right-20 w-1 h-1 bg-info/60 rounded-full animate-float" style={{ animationDelay: '1s', animationDuration: '5s' }}></div>
+        <div className="absolute bottom-32 left-20 w-3 h-3 bg-success/30 rounded-full animate-float" style={{ animationDelay: '2s', animationDuration: '6s' }}></div>
+        <div className="absolute bottom-20 right-10 w-1.5 h-1.5 bg-primary/50 rounded-full animate-float" style={{ animationDelay: '3s', animationDuration: '4.5s' }}></div>
+      </div>
       
       <div className="max-w-7xl mx-auto grid lg:grid-cols-2 gap-16 lg:gap-20 items-center relative z-10">
         {/* Left Side - Content */}
         <div className="space-y-10 text-center lg:text-left">
           <div className="space-y-8">
-            <div className="inline-flex items-center gap-2 bg-primary/10 text-primary px-4 py-2 rounded-full text-sm font-medium border border-primary/20">
-              <Sparkles className="w-4 h-4" />
+            <div className="inline-flex items-center gap-2 bg-primary/10 text-primary px-4 py-2 rounded-full text-sm font-medium border border-primary/20 animate-slide-up hover:scale-105 transition-transform duration-300">
+              <Sparkles className="w-4 h-4 animate-spin" style={{ animationDuration: '3s' }} />
               Novo: IA + WhatsApp + Pagamentos
             </div>
             
-            <h1 className="text-display">
+            <h1 className="text-display animate-slide-up" style={{ animationDelay: '0.2s' }}>
               <span className="block text-foreground">Agendamento</span>
-              <span className="block gradient-text">Inteligente</span>
+              <span className="block gradient-text animate-pulse-glow">Inteligente</span>
               <span className="block text-foreground">para Profissionais</span>
             </h1>
             
-            <p className="text-lg text-muted-foreground max-w-xl mx-auto lg:mx-0 leading-relaxed">
+            <p className="text-lg text-muted-foreground max-w-xl mx-auto lg:mx-0 leading-relaxed animate-slide-up" style={{ animationDelay: '0.4s' }}>
               Automatize agendamentos, receba pagamentos e tenha relatórios em tempo real.
               A plataforma mais avançada para seu negócio.
             </p>
           </div>
           
-          <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
+          <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start animate-slide-up" style={{ animationDelay: '0.6s' }}>
             <Button 
               size="lg" 
-              className="w-full sm:w-auto bg-primary hover:bg-primary-hover text-primary-foreground px-8 py-3 rounded-lg font-medium shadow-sm"
+              className="w-full sm:w-auto bg-primary hover:bg-primary-hover text-primary-foreground px-8 py-3 rounded-lg font-medium shadow-sm group hover:scale-105 transition-all duration-300 hover:shadow-neon"
               onClick={handleStartFree}
             >
               Começar Grátis
-              <Zap className="w-4 h-4 ml-2" />
+              <Zap className="w-4 h-4 ml-2 group-hover:rotate-12 transition-transform duration-300" />
             </Button>
             <Dialog>
               <DialogTrigger asChild>
-                <Button variant="outline" size="lg" className="w-full sm:w-auto px-8 py-3 rounded-lg font-medium">
-                  <Play className="w-4 h-4 mr-2" />
+                <Button variant="outline" size="lg" className="w-full sm:w-auto px-8 py-3 rounded-lg font-medium group hover:scale-105 transition-all duration-300 hover:border-primary/50">
+                  <Play className="w-4 h-4 mr-2 group-hover:scale-110 transition-transform duration-300" />
                   Ver Demo
                 </Button>
               </DialogTrigger>
@@ -73,7 +82,7 @@ export function HeroSection() {
             </Dialog>
           </div>
           
-          <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-8 text-sm text-muted-foreground">
+          <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-8 text-sm text-muted-foreground animate-slide-up" style={{ animationDelay: '0.8s' }}>
             <div className="flex items-center gap-2">
               <div className="w-2 h-2 bg-success rounded-full"></div>
               <span>Grátis até 20 agendamentos</span>
@@ -90,8 +99,8 @@ export function HeroSection() {
         </div>
         
         {/* Right Side - Dashboard Preview */}
-        <div className="relative order-first lg:order-last">
-          <div className="bg-card border border-border rounded-2xl p-8 space-y-8 shadow-elevated">
+        <div className="relative order-first lg:order-last animate-scale-in" style={{ animationDelay: '0.4s' }}>
+          <div className="bg-card border border-border rounded-2xl p-8 space-y-8 shadow-elevated hover:shadow-premium transition-all duration-500 group hover:scale-[1.02]">
             {/* Header */}
             <div className="flex items-center justify-between">
               <h3 className="text-xl font-semibold">Dashboard</h3>
@@ -163,16 +172,16 @@ export function HeroSection() {
             
             {/* Quick Actions */}
             <div className="grid grid-cols-3 gap-4">
-              <Button variant="outline" size="sm" className="flex-col h-20 gap-2 p-4">
-                <Bell className="w-5 h-5" />
+              <Button variant="outline" size="sm" className="flex-col h-20 gap-2 p-4 group hover:scale-105 transition-all duration-300 hover:border-primary/50">
+                <Bell className="w-5 h-5 group-hover:animate-bounce" />
                 <span className="text-xs font-medium">Notificar</span>
               </Button>
-              <Button variant="outline" size="sm" className="flex-col h-20 gap-2 p-4">
-                <BarChart3 className="w-5 h-5" />
+              <Button variant="outline" size="sm" className="flex-col h-20 gap-2 p-4 group hover:scale-105 transition-all duration-300 hover:border-primary/50">
+                <BarChart3 className="w-5 h-5 group-hover:scale-110 transition-transform duration-300" />
                 <span className="text-xs font-medium">Relatório</span>
               </Button>
-              <Button variant="outline" size="sm" className="flex-col h-20 gap-2 p-4">
-                <Users className="w-5 h-5" />
+              <Button variant="outline" size="sm" className="flex-col h-20 gap-2 p-4 group hover:scale-105 transition-all duration-300 hover:border-primary/50">
+                <Users className="w-5 h-5 group-hover:scale-110 transition-transform duration-300" />
                 <span className="text-xs font-medium">Clientes</span>
               </Button>
             </div>
