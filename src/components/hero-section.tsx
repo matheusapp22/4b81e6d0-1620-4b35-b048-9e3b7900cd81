@@ -13,28 +13,27 @@ export function HeroSection() {
   };
 
   return (
-    <section className="min-h-screen bg-background flex items-center justify-center px-6 md:px-8 relative overflow-hidden">
+    <section className="min-h-screen bg-gradient-to-br from-background via-secondary/20 to-background flex items-center justify-center px-6 md:px-8 relative overflow-hidden">
       {/* Subtle Background Elements */}
-      <div className="absolute inset-0 bg-gradient-to-br from-background via-secondary/30 to-background"></div>
-      <div className="absolute top-1/4 left-1/4 w-64 h-64 bg-primary/5 rounded-full blur-3xl"></div>
-      <div className="absolute bottom-1/4 right-1/4 w-48 h-48 bg-primary/3 rounded-full blur-2xl"></div>
+      <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-primary/5 rounded-full blur-3xl"></div>
+      <div className="absolute bottom-1/4 right-1/4 w-64 h-64 bg-info/5 rounded-full blur-2xl"></div>
       
-      <div className="max-w-6xl mx-auto grid lg:grid-cols-2 gap-12 lg:gap-16 items-center relative z-10">
+      <div className="max-w-7xl mx-auto grid lg:grid-cols-2 gap-16 lg:gap-20 items-center relative z-10">
         {/* Left Side - Content */}
-        <div className="space-y-8 text-center lg:text-left">
-          <div className="space-y-6">
-            <Badge variant="secondary" className="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium bg-secondary border border-border rounded-full">
-              <Sparkles className="w-4 h-4 text-primary" />
+        <div className="space-y-10 text-center lg:text-left">
+          <div className="space-y-8">
+            <div className="inline-flex items-center gap-2 bg-primary/10 text-primary px-4 py-2 rounded-full text-sm font-medium border border-primary/20">
+              <Sparkles className="w-4 h-4" />
               Novo: IA + WhatsApp + Pagamentos
-            </Badge>
+            </div>
             
-            <h1 className="text-display leading-tight">
-              <span className="block">Agendamento</span>
+            <h1 className="text-display">
+              <span className="block text-foreground">Agendamento</span>
               <span className="block gradient-text">Inteligente</span>
-              <span className="block">para Profissionais</span>
+              <span className="block text-foreground">para Profissionais</span>
             </h1>
             
-            <p className="text-subtitle text-muted-foreground max-w-lg mx-auto lg:mx-0">
+            <p className="text-lg text-muted-foreground max-w-xl mx-auto lg:mx-0 leading-relaxed">
               Automatize agendamentos, receba pagamentos e tenha relatórios em tempo real.
               A plataforma mais avançada para seu negócio.
             </p>
@@ -43,7 +42,7 @@ export function HeroSection() {
           <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
             <Button 
               size="lg" 
-              className="w-full sm:w-auto bg-primary hover:bg-primary-hover text-primary-foreground shadow-sm transition-colors"
+              className="w-full sm:w-auto bg-primary hover:bg-primary-hover text-primary-foreground px-8 py-3 rounded-lg font-medium shadow-sm"
               onClick={handleStartFree}
             >
               Começar Grátis
@@ -51,19 +50,19 @@ export function HeroSection() {
             </Button>
             <Dialog>
               <DialogTrigger asChild>
-                <Button variant="outline" size="lg" className="w-full sm:w-auto">
+                <Button variant="outline" size="lg" className="w-full sm:w-auto px-8 py-3 rounded-lg font-medium">
                   <Play className="w-4 h-4 mr-2" />
                   Ver Demo
                 </Button>
               </DialogTrigger>
               <DialogContent className="max-w-6xl h-[90vh]">
                 <DialogHeader>
-                  <DialogTitle className="text-title flex items-center gap-3">
-                    <Sparkles className="w-6 h-6 text-primary" />
+                  <DialogTitle className="text-xl font-semibold flex items-center gap-3">
+                    <Sparkles className="w-5 h-5 text-primary" />
                     Demo - GoAgendas
                   </DialogTitle>
                 </DialogHeader>
-                <div className="w-full h-full rounded-lg overflow-hidden">
+                <div className="w-full h-full rounded-lg overflow-hidden border border-border">
                   <iframe
                     src="/dashboard"
                     className="w-full h-full border-0"
@@ -74,7 +73,7 @@ export function HeroSection() {
             </Dialog>
           </div>
           
-          <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-6 text-caption">
+          <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-8 text-sm text-muted-foreground">
             <div className="flex items-center gap-2">
               <div className="w-2 h-2 bg-success rounded-full"></div>
               <span>Grátis até 20 agendamentos</span>
@@ -92,41 +91,45 @@ export function HeroSection() {
         
         {/* Right Side - Dashboard Preview */}
         <div className="relative order-first lg:order-last">
-          <div className="bg-card border border-border rounded-xl p-6 space-y-6 shadow-card">
+          <div className="bg-card border border-border rounded-2xl p-8 space-y-8 shadow-elevated">
             {/* Header */}
             <div className="flex items-center justify-between">
-              <h3 className="text-title font-semibold">Dashboard</h3>
-              <Badge className="bg-success/10 text-success border-success/20 border px-3 py-1 rounded-full text-xs font-medium">
-                <Activity className="w-3 h-3 mr-1" />
+              <h3 className="text-xl font-semibold">Dashboard</h3>
+              <div className="inline-flex items-center gap-2 bg-success/10 text-success px-3 py-1.5 rounded-full text-xs font-medium border border-success/20">
+                <Activity className="w-3 h-3" />
                 Online
-              </Badge>
+              </div>
             </div>
             
             {/* Stats Cards */}
-            <div className="grid grid-cols-2 gap-4">
-              <div className="bg-secondary rounded-lg p-4 space-y-3">
-                <div className="flex items-center gap-2">
-                  <Calendar className="w-4 h-4 text-primary" />
-                  <span className="text-caption">Hoje</span>
+            <div className="grid grid-cols-2 gap-6">
+              <div className="bg-secondary rounded-xl p-6 space-y-4 border border-border">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center">
+                    <Calendar className="w-5 h-5 text-primary" />
+                  </div>
+                  <span className="text-sm font-medium text-muted-foreground">Hoje</span>
                 </div>
-                <div className="text-2xl font-bold text-foreground">12</div>
-                <div className="text-caption">agendamentos</div>
+                <div className="text-3xl font-bold text-foreground">12</div>
+                <div className="text-sm text-muted-foreground">agendamentos</div>
               </div>
               
-              <div className="bg-secondary rounded-lg p-4 space-y-3">
-                <div className="flex items-center gap-2">
-                  <CreditCard className="w-4 h-4 text-success" />
-                  <span className="text-caption">Receita</span>
+              <div className="bg-secondary rounded-xl p-6 space-y-4 border border-border">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 bg-success/10 rounded-lg flex items-center justify-center">
+                    <CreditCard className="w-5 h-5 text-success" />
+                  </div>
+                  <span className="text-sm font-medium text-muted-foreground">Receita</span>
                 </div>
-                <div className="text-2xl font-bold text-foreground">R$ 1.240</div>
-                <div className="text-caption">este mês</div>
+                <div className="text-3xl font-bold text-foreground">R$ 1.240</div>
+                <div className="text-sm text-muted-foreground">este mês</div>
               </div>
             </div>
             
             {/* Recent Appointments */}
-            <div className="space-y-4 hidden md:block">
-              <h4 className="font-semibold text-body">Próximos Agendamentos</h4>
-              <div className="space-y-3">
+            <div className="space-y-6 hidden md:block">
+              <h4 className="font-semibold text-foreground">Próximos Agendamentos</h4>
+              <div className="space-y-4">
                 {[
                   { time: "14:30", client: "João Silva", service: "Corte + Barba", status: "confirmed" },
                   { time: "15:00", client: "Maria Santos", service: "Manicure", status: "scheduled" },
@@ -134,20 +137,24 @@ export function HeroSection() {
                 ].map((appointment, index) => (
                   <div 
                     key={index} 
-                    className="bg-secondary border border-border rounded-lg p-3 flex items-center gap-3"
+                    className="bg-secondary border border-border rounded-xl p-4 flex items-center gap-4 hover:shadow-sm transition-shadow"
                   >
-                    <div className="w-10 h-10 bg-primary rounded-lg flex items-center justify-center">
+                    <div className="w-12 h-12 bg-primary rounded-lg flex items-center justify-center">
                       <Clock className="w-5 h-5 text-primary-foreground" />
                     </div>
                     <div className="flex-1 min-w-0">
-                      <div className="font-medium text-sm truncate">{appointment.client}</div>
-                      <div className="text-caption truncate">{appointment.service}</div>
+                      <div className="font-medium text-sm text-foreground truncate">{appointment.client}</div>
+                      <div className="text-xs text-muted-foreground truncate">{appointment.service}</div>
                     </div>
-                    <div className="text-right">
-                      <div className="text-sm font-medium">{appointment.time}</div>
-                      <Badge className={`${appointment.status === 'confirmed' ? 'bg-success/10 text-success border-success/20' : 'bg-info/10 text-info border-info/20'} border rounded-full px-2 py-1 text-xs`}>
+                    <div className="text-right space-y-1">
+                      <div className="text-sm font-semibold text-foreground">{appointment.time}</div>
+                      <div className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium border ${
+                        appointment.status === 'confirmed' 
+                          ? 'bg-success/10 text-success border-success/20' 
+                          : 'bg-info/10 text-info border-info/20'
+                      }`}>
                         {appointment.status === 'confirmed' ? 'Confirmado' : 'Agendado'}
-                      </Badge>
+                      </div>
                     </div>
                   </div>
                 ))}
@@ -155,23 +162,23 @@ export function HeroSection() {
             </div>
             
             {/* Quick Actions */}
-            <div className="grid grid-cols-3 gap-3">
-              <Button variant="outline" size="sm" className="flex-col h-16 gap-2">
-                <Bell className="w-4 h-4" />
-                <span className="text-micro">Notificar</span>
+            <div className="grid grid-cols-3 gap-4">
+              <Button variant="outline" size="sm" className="flex-col h-20 gap-2 p-4">
+                <Bell className="w-5 h-5" />
+                <span className="text-xs font-medium">Notificar</span>
               </Button>
-              <Button variant="outline" size="sm" className="flex-col h-16 gap-2">
-                <BarChart3 className="w-4 h-4" />
-                <span className="text-micro">Relatório</span>
+              <Button variant="outline" size="sm" className="flex-col h-20 gap-2 p-4">
+                <BarChart3 className="w-5 h-5" />
+                <span className="text-xs font-medium">Relatório</span>
               </Button>
-              <Button variant="outline" size="sm" className="flex-col h-16 gap-2">
-                <Users className="w-4 h-4" />
-                <span className="text-micro">Clientes</span>
+              <Button variant="outline" size="sm" className="flex-col h-20 gap-2 p-4">
+                <Users className="w-5 h-5" />
+                <span className="text-xs font-medium">Clientes</span>
               </Button>
             </div>
 
             {/* Rating Section */}
-            <div className="flex items-center justify-center gap-3 pt-4 border-t border-border">
+            <div className="flex items-center justify-center gap-3 pt-6 border-t border-border">
               <div className="flex items-center gap-1">
                 {[...Array(5)].map((_, i) => (
                   <Star 
@@ -180,7 +187,7 @@ export function HeroSection() {
                   />
                 ))}
               </div>
-              <span className="text-caption font-medium">5.0 • Excelente</span>
+              <span className="text-sm font-medium text-muted-foreground">5.0 • Excelente</span>
             </div>
           </div>
         </div>

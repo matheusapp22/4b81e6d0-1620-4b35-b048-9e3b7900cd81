@@ -1,64 +1,64 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=SF+Pro+Display:wght@300;400;500;600;700;800;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 @layer base {
   :root {
-    /* Modern Primary Colors */
-    --primary: 234 89% 74%; /* #8B9EFE - Soft Purple */
-    --primary-hover: 234 89% 70%;
+    /* Modern Primary Colors - Inspired by contemporary SaaS */
+    --primary: 250 84% 60%; /* #6366F1 - Indigo */
+    --primary-hover: 250 84% 55%;
     --primary-foreground: 0 0% 100%;
-    --primary-glow: 234 89% 80%;
+    --primary-glow: 250 84% 70%;
     
-    /* Secondary Colors */
-    --secondary: 240 4.8% 95.9%; /* #F8FAFC - Light Gray */
-    --secondary-hover: 240 4.8% 91%;
-    --secondary-foreground: 240 10% 3.9%;
+    /* Neutral Secondary Colors */
+    --secondary: 240 5% 96%; /* #F8FAFC - Very Light Gray */
+    --secondary-hover: 240 5% 92%;
+    --secondary-foreground: 240 6% 10%;
     
-    /* Clean Background Colors */
+    /* Clean Backgrounds */
     --background: 0 0% 100%; /* Pure White */
-    --background-alt: 240 4.8% 95.9%; /* #F8FAFC - Very Light Gray */
-    --foreground: 240 10% 3.9%; /* #0F172A - Dark Blue Gray */
+    --background-alt: 240 5% 96%; /* #F8FAFC */
+    --foreground: 240 6% 10%; /* #1E293B - Dark Gray */
     
     /* Card Surfaces */
     --card: 0 0% 100%;
-    --card-foreground: 240 10% 3.9%;
+    --card-foreground: 240 6% 10%;
     --surface: 0 0% 100%;
-    --surface-alt: 240 4.8% 95.9%;
+    --surface-alt: 240 5% 96%;
     
     /* Text Colors */
-    --muted: 240 4.8% 95.9%;
-    --muted-foreground: 240 3.8% 46.1%; /* #64748B - Cool Gray */
+    --muted: 240 5% 96%;
+    --muted-foreground: 240 4% 46%; /* #64748B - Slate Gray */
     
-    /* Subtle Borders */
-    --border: 240 5.9% 90%; /* #E2E8F0 - Light Gray */
-    --border-muted: 240 4.8% 95.9%;
+    /* Borders */
+    --border: 240 6% 90%; /* #E2E8F0 */
+    --border-muted: 240 5% 94%;
     
     /* Interactive States */
-    --accent: 240 4.8% 95.9%;
-    --accent-foreground: 240 5.9% 10%;
+    --accent: 240 5% 96%;
+    --accent-foreground: 240 6% 10%;
     
     /* Status Colors */
-    --success: 142 71% 45%; /* #10B981 - Green */
+    --success: 142 71% 45%; /* #10B981 - Emerald */
     --success-foreground: 0 0% 100%;
     --warning: 38 92% 50%; /* #F59E0B - Amber */
     --warning-foreground: 0 0% 100%;
-    --destructive: 0 84.2% 60.2%; /* #EF4444 - Red */
+    --destructive: 0 84% 60%; /* #EF4444 - Red */
     --destructive-foreground: 0 0% 100%;
     --info: 217 91% 60%; /* #3B82F6 - Blue */
     --info-foreground: 0 0% 100%;
-    
+
     /* Glass & Effects */
-    --glass-bg: 0 0% 100% / 0.8;
-    --glass-border: 220 13% 91% / 0.5;
+    --glass-bg: 255 255 255 / 0.9;
+    --glass-border: 240 6% 90% / 0.8;
     --backdrop-blur: 12px;
     
-    /* Shadows */
-    --shadow-subtle: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
-    --shadow-card: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
-    --shadow-elevated: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
-    --shadow-premium: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+    /* Modern Shadows */
+    --shadow-subtle: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+    --shadow-card: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+    --shadow-elevated: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+    --shadow-premium: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
     
     /* Modern Gradients */
     --gradient-primary: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--primary-glow)));
@@ -66,42 +66,42 @@
     --gradient-hero: linear-gradient(135deg, hsl(var(--background)) 0%, hsl(var(--background-alt)) 50%, hsl(var(--background)) 100%);
     --gradient-glass: linear-gradient(135deg, hsl(var(--glass-bg)), hsl(var(--glass-bg)));
     
-    /* Radiuses */
-    --radius-sm: 0.5rem;
-    --radius: 0.75rem;
-    --radius-lg: 1rem;
-    --radius-xl: 1.5rem;
-    --radius-2xl: 2rem;
+    /* Border Radius */
+    --radius-sm: 0.375rem; /* 6px */
+    --radius: 0.5rem; /* 8px */
+    --radius-lg: 0.75rem; /* 12px */
+    --radius-xl: 1rem; /* 16px */
+    --radius-2xl: 1.5rem; /* 24px */
     
     /* Transitions */
     --transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
-    --transition-normal: 250ms cubic-bezier(0.4, 0, 0.2, 1);
-    --transition-slow: 350ms cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-normal: 200ms cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-slow: 300ms cubic-bezier(0.4, 0, 0.2, 1);
   }
 
   .dark {
     /* Modern Dark Mode */
-    --background: 240 10% 3.9%; /* #0F172A - Dark Blue Gray */
-    --background-alt: 240 3.7% 15.9%; /* #1E293B - Slate Gray */
+    --background: 240 10% 4%; /* #0F172A - Very Dark Blue */
+    --background-alt: 240 6% 8%; /* #1E293B - Dark Blue Gray */
     --foreground: 0 0% 98%; /* #FAFAFA - Off White */
     
-    --card: 240 10% 3.9%;
+    --card: 240 6% 8%;
     --card-foreground: 0 0% 98%;
-    --surface: 240 3.7% 15.9%;
-    --surface-alt: 240 10% 3.9%;
+    --surface: 240 6% 8%;
+    --surface-alt: 240 10% 4%;
     
-    --primary: 234 89% 74%; /* Same soft purple */
-    --secondary: 240 3.7% 15.9%;
+    --primary: 250 84% 60%; /* Same indigo but brighter for dark */
+    --secondary: 240 6% 8%;
     --secondary-foreground: 0 0% 98%;
     
-    --muted: 240 3.7% 15.9%;
-    --muted-foreground: 240 5% 64.9%; /* #94A3B8 - Light Slate */
+    --muted: 240 6% 8%;
+    --muted-foreground: 240 5% 65%; /* #94A3B8 - Light Slate */
     
-    --border: 240 3.7% 15.9%;
-    --border-muted: 240 3.7% 12%;
+    --border: 240 6% 12%;
+    --border-muted: 240 6% 8%;
     
-    --glass-bg: 240 3.7% 15.9% / 0.8;
-    --glass-border: 240 3.7% 25% / 0.5;
+    --glass-bg: 240 6% 8% / 0.9;
+    --glass-border: 240 6% 20% / 0.8;
   }
 
   * {
@@ -157,17 +157,18 @@
     @apply text-xs font-medium text-muted-foreground;
   }
 
-  /* Glass Effects */
+  /* Modern Glass Effects */
   .glass-card {
     background: hsl(var(--glass-bg));
     border: 1px solid hsl(var(--glass-border));
     backdrop-filter: blur(var(--backdrop-blur));
     -webkit-backdrop-filter: blur(var(--backdrop-blur));
+    box-shadow: var(--shadow-card);
   }
 
   /* Gradients */
   .gradient-text {
-    @apply bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent;
+    @apply bg-gradient-to-r from-primary to-primary-glow bg-clip-text text-transparent;
   }
   
   .bg-gradient-primary {
@@ -231,11 +232,11 @@
 
   /* Premium Components */
   .premium-card {
-    @apply glass-card rounded-2xl shadow-premium;
+    @apply bg-card border border-border rounded-xl shadow-card backdrop-blur-sm;
   }
   
   .nav-premium {
-    @apply glass-card border-0 shadow-card;
+    @apply bg-background/95 backdrop-blur-sm border-b border-border;
   }
 
   /* Progress Bars */
@@ -246,7 +247,7 @@
   /* Metrics Display */
   .metric-display {
     @apply font-bold tabular-nums;
-    font-family: 'SF Pro Display', 'Inter', sans-serif;
+    font-family: 'Inter', sans-serif;
   }
 
   /* Loading Skeleton */
