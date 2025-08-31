@@ -1,4 +1,3 @@
-import { GlassCard } from "@/components/ui/glass-card";
 import { Badge } from "@/components/ui/badge";
 import { 
   Calendar, 
