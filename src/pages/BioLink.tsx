@@ -82,36 +82,15 @@ const BioLink = () => {
 
   const fetchBusinessData = async () => {
     try {
-      // First try to find an active bio link with this slug
-      const { data: bioLinkData, error: bioLinkError } = await supabase
-        .from('bio_links')
+      // Fetch business profile by business_name (using as username)
+      const { data: profileData, error: profileError } = await supabase
+        .from('public_profiles')
         .select('*')
-        .eq('slug', username)
-        .eq('is_active', true)
+        .eq('business_name', username)
         .maybeSingle();
 
-      let profileData = null;
-      
-      if (bioLinkData) {
-        // If we found a bio link, use its data
-        profileData = bioLinkData;
-      } else {
-        // Fallback: search by business_name in public_profiles
-        const { data: publicProfileData, error: profileError } = await supabase
-          .from('public_profiles')
-          .select('*')
-          .eq('business_name', username)
-          .maybeSingle();
-
-        if (profileError || !publicProfileData) {
-          console.error('Profile not found:', profileError);
-          return;
-        }
-        profileData = publicProfileData;
-      }
-
-      if (!profileData) {
-        console.error('No profile or bio link found');
+      if (profileError || !profileData) {
+        console.error('Profile not found:', profileError);
         return;
       }
 
