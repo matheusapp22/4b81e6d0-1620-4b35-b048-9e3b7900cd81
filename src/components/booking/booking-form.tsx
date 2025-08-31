@@ -96,48 +96,61 @@ export const BookingForm = ({ service, businessProfile }: BookingFormProps) => {
       return;
     }
 
-    setLoading(true);
-    try {
-      const { error } = await supabase
-        .from('appointments')
-        .insert({
-          user_id: businessProfile.user_id,
-          service_id: service.id,
-          client_name: values.client_name,
-          client_email: values.client_email,
-          client_phone: values.client_phone,
-          appointment_date: format(selectedDate, 'yyyy-MM-dd'),
-          start_time: selectedTime,
-          end_time: calculateEndTime(selectedTime, service.duration),
-          notes: values.notes,
-          status: 'scheduled',
-          payment_status: 'pending',
-          payment_amount: service.price,
-        });
+  setLoading(true);
+  try {
+    console.log('Starting booking process...');
+    console.log('Selected date:', selectedDate);
+    console.log('Selected time:', selectedTime);
+    console.log('Business profile:', businessProfile);
+    console.log('Service:', service);
+    console.log('Form values:', values);
 
-      if (error) throw error;
-
-      toast({
-        title: "Agendamento realizado!",
-        description: "Seu agendamento foi confirmado. Você receberá uma confirmação em breve.",
+    const { error } = await supabase
+      .from('appointments')
+      .insert({
+        user_id: businessProfile.user_id,
+        service_id: service.id,
+        client_name: values.client_name,
+        client_email: values.client_email,
+        client_phone: values.client_phone,
+        appointment_date: format(selectedDate, 'yyyy-MM-dd'),
+        start_time: selectedTime,
+        end_time: calculateEndTime(selectedTime, service.duration),
+        notes: values.notes,
+        status: 'scheduled',
+        payment_status: 'pending',
+        payment_amount: service.price,
       });
 
-      // Reset form
-      form.reset();
-      setSelectedDate(undefined);
-      setSelectedTime('');
-      setAvailableSlots([]);
-      
-    } catch (error) {
-      console.error('Error booking appointment:', error);
-      toast({
-        title: "Erro",
-        description: "Não foi possível realizar o agendamento. Tente novamente.",
-        variant: "destructive",
-      });
-    } finally {
-      setLoading(false);
+    console.log('Insert result error:', error);
+
+    if (error) {
+      console.error('Supabase error:', error);
+      throw error;
     }
+
+    console.log('Booking successful!');
+    toast({
+      title: "Agendamento realizado!",
+      description: "Seu agendamento foi confirmado. Você receberá uma confirmação em breve.",
+    });
+
+    // Reset form
+    form.reset();
+    setSelectedDate(undefined);
+    setSelectedTime('');
+    setAvailableSlots([]);
+    
+  } catch (error) {
+    console.error('Error booking appointment:', error);
+    toast({
+      title: "Erro",
+      description: error?.message || "Não foi possível realizar o agendamento. Tente novamente.",
+      variant: "destructive",
+    });
+  } finally {
+    setLoading(false);
+  }
   };
 
   const calculateEndTime = (startTime: string, duration: number) => {
