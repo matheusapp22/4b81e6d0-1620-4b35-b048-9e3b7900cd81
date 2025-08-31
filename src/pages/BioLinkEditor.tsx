@@ -10,7 +10,9 @@ import { useToast } from '@/hooks/use-toast';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
 import { Card } from '@/components/ui/card';
-import { Upload, Clock, Save, Eye, Image as ImageIcon, User, Link2, Copy, Share2, QrCode } from 'lucide-react';
+import { Switch } from '@/components/ui/switch';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import { Upload, Clock, Save, Eye, Image as ImageIcon, User, Link2, Copy, Share2, QrCode, Plus, Trash2, Camera, Star } from 'lucide-react';
 
 interface BusinessHours {
   id: string;
@@ -20,6 +22,23 @@ interface BusinessHours {
   is_working: boolean;
 }
 
+interface BioLink {
+  id: string;
+  name: string;
+  slug: string;
+  is_active: boolean;
+  created_at: string;
+}
+
+interface Testimonial {
+  id: string;
+  image_url: string;
+  client_name?: string;
+  description?: string;
+  rating?: number;
+  display_order: number;
+}
+
 export const BioLinkEditor = () => {
   const { user, profile, refreshProfile } = useAuth();
   const { toast } = useToast();
@@ -27,6 +46,10 @@ export const BioLinkEditor = () => {
   const [businessHours, setBusinessHours] = useState<BusinessHours[]>([]);
   const [avatarFile, setAvatarFile] = useState<File | null>(null);
   const [bannerFile, setBannerFile] = useState<File | null>(null);
+  const [bioLinks, setBioLinks] = useState<BioLink[]>([]);
+  const [testimonials, setTestimonials] = useState<Testimonial[]>([]);
+  const [newTestimonial, setNewTestimonial] = useState({ client_name: '', description: '', rating: 5 });
+  const [testimonialFile, setTestimonialFile] = useState<File | null>(null);
   const [formData, setFormData] = useState({
     business_name: '',
     first_name: '',
@@ -97,6 +120,8 @@ export const BioLinkEditor = () => {
 
   useEffect(() => {
     fetchBusinessHours();
+    fetchBioLinks();
+    fetchTestimonials();
   }, [user]);
 
   const fetchBusinessHours = async () => {
@@ -113,6 +138,40 @@ export const BioLinkEditor = () => {
       setBusinessHours(data || []);
     } catch (error) {
       console.error('Error fetching business hours:', error);
+    }
+  };
+
+  const fetchBioLinks = async () => {
+    if (!user) return;
+
+    try {
+      const { data, error } = await supabase
+        .from('bio_links')
+        .select('*')
+        .eq('user_id', user.id)
+        .order('created_at', { ascending: false });
+
+      if (error) throw error;
+      setBioLinks(data || []);
+    } catch (error) {
+      console.error('Error fetching bio links:', error);
+    }
+  };
+
+  const fetchTestimonials = async () => {
+    if (!user) return;
+
+    try {
+      const { data, error } = await supabase
+        .from('testimonials')
+        .select('*')
+        .eq('user_id', user.id)
+        .order('display_order');
+
+      if (error) throw error;
+      setTestimonials(data || []);
+    } catch (error) {
+      console.error('Error fetching testimonials:', error);
     }
   };
 
@@ -265,6 +324,164 @@ export const BioLinkEditor = () => {
     return qrUrl;
   };
 
+  const createBioLink = async () => {
+    if (!user || !formData.business_name) return;
+
+    try {
+      setLoading(true);
+      
+      // First deactivate all existing bio links
+      await supabase
+        .from('bio_links')
+        .update({ is_active: false })
+        .eq('user_id', user.id);
+
+      const { error } = await supabase
+        .from('bio_links')
+        .insert({
+          user_id: user.id,
+          name: `${formData.business_name} - ${new Date().toLocaleDateString()}`,
+          slug: formData.business_name,
+          is_active: true,
+          ...formData
+        });
+
+      if (error) throw error;
+
+      await fetchBioLinks();
+      toast({
+        title: "Bio Link criado!",
+        description: "Seu novo bio link foi salvo e ativado.",
+      });
+    } catch (error: any) {
+      toast({
+        title: "Erro",
+        description: error.message,
+        variant: "destructive",
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const toggleBioLink = async (id: string, isActive: boolean) => {
+    try {
+      if (isActive) {
+        // Deactivate all other bio links first
+        await supabase
+          .from('bio_links')
+          .update({ is_active: false })
+          .eq('user_id', user!.id);
+      }
+
+      const { error } = await supabase
+        .from('bio_links')
+        .update({ is_active: isActive })
+        .eq('id', id);
+
+      if (error) throw error;
+
+      await fetchBioLinks();
+      toast({
+        title: isActive ? "Bio Link ativado!" : "Bio Link desativado!",
+        description: isActive ? "Este bio link agora está ativo." : "Este bio link foi desativado.",
+      });
+    } catch (error: any) {
+      toast({
+        title: "Erro",
+        description: error.message,
+        variant: "destructive",
+      });
+    }
+  };
+
+  const deleteBioLink = async (id: string) => {
+    try {
+      const { error } = await supabase
+        .from('bio_links')
+        .delete()
+        .eq('id', id);
+
+      if (error) throw error;
+
+      await fetchBioLinks();
+      toast({
+        title: "Bio Link excluído!",
+        description: "O bio link foi removido com sucesso.",
+      });
+    } catch (error: any) {
+      toast({
+        title: "Erro",
+        description: error.message,
+        variant: "destructive",
+      });
+    }
+  };
+
+  const addTestimonial = async () => {
+    if (!user || !testimonialFile) return;
+
+    try {
+      setLoading(true);
+
+      // Upload image
+      const imageUrl = await uploadImage(testimonialFile, 'testimonials');
+
+      const { error } = await supabase
+        .from('testimonials')
+        .insert({
+          user_id: user.id,
+          image_url: imageUrl,
+          client_name: newTestimonial.client_name,
+          description: newTestimonial.description,
+          rating: newTestimonial.rating,
+          display_order: testimonials.length
+        });
+
+      if (error) throw error;
+
+      await fetchTestimonials();
+      setNewTestimonial({ client_name: '', description: '', rating: 5 });
+      setTestimonialFile(null);
+      
+      toast({
+        title: "Depoimento adicionado!",
+        description: "O depoimento foi salvo com sucesso.",
+      });
+    } catch (error: any) {
+      toast({
+        title: "Erro",
+        description: error.message,
+        variant: "destructive",
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const deleteTestimonial = async (id: string) => {
+    try {
+      const { error } = await supabase
+        .from('testimonials')
+        .delete()
+        .eq('id', id);
+
+      if (error) throw error;
+
+      await fetchTestimonials();
+      toast({
+        title: "Depoimento removido!",
+        description: "O depoimento foi excluído com sucesso.",
+      });
+    } catch (error: any) {
+      toast({
+        title: "Erro",
+        description: error.message,
+        variant: "destructive",
+      });
+    }
+  };
+
   const bioLinkUrl = formData.business_name ? `/bio/${formData.business_name}` : '';
   const fullBioLinkUrl = formData.business_name ? `${window.location.origin}/bio/${formData.business_name}` : '';
 
@@ -288,6 +505,10 @@ export const BioLinkEditor = () => {
           <Button onClick={handleSave} disabled={loading}>
             <Save className="w-4 h-4 mr-2" />
             {loading ? 'Salvando...' : 'Salvar'}
+          </Button>
+          <Button onClick={createBioLink} disabled={loading || !formData.business_name} variant="outline">
+            <Plus className="w-4 h-4 mr-2" />
+            Criar Bio Link
           </Button>
         </div>
       </div>
@@ -844,6 +1065,167 @@ export const BioLinkEditor = () => {
           </div>
         </GlassCard>
       )}
+
+      {/* Bio Links Saved */}
+      {bioLinks.length > 0 && (
+        <GlassCard className="p-6">
+          <h2 className="text-xl font-semibold mb-4">Bio Links Salvos</h2>
+          <div className="space-y-3">
+            {bioLinks.map((bioLink) => (
+              <div key={bioLink.id} className="flex items-center justify-between p-3 border rounded-lg">
+                <div className="flex-1">
+                  <p className="font-medium">{bioLink.name}</p>
+                  <p className="text-sm text-muted-foreground">/bio/{bioLink.slug}</p>
+                </div>
+                <div className="flex items-center gap-3">
+                  <div className="flex items-center gap-2">
+                    <Label htmlFor={`bio-link-${bioLink.id}`} className="text-sm">
+                      {bioLink.is_active ? 'Ativo' : 'Inativo'}
+                    </Label>
+                    <Switch
+                      id={`bio-link-${bioLink.id}`}
+                      checked={bioLink.is_active}
+                      onCheckedChange={(checked) => toggleBioLink(bioLink.id, checked)}
+                    />
+                  </div>
+                  <Button
+                    variant="outline"
+                    size="icon"
+                    onClick={() => deleteBioLink(bioLink.id)}
+                  >
+                    <Trash2 className="w-4 h-4" />
+                  </Button>
+                </div>
+              </div>
+            ))}
+          </div>
+        </GlassCard>
+      )}
+
+      {/* Testimonials Management */}
+      <GlassCard className="p-6">
+        <h2 className="text-xl font-semibold mb-4 flex items-center gap-2">
+          <Camera className="w-5 h-5" />
+          Depoimentos (Fotos)
+        </h2>
+        
+        <div className="space-y-6">
+          {/* Add New Testimonial */}
+          <div className="space-y-4">
+            <h3 className="text-lg font-medium">Adicionar Novo Depoimento</h3>
+            
+            <div>
+              <Label htmlFor="testimonial-image">Imagem do Depoimento</Label>
+              <div className="mt-2">
+                {testimonialFile && (
+                  <div className="mb-3">
+                    <img
+                      src={URL.createObjectURL(testimonialFile)}
+                      alt="Preview"
+                      className="w-32 h-32 object-cover rounded-lg"
+                    />
+                  </div>
+                )}
+                <Label htmlFor="testimonial-image" className="cursor-pointer">
+                  <div className="flex items-center gap-2 px-3 py-2 border rounded-lg hover:bg-accent">
+                    <Upload className="w-4 h-4" />
+                    {testimonialFile ? 'Alterar Imagem' : 'Selecionar Imagem'}
+                  </div>
+                </Label>
+                <Input
+                  id="testimonial-image"
+                  type="file"
+                  accept="image/*"
+                  className="hidden"
+                  onChange={(e) => setTestimonialFile(e.target.files?.[0] || null)}
+                />
+              </div>
+            </div>
+
+            <div>
+              <Label htmlFor="client-name">Nome do Cliente (opcional)</Label>
+              <Input
+                id="client-name"
+                value={newTestimonial.client_name}
+                onChange={(e) => setNewTestimonial({...newTestimonial, client_name: e.target.value})}
+                placeholder="João Silva"
+              />
+            </div>
+
+            <div>
+              <Label htmlFor="description">Descrição (opcional)</Label>
+              <Textarea
+                id="description"
+                value={newTestimonial.description}
+                onChange={(e) => setNewTestimonial({...newTestimonial, description: e.target.value})}
+                placeholder="Excelente atendimento, super recomendo!"
+                rows={3}
+              />
+            </div>
+
+            <div>
+              <Label htmlFor="rating">Avaliação</Label>
+              <div className="flex gap-1 mt-2">
+                {[1, 2, 3, 4, 5].map((star) => (
+                  <button
+                    key={star}
+                    type="button"
+                    onClick={() => setNewTestimonial({...newTestimonial, rating: star})}
+                    className="focus:outline-none"
+                  >
+                    <Star
+                      className={`w-6 h-6 ${
+                        star <= newTestimonial.rating 
+                          ? 'fill-yellow-400 text-yellow-400' 
+                          : 'text-gray-300'
+                      }`}
+                    />
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            <Button 
+              onClick={addTestimonial} 
+              disabled={loading || !testimonialFile}
+              className="w-full"
+            >
+              <Plus className="w-4 h-4 mr-2" />
+              Adicionar Depoimento
+            </Button>
+          </div>
+
+          {/* Existing Testimonials */}
+          {testimonials.length > 0 && (
+            <div>
+              <h3 className="text-lg font-medium mb-4">Depoimentos Existentes ({testimonials.length}/10)</h3>
+              <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+                {testimonials.map((testimonial) => (
+                  <div key={testimonial.id} className="relative group">
+                    <img
+                      src={testimonial.image_url}
+                      alt={`Depoimento de ${testimonial.client_name || 'cliente'}`}
+                      className="w-full h-32 object-cover rounded-lg"
+                    />
+                    <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity duration-200 rounded-lg flex items-center justify-center">
+                      <Button
+                        variant="destructive"
+                        size="icon"
+                        onClick={() => deleteTestimonial(testimonial.id)}
+                      >
+                        <Trash2 className="w-4 h-4" />
+                      </Button>
+                    </div>
+                    {testimonial.client_name && (
+                      <p className="text-sm mt-1 text-center font-medium">{testimonial.client_name}</p>
+                    )}
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+        </div>
+      </GlassCard>
 
       {/* Preview */}
       {bioLinkUrl && (

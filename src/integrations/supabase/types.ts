@@ -86,6 +86,114 @@ export type Database = {
           },
         ]
       }
+      bio_links: {
+        Row: {
+          accent_color: string | null
+          avatar_url: string | null
+          background_color: string | null
+          background_gradient_end: string | null
+          background_gradient_start: string | null
+          banner_url: string | null
+          border_radius: string | null
+          business_name: string | null
+          button_background_color: string | null
+          button_text_color: string | null
+          card_background_color: string | null
+          card_border_color: string | null
+          created_at: string
+          description: string | null
+          font_color: string | null
+          font_family: string | null
+          font_size: string | null
+          id: string
+          instagram_link: string | null
+          is_active: boolean | null
+          name: string
+          primary_color: string | null
+          secondary_color: string | null
+          section_header_color: string | null
+          shadow_intensity: string | null
+          slug: string
+          text_primary_color: string | null
+          text_secondary_color: string | null
+          updated_at: string
+          use_gradient_background: boolean | null
+          user_id: string
+          website_link: string | null
+          whatsapp_link: string | null
+        }
+        Insert: {
+          accent_color?: string | null
+          avatar_url?: string | null
+          background_color?: string | null
+          background_gradient_end?: string | null
+          background_gradient_start?: string | null
+          banner_url?: string | null
+          border_radius?: string | null
+          business_name?: string | null
+          button_background_color?: string | null
+          button_text_color?: string | null
+          card_background_color?: string | null
+          card_border_color?: string | null
+          created_at?: string
+          description?: string | null
+          font_color?: string | null
+          font_family?: string | null
+          font_size?: string | null
+          id?: string
+          instagram_link?: string | null
+          is_active?: boolean | null
+          name: string
+          primary_color?: string | null
+          secondary_color?: string | null
+          section_header_color?: string | null
+          shadow_intensity?: string | null
+          slug: string
+          text_primary_color?: string | null
+          text_secondary_color?: string | null
+          updated_at?: string
+          use_gradient_background?: boolean | null
+          user_id: string
+          website_link?: string | null
+          whatsapp_link?: string | null
+        }
+        Update: {
+          accent_color?: string | null
+          avatar_url?: string | null
+          background_color?: string | null
+          background_gradient_end?: string | null
+          background_gradient_start?: string | null
+          banner_url?: string | null
+          border_radius?: string | null
+          business_name?: string | null
+          button_background_color?: string | null
+          button_text_color?: string | null
+          card_background_color?: string | null
+          card_border_color?: string | null
+          created_at?: string
+          description?: string | null
+          font_color?: string | null
+          font_family?: string | null
+          font_size?: string | null
+          id?: string
+          instagram_link?: string | null
+          is_active?: boolean | null
+          name?: string
+          primary_color?: string | null
+          secondary_color?: string | null
+          section_header_color?: string | null
+          shadow_intensity?: string | null
+          slug?: string
+          text_primary_color?: string | null
+          text_secondary_color?: string | null
+          updated_at?: string
+          use_gradient_background?: boolean | null
+          user_id?: string
+          website_link?: string | null
+          whatsapp_link?: string | null
+        }
+        Relationships: []
+      }
       business_hours: {
         Row: {
           created_at: string
@@ -1011,6 +1119,56 @@ export type Database = {
           user_id?: string
         }
         Relationships: []
+      }
+      testimonials: {
+        Row: {
+          bio_link_id: string | null
+          client_name: string | null
+          created_at: string
+          description: string | null
+          display_order: number | null
+          id: string
+          image_url: string
+          is_active: boolean | null
+          rating: number | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          bio_link_id?: string | null
+          client_name?: string | null
+          created_at?: string
+          description?: string | null
+          display_order?: number | null
+          id?: string
+          image_url: string
+          is_active?: boolean | null
+          rating?: number | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          bio_link_id?: string | null
+          client_name?: string | null
+          created_at?: string
+          description?: string | null
+          display_order?: number | null
+          id?: string
+          image_url?: string
+          is_active?: boolean | null
+          rating?: number | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "testimonials_bio_link_id_fkey"
+            columns: ["bio_link_id"]
+            isOneToOne: false
+            referencedRelation: "bio_links"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       time_off: {
         Row: {

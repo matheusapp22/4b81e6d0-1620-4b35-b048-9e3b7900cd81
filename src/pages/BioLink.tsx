@@ -8,6 +8,7 @@ import { Badge } from '@/components/ui/badge';
 import { Calendar, Clock, Phone, Mail, Star, MessageCircle, Instagram, Globe, QrCode, Moon, Sun } from 'lucide-react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { BookingForm } from '@/components/booking/booking-form';
+import { TestimonialsCarousel } from '@/components/testimonials-carousel';
 
 interface BusinessProfile {
   user_id: string;
@@ -65,6 +66,7 @@ const BioLink = () => {
   const [profile, setProfile] = useState<BusinessProfile | null>(null);
   const [services, setServices] = useState<Service[]>([]);
   const [businessHours, setBusinessHours] = useState<BusinessHours[]>([]);
+  const [testimonials, setTestimonials] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selectedService, setSelectedService] = useState<Service | null>(null);
   const [darkMode, setDarkMode] = useState(false);
@@ -111,6 +113,16 @@ const BioLink = () => {
         .order('day_of_week');
 
       if (hoursData) setBusinessHours(hoursData);
+
+      // Fetch testimonials
+      const { data: testimonialsData } = await supabase
+        .from('testimonials')
+        .select('*')
+        .eq('user_id', profileData.user_id)
+        .eq('is_active', true)
+        .order('display_order');
+
+      if (testimonialsData) setTestimonials(testimonialsData);
     } catch (error) {
       console.error('Error fetching business data:', error);
     } finally {
@@ -371,6 +383,20 @@ const BioLink = () => {
                 </div>
               ))}
             </div>
+          </div>
+        )}
+
+        {/* Testimonials */}
+        {testimonials.length > 0 && (
+          <div 
+            className={`p-6 mb-8 ${getBorderRadiusClass()} ${getShadowClass()}`}
+            style={{
+              backgroundColor: profile?.card_background_color || 'rgba(255,255,255,0.1)',
+              borderColor: profile?.card_border_color || 'rgba(255,255,255,0.2)',
+              border: '1px solid'
+            }}
+          >
+            <TestimonialsCarousel testimonials={testimonials} />
           </div>
         )}
 
