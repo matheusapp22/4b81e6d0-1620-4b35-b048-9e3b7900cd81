@@ -31,12 +31,12 @@ export function DashboardGreeting() {
   return (
     <GlassCard variant="premium" className="overflow-hidden relative group">
       {/* Subtle background pattern */}
-      <div className="absolute inset-0 dot-pattern opacity-20"></div>
+      <div className="absolute inset-0 dot-pattern opacity-10"></div>
       
       {/* Floating elements */}
-      <div className="absolute top-6 right-6 w-20 h-20 bg-gradient-primary rounded-full opacity-8 animate-float"></div>
-      <div className="absolute bottom-6 left-6 w-12 h-12 bg-neon-cyan rounded-full opacity-15 animate-pulse"></div>
-      <div className="absolute top-1/2 right-1/4 w-6 h-6 bg-neon-purple rounded-full opacity-20 animate-bounce-subtle"></div>
+      <div className="absolute top-6 right-6 w-20 h-20 bg-gradient-primary rounded-full opacity-5 animate-float"></div>
+      <div className="absolute bottom-6 left-6 w-12 h-12 bg-secondary/10 rounded-full animate-pulse"></div>
+      <div className="absolute top-1/2 right-1/4 w-6 h-6 bg-primary/20 rounded-full animate-bounce-subtle"></div>
       
       <div className="relative z-10 p-10">
         <div className="flex items-center justify-between">
@@ -86,7 +86,7 @@ export function DashboardGreeting() {
               <div className="w-24 h-24 bg-gradient-primary rounded-full flex items-center justify-center backdrop-blur-sm group-hover:scale-110 transition-all duration-500 shadow-elevated">
                 <TrendingUp className="w-12 h-12 text-white animate-pulse" />
               </div>
-              <div className="absolute -top-2 -right-2 w-8 h-8 bg-neon-green rounded-full flex items-center justify-center animate-bounce-subtle">
+              <div className="absolute -top-2 -right-2 w-8 h-8 bg-success rounded-full flex items-center justify-center animate-bounce-subtle">
                 <Zap className="w-4 h-4 text-white" />
               </div>
             </div>

@@ -15,10 +15,10 @@ export function HeroSection() {
   return (
     <section className="min-h-screen bg-gradient-hero flex items-center justify-center px-6 md:px-8 relative overflow-hidden">
       {/* Background Elements */}
-      <div className="absolute inset-0 dot-pattern opacity-30"></div>
-      <div className="absolute top-32 left-32 w-40 h-40 bg-primary/3 rounded-full blur-3xl animate-float"></div>
-      <div className="absolute bottom-32 right-32 w-32 h-32 bg-secondary/3 rounded-full blur-2xl animate-pulse"></div>
-      <div className="absolute top-1/2 left-1/4 w-20 h-20 bg-neon-cyan/2 rounded-full blur-xl animate-bounce-subtle"></div>
+      <div className="absolute inset-0 dot-pattern opacity-20"></div>
+      <div className="absolute top-32 left-32 w-40 h-40 bg-primary/5 rounded-full blur-3xl animate-float"></div>
+      <div className="absolute bottom-32 right-32 w-32 h-32 bg-secondary/5 rounded-full blur-2xl animate-pulse"></div>
+      <div className="absolute top-1/2 left-1/4 w-20 h-20 bg-primary/3 rounded-full blur-xl animate-bounce-subtle"></div>
       
       <div className="max-w-7xl mx-auto grid lg:grid-cols-2 gap-16 lg:gap-20 items-center relative z-10">
         {/* Left Side - Content */}
@@ -43,7 +43,7 @@ export function HeroSection() {
           
           <div className="flex flex-col sm:flex-row gap-6 justify-center lg:justify-start">
             <Button 
-              variant="hero" 
+              variant="futuristic" 
               size="hero" 
               className="animate-pulse-glow w-full sm:w-auto group shadow-elevated"
               onClick={handleStartFree}
@@ -82,11 +82,11 @@ export function HeroSection() {
               <span className="font-medium">Grátis até 20 agendamentos</span>
             </div>
             <div className="flex items-center gap-3">
-              <div className="w-3 h-3 bg-neon-blue rounded-full animate-pulse shadow-card"></div>
+              <div className="w-3 h-3 bg-primary rounded-full animate-pulse shadow-card"></div>
               <span className="font-medium">Sem taxa de instalação</span>
             </div>
             <div className="flex items-center gap-3">
-              <div className="w-3 h-3 bg-neon-purple rounded-full animate-pulse shadow-card"></div>
+              <div className="w-3 h-3 bg-secondary rounded-full animate-pulse shadow-card"></div>
               <span className="font-medium">Suporte em português</span>
             </div>
           </div>
