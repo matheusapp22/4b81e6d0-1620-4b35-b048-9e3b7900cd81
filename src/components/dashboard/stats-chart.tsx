@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { LineChart, Line, XAxis, YAxis, ResponsiveContainer, Tooltip } from 'recharts';
-import { BarChart, Bar } from 'recharts';
+import { GlassCard } from '@/components/ui/glass-card';
+import { LineChart, Line, XAxis, YAxis, ResponsiveContainer, Tooltip, BarChart, Bar, Area, AreaChart } from 'recharts';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/auth-context';
-import { TrendingUp, Calendar, DollarSign } from 'lucide-react';
+import { TrendingUp, Calendar, DollarSign, Activity } from 'lucide-react';
 
 interface ChartData {
   day: string;
@@ -79,18 +78,30 @@ export function StatsChart() {
     fetchData();
   }, [user]);
 
+  const CustomTooltip = ({ active, payload, label }: any) => {
+    if (active && payload && payload.length) {
+      return (
+        <GlassCard variant="minimal" className="p-3 border-0 shadow-elevated">
+          <p className="text-xs font-medium text-muted-foreground mb-2">{label}</p>
+          {payload.map((entry: any, index: number) => (
+            <p key={index} className="text-sm font-semibold" style={{ color: entry.color }}>
+              {entry.name}: {entry.name === 'Receita' ? `R$ ${entry.value.toFixed(2)}` : entry.value}
+            </p>
+          ))}
+        </GlassCard>
+      );
+    }
+    return null;
+  };
+
   if (loading) {
     return (
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {[...Array(3)].map((_, i) => (
-          <Card key={i} className="glass-card">
-            <CardContent className="p-6">
-              <div className="animate-pulse">
-                <div className="h-4 bg-muted rounded w-3/4 mb-4"></div>
-                <div className="h-32 bg-muted rounded"></div>
-              </div>
-            </CardContent>
-          </Card>
+          <GlassCard key={i} variant="premium" className="p-6">
+            <div className="loading-skeleton h-4 w-3/4 mb-4 rounded"></div>
+            <div className="loading-skeleton h-32 rounded-xl"></div>
+          </GlassCard>
         ))}
       </div>
     );
@@ -99,121 +110,124 @@ export function StatsChart() {
   return (
     <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
       {/* Revenue Chart */}
-      <Card className="glass-card hover-glow">
-        <CardHeader className="pb-2">
-          <CardTitle className="flex items-center gap-2 text-base">
-            <DollarSign className="w-5 h-5 text-green-500" />
-            Receita (7 dias)
-          </CardTitle>
-        </CardHeader>
-        <CardContent className="pb-4">
-          <ResponsiveContainer width="100%" height={120}>
-            <LineChart data={data}>
-              <XAxis 
-                dataKey="day" 
-                axisLine={false}
-                tickLine={false}
-                tick={{ fontSize: 12, fill: 'hsl(var(--muted-foreground))' }}
-              />
-              <YAxis hide />
-              <Tooltip 
-                contentStyle={{
-                  backgroundColor: 'hsl(var(--card))',
-                  border: '1px solid hsl(var(--border))',
-                  borderRadius: '8px',
-                  boxShadow: '0 4px 12px rgba(0,0,0,0.15)'
-                }}
-                formatter={(value: number) => [`R$ ${value.toFixed(2)}`, 'Receita']}
-              />
-              <Line 
-                type="monotone" 
-                dataKey="revenue" 
-                stroke="#10b981" 
-                strokeWidth={3}
-                dot={{ fill: '#10b981', strokeWidth: 2, r: 4 }}
-                activeDot={{ r: 6, stroke: '#10b981', strokeWidth: 2 }}
-              />
-            </LineChart>
-          </ResponsiveContainer>
-        </CardContent>
-      </Card>
+      <GlassCard variant="premium" hover className="group">
+        <div className="p-6 space-y-4">
+          <div className="flex items-center gap-3">
+            <div className="p-2 rounded-xl bg-neon-green/10 group-hover:bg-neon-green/20 transition-colors duration-300">
+              <DollarSign className="w-5 h-5 text-neon-green" />
+            </div>
+            <div>
+              <h4 className="font-semibold text-body">Receita</h4>
+              <p className="text-caption">Últimos 7 dias</p>
+            </div>
+          </div>
+          
+          <div className="h-32">
+            <ResponsiveContainer width="100%" height="100%">
+              <AreaChart data={data}>
+                <defs>
+                  <linearGradient id="revenueGradient" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="5%" stopColor="hsl(120 60% 45%)" stopOpacity={0.3}/>
+                    <stop offset="95%" stopColor="hsl(120 60% 45%)" stopOpacity={0}/>
+                  </linearGradient>
+                </defs>
+                <XAxis 
+                  dataKey="day" 
+                  axisLine={false}
+                  tickLine={false}
+                  tick={{ fontSize: 11, fill: 'hsl(var(--muted-foreground))' }}
+                />
+                <YAxis hide />
+                <Tooltip content={<CustomTooltip />} />
+                <Area
+                  type="monotone"
+                  dataKey="revenue"
+                  stroke="hsl(120 60% 45%)"
+                  strokeWidth={2}
+                  fill="url(#revenueGradient)"
+                  dot={{ fill: 'hsl(120 60% 45%)', strokeWidth: 0, r: 3 }}
+                  activeDot={{ r: 5, stroke: 'hsl(120 60% 45%)', strokeWidth: 2, fill: 'white' }}
+                />
+              </AreaChart>
+            </ResponsiveContainer>
+          </div>
+        </div>
+      </GlassCard>
 
       {/* Appointments Chart */}
-      <Card className="glass-card hover-glow">
-        <CardHeader className="pb-2">
-          <CardTitle className="flex items-center gap-2 text-base">
-            <Calendar className="w-5 h-5 text-blue-500" />
-            Agendamentos (7 dias)
-          </CardTitle>
-        </CardHeader>
-        <CardContent className="pb-4">
-          <ResponsiveContainer width="100%" height={120}>
-            <BarChart data={data}>
-              <XAxis 
-                dataKey="day" 
-                axisLine={false}
-                tickLine={false}
-                tick={{ fontSize: 12, fill: 'hsl(var(--muted-foreground))' }}
-              />
-              <YAxis hide />
-              <Tooltip 
-                contentStyle={{
-                  backgroundColor: 'hsl(var(--card))',
-                  border: '1px solid hsl(var(--border))',
-                  borderRadius: '8px',
-                  boxShadow: '0 4px 12px rgba(0,0,0,0.15)'
-                }}
-                formatter={(value: number) => [value, 'Agendamentos']}
-              />
-              <Bar 
-                dataKey="appointments" 
-                fill="#3b82f6"
-                radius={[4, 4, 0, 0]}
-              />
-            </BarChart>
-          </ResponsiveContainer>
-        </CardContent>
-      </Card>
+      <GlassCard variant="premium" hover className="group">
+        <div className="p-6 space-y-4">
+          <div className="flex items-center gap-3">
+            <div className="p-2 rounded-xl bg-neon-blue/10 group-hover:bg-neon-blue/20 transition-colors duration-300">
+              <Calendar className="w-5 h-5 text-neon-blue" />
+            </div>
+            <div>
+              <h4 className="font-semibold text-body">Agendamentos</h4>
+              <p className="text-caption">Últimos 7 dias</p>
+            </div>
+          </div>
+          
+          <div className="h-32">
+            <ResponsiveContainer width="100%" height="100%">
+              <BarChart data={data} barCategoryGap="20%">
+                <XAxis 
+                  dataKey="day" 
+                  axisLine={false}
+                  tickLine={false}
+                  tick={{ fontSize: 11, fill: 'hsl(var(--muted-foreground))' }}
+                />
+                <YAxis hide />
+                <Tooltip content={<CustomTooltip />} />
+                <Bar 
+                  dataKey="appointments" 
+                  fill="hsl(220 100% 50%)"
+                  radius={[6, 6, 0, 0]}
+                  className="data-point"
+                />
+              </BarChart>
+            </ResponsiveContainer>
+          </div>
+        </div>
+      </GlassCard>
 
       {/* Clients Chart */}
-      <Card className="glass-card hover-glow">
-        <CardHeader className="pb-2">
-          <CardTitle className="flex items-center gap-2 text-base">
-            <TrendingUp className="w-5 h-5 text-purple-500" />
-            Novos Clientes (7 dias)
-          </CardTitle>
-        </CardHeader>
-        <CardContent className="pb-4">
-          <ResponsiveContainer width="100%" height={120}>
-            <LineChart data={data}>
-              <XAxis 
-                dataKey="day" 
-                axisLine={false}
-                tickLine={false}
-                tick={{ fontSize: 12, fill: 'hsl(var(--muted-foreground))' }}
-              />
-              <YAxis hide />
-              <Tooltip 
-                contentStyle={{
-                  backgroundColor: 'hsl(var(--card))',
-                  border: '1px solid hsl(var(--border))',
-                  borderRadius: '8px',
-                  boxShadow: '0 4px 12px rgba(0,0,0,0.15)'
-                }}
-                formatter={(value: number) => [value, 'Novos Clientes']}
-              />
-              <Line 
-                type="monotone" 
-                dataKey="clients" 
-                stroke="#8b5cf6" 
-                strokeWidth={3}
-                dot={{ fill: '#8b5cf6', strokeWidth: 2, r: 4 }}
-                activeDot={{ r: 6, stroke: '#8b5cf6', strokeWidth: 2 }}
-              />
-            </LineChart>
-          </ResponsiveContainer>
-        </CardContent>
-      </Card>
+      <GlassCard variant="premium" hover className="group">
+        <div className="p-6 space-y-4">
+          <div className="flex items-center gap-3">
+            <div className="p-2 rounded-xl bg-neon-purple/10 group-hover:bg-neon-purple/20 transition-colors duration-300">
+              <TrendingUp className="w-5 h-5 text-neon-purple" />
+            </div>
+            <div>
+              <h4 className="font-semibold text-body">Novos Clientes</h4>
+              <p className="text-caption">Últimos 7 dias</p>
+            </div>
+          </div>
+          
+          <div className="h-32">
+            <ResponsiveContainer width="100%" height="100%">
+              <LineChart data={data}>
+                <XAxis 
+                  dataKey="day" 
+                  axisLine={false}
+                  tickLine={false}
+                  tick={{ fontSize: 11, fill: 'hsl(var(--muted-foreground))' }}
+                />
+                <YAxis hide />
+                <Tooltip content={<CustomTooltip />} />
+                <Line 
+                  type="monotone" 
+                  dataKey="clients" 
+                  stroke="hsl(270 100% 60%)" 
+                  strokeWidth={3}
+                  dot={{ fill: 'hsl(270 100% 60%)', strokeWidth: 0, r: 4 }}
+                  activeDot={{ r: 6, stroke: 'hsl(270 100% 60%)', strokeWidth: 2, fill: 'white' }}
+                  className="data-point"
+                />
+              </LineChart>
+            </ResponsiveContainer>
+          </div>
+        </div>
+      </GlassCard>
     </div>
   );
 }

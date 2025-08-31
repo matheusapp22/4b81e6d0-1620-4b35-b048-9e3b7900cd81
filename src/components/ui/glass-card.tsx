@@ -2,12 +2,13 @@ import { cn } from "@/lib/utils";
 import { forwardRef } from "react";
 
 export interface GlassCardProps extends React.HTMLAttributes<HTMLDivElement> {
-  variant?: "default" | "neon" | "minimal";
+  variant?: "default" | "premium" | "neon" | "minimal";
   hover?: boolean;
+  glow?: boolean;
 }
 
 const GlassCard = forwardRef<HTMLDivElement, GlassCardProps>(
-  ({ className, variant = "default", hover = false, ...props }, ref) => {
+  ({ className, variant = "default", hover = false, glow = false, ...props }, ref) => {
     return (
       <div
         ref={ref}
@@ -15,9 +16,11 @@ const GlassCard = forwardRef<HTMLDivElement, GlassCardProps>(
           "rounded-xl border transition-all duration-300",
           {
             "glass-card": variant === "default",
+            "premium-card": variant === "premium",
             "glass neon-border": variant === "neon",
-            "bg-card/50 border-border/50": variant === "minimal",
+            "bg-card/80 border-border/60 backdrop-blur-sm": variant === "minimal",
             "hover-glow cursor-pointer": hover,
+            "neon-glow": glow,
           },
           className
         )}

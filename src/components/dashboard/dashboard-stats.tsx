@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Calendar, Clock, DollarSign, Users, TrendingUp, TrendingDown } from 'lucide-react';
+import { GlassCard } from '@/components/ui/glass-card';
+import { Calendar, Clock, DollarSign, Users, TrendingUp, TrendingDown, Activity } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/auth-context';
 
@@ -96,36 +96,40 @@ export function DashboardStats() {
       value: stats.todayAppointments,
       icon: Calendar,
       color: 'text-primary',
-      bgColor: 'bg-primary/10',
+      bgColor: 'bg-primary/8',
       trend: '+12%',
-      trendColor: 'text-green-500'
+      trendColor: 'text-neon-green',
+      description: 'vs. ontem'
     },
     {
       title: 'Total de Clientes',
       value: stats.totalClients,
       icon: Users,
-      color: 'text-blue-500',
-      bgColor: 'bg-blue-500/10',
+      color: 'text-neon-blue',
+      bgColor: 'bg-neon-blue/8',
       trend: '+8%',
-      trendColor: 'text-green-500'
+      trendColor: 'text-neon-green',
+      description: 'este mês'
     },
     {
       title: 'Receita do Mês',
-      value: `R$ ${stats.monthlyRevenue.toFixed(2)}`,
+      value: `R$ ${stats.monthlyRevenue.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`,
       icon: DollarSign,
-      color: 'text-green-500',
-      bgColor: 'bg-green-500/10',
+      color: 'text-neon-green',
+      bgColor: 'bg-neon-green/8',
       trend: '+24%',
-      trendColor: 'text-green-500'
+      trendColor: 'text-neon-green',
+      description: 'vs. mês anterior'
     },
     {
       title: 'Taxa de Conclusão',
       value: `${stats.completionRate}%`,
-      icon: stats.completionRate >= 80 ? TrendingUp : TrendingDown,
-      color: stats.completionRate >= 80 ? 'text-green-500' : 'text-yellow-500',
-      bgColor: stats.completionRate >= 80 ? 'bg-green-500/10' : 'bg-yellow-500/10',
+      icon: stats.completionRate >= 80 ? TrendingUp : Activity,
+      color: stats.completionRate >= 80 ? 'text-neon-green' : 'text-warning',
+      bgColor: stats.completionRate >= 80 ? 'bg-neon-green/8' : 'bg-warning/8',
       trend: stats.completionRate >= 80 ? '+5%' : '-2%',
-      trendColor: stats.completionRate >= 80 ? 'text-green-500' : 'text-yellow-500'
+      trendColor: stats.completionRate >= 80 ? 'text-neon-green' : 'text-warning',
+      description: 'este mês'
     }
   ];
 
@@ -133,14 +137,11 @@ export function DashboardStats() {
     return (
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         {[...Array(4)].map((_, i) => (
-          <Card key={i} className="glass-card">
-            <CardContent className="p-6">
-              <div className="animate-pulse">
-                <div className="h-4 bg-muted rounded w-3/4 mb-2"></div>
-                <div className="h-8 bg-muted rounded w-1/2"></div>
-              </div>
-            </CardContent>
-          </Card>
+          <GlassCard key={i} variant="premium" className="p-6">
+            <div className="loading-skeleton h-4 w-3/4 mb-3 rounded"></div>
+            <div className="loading-skeleton h-8 w-1/2 mb-2 rounded"></div>
+            <div className="loading-skeleton h-3 w-2/3 rounded"></div>
+          </GlassCard>
         ))}
       </div>
     );
@@ -148,28 +149,40 @@ export function DashboardStats() {
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-      {statsData.map((stat) => (
-        <Card key={stat.title} className="glass-card hover-glow transition-all duration-300 group">
-          <CardContent className="p-6">
-            <div className="flex items-center justify-between mb-4">
-              <div className={`p-3 rounded-lg ${stat.bgColor} group-hover:scale-110 transition-transform duration-300`}>
-                <stat.icon className={`w-6 h-6 ${stat.color} animate-pulse`} />
+      {statsData.map((stat, index) => (
+        <GlassCard 
+          key={stat.title} 
+          variant="premium" 
+          hover 
+          className="group animate-scale-in"
+          style={{ animationDelay: `${index * 0.1}s` }}
+        >
+          <div className="p-6 space-y-4">
+            {/* Header */}
+            <div className="flex items-center justify-between">
+              <div className={`p-3 rounded-2xl ${stat.bgColor} group-hover:scale-110 transition-transform duration-300`}>
+                <stat.icon className={`w-5 h-5 ${stat.color}`} />
               </div>
-              <div className={`text-sm font-medium ${stat.trendColor} flex items-center gap-1`}>
+              <div className={`status-badge ${stat.trendColor.includes('green') ? 'success' : 'warning'}`}>
                 <TrendingUp className="w-3 h-3" />
                 {stat.trend}
               </div>
             </div>
-            <div>
-              <p className="text-sm font-medium text-muted-foreground mb-1">
+            
+            {/* Content */}
+            <div className="space-y-2">
+              <p className="text-caption text-muted-foreground">
                 {stat.title}
               </p>
-              <p className="text-3xl font-bold gradient-text">
+              <p className="metric-display gradient-text">
                 {stat.value}
               </p>
+              <p className="text-xs text-muted-foreground">
+                {stat.description}
+              </p>
             </div>
-          </CardContent>
-        </Card>
+          </div>
+        </GlassCard>
       ))}
     </div>
   );

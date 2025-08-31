@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { GlassCard } from '@/components/ui/glass-card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
-import { Clock, User, MapPin, Phone, Calendar as CalendarIcon } from 'lucide-react';
+import { Clock, User, MapPin, Phone, Calendar as CalendarIcon, CheckCircle, RotateCcw } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/auth-context';
 
@@ -77,46 +77,48 @@ export function NextAppointment() {
 
   if (loading) {
     return (
-      <Card className="glass-card">
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <Clock className="w-5 h-5" />
-            Próximo Agendamento
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="animate-pulse space-y-4">
-            <div className="h-4 bg-muted rounded w-3/4"></div>
-            <div className="h-16 bg-muted rounded"></div>
+      <GlassCard variant="premium">
+        <div className="p-6 space-y-4">
+          <div className="flex items-center gap-3 mb-4">
+            <div className="loading-skeleton w-5 h-5 rounded"></div>
+            <div className="loading-skeleton h-5 w-32 rounded"></div>
           </div>
-        </CardContent>
-      </Card>
+          <div className="loading-skeleton h-20 rounded-xl"></div>
+        </div>
+      </GlassCard>
     );
   }
 
   if (!nextAppointment) {
     return (
-      <Card className="glass-card">
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <Clock className="w-5 h-5" />
-            Próximo Agendamento
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="text-center py-6">
-            <CalendarIcon className="w-12 h-12 text-muted-foreground mx-auto mb-4 opacity-50" />
-            <p className="text-muted-foreground mb-2">Nenhum agendamento próximo</p>
-            <p className="text-sm text-muted-foreground">
-              Que tal aproveitar para organizar sua agenda?
-            </p>
-            <Button variant="outline" className="mt-4" size="sm">
-              <CalendarIcon className="w-4 h-4 mr-2" />
-              Ver Agenda
+      <GlassCard variant="premium" className="group">
+        <div className="p-6">
+          <div className="flex items-center gap-3 mb-6">
+            <div className="p-2 rounded-xl bg-primary/10">
+              <Clock className="w-5 h-5 text-primary" />
+            </div>
+            <h3 className="text-headline font-semibold">Próximo Agendamento</h3>
+          </div>
+          
+          <div className="text-center py-8 space-y-4">
+            <div className="w-16 h-16 bg-muted rounded-3xl flex items-center justify-center mx-auto group-hover:scale-110 transition-transform duration-300">
+              <CalendarIcon className="w-8 h-8 text-muted-foreground" />
+            </div>
+            <div className="space-y-2">
+              <p className="text-body font-medium">Agenda livre</p>
+              <p className="text-caption">
+                Que tal aproveitar para organizar sua agenda?
+              </p>
+            </div>
+            <Button variant="minimal" size="sm" asChild>
+              <a href="/calendar">
+                <CalendarIcon className="w-4 h-4" />
+                Ver Agenda
+              </a>
             </Button>
           </div>
-        </CardContent>
-      </Card>
+        </div>
+      </GlassCard>
     );
   }
 
@@ -140,73 +142,107 @@ export function NextAppointment() {
     return date === new Date().toISOString().split('T')[0];
   };
 
+  const getTimeUntil = () => {
+    const appointmentDateTime = new Date(`${nextAppointment.appointment_date}T${nextAppointment.start_time}`);
+    const now = new Date();
+    const diffMs = appointmentDateTime.getTime() - now.getTime();
+    const diffHours = Math.floor(diffMs / (1000 * 60 * 60));
+    const diffMinutes = Math.floor((diffMs % (1000 * 60 * 60)) / (1000 * 60));
+    
+    if (diffHours > 0) {
+      return `em ${diffHours}h ${diffMinutes}m`;
+    } else if (diffMinutes > 0) {
+      return `em ${diffMinutes}m`;
+    } else {
+      return 'agora';
+    }
+  };
+
   return (
-    <Card className="glass-card hover-glow transition-all duration-300">
-      <CardHeader className="pb-3">
-        <CardTitle className="flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <Clock className="w-5 h-5 text-primary" />
-            Próximo Agendamento
+    <GlassCard variant="premium" hover className="group">
+      <div className="p-6 space-y-6">
+        {/* Header */}
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <div className="p-2 rounded-xl bg-primary/10 group-hover:bg-primary/20 transition-colors duration-300">
+              <Clock className="w-5 h-5 text-primary" />
+            </div>
+            <h3 className="text-headline font-semibold">Próximo Agendamento</h3>
           </div>
-          <Badge variant={isToday(nextAppointment.appointment_date) ? "default" : "secondary"}>
+          <Badge 
+            variant={isToday(nextAppointment.appointment_date) ? "default" : "secondary"}
+            className="status-badge"
+          >
             {isToday(nextAppointment.appointment_date) ? 'Hoje' : formatDate(nextAppointment.appointment_date)}
           </Badge>
-        </CardTitle>
-      </CardHeader>
-      <CardContent className="space-y-4">
+        </div>
+
+        {/* Client Info */}
         <div className="flex items-center gap-4">
-          <Avatar className="h-12 w-12">
-            <AvatarFallback className="bg-primary/10 text-primary font-semibold">
+          <Avatar className="h-14 w-14 border-2 border-border group-hover:border-primary/30 transition-colors duration-300">
+            <AvatarFallback className="bg-gradient-primary text-primary-foreground font-semibold text-lg">
               {getInitials(nextAppointment.client_name)}
             </AvatarFallback>
           </Avatar>
           
-          <div className="flex-1 min-w-0">
-            <div className="flex items-center gap-2 mb-1">
+          <div className="flex-1 min-w-0 space-y-2">
+            <div className="flex items-center gap-2">
               <User className="w-4 h-4 text-muted-foreground" />
               <span className="font-semibold text-lg truncate">
                 {nextAppointment.client_name}
               </span>
             </div>
             
-            <div className="flex items-center gap-2 text-sm text-muted-foreground mb-1">
-              <Phone className="w-3 h-3" />
+            <div className="flex items-center gap-2 text-caption">
+              <Phone className="w-3 h-3 text-muted-foreground" />
               <span>{nextAppointment.client_phone}</span>
             </div>
           </div>
         </div>
 
-        <div className="bg-primary/5 rounded-lg p-3 space-y-2">
+        {/* Service Details */}
+        <div className="premium-card p-4 space-y-3">
           <div className="flex items-center justify-between">
-            <span className="font-medium">{nextAppointment.services.name}</span>
-            <span className="text-sm font-medium text-primary">
+            <span className="font-semibold text-body">{nextAppointment.services.name}</span>
+            <span className="metric-display text-lg text-primary">
               R$ {nextAppointment.services.price.toFixed(2)}
             </span>
           </div>
           
-          <div className="flex items-center gap-4 text-sm text-muted-foreground">
-            <div className="flex items-center gap-1">
-              <Clock className="w-3 h-3" />
+          <div className="flex items-center gap-6 text-caption">
+            <div className="flex items-center gap-2">
+              <Clock className="w-3 h-3 text-muted-foreground" />
               <span>
                 {formatTime(nextAppointment.start_time)} - {formatTime(nextAppointment.end_time)}
               </span>
             </div>
-            <div className="flex items-center gap-1">
-              <MapPin className="w-3 h-3" />
+            <div className="flex items-center gap-2">
+              <MapPin className="w-3 h-3 text-muted-foreground" />
               <span>{nextAppointment.services.duration}min</span>
             </div>
           </div>
+
+          {/* Time until appointment */}
+          <div className="flex items-center gap-2 pt-2 border-t border-border/50">
+            <Activity className="w-3 h-3 text-primary animate-pulse" />
+            <span className="text-xs font-medium text-primary">
+              {getTimeUntil()}
+            </span>
+          </div>
         </div>
 
-        <div className="flex gap-2">
-          <Button size="sm" className="flex-1">
+        {/* Actions */}
+        <div className="flex gap-3">
+          <Button size="sm" className="flex-1 group/btn">
+            <CheckCircle className="w-4 h-4 group-hover/btn:scale-110 transition-transform duration-200" />
             Confirmar
           </Button>
-          <Button size="sm" variant="outline" className="flex-1">
+          <Button size="sm" variant="outline" className="flex-1 group/btn">
+            <RotateCcw className="w-4 h-4 group-hover/btn:rotate-180 transition-transform duration-300" />
             Reagendar
           </Button>
         </div>
-      </CardContent>
-    </Card>
+      </div>
+    </GlassCard>
   );
 }

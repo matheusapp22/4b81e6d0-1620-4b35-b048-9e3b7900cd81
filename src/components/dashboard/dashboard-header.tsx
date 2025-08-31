@@ -15,7 +15,9 @@ import {
   Gift,
   Mail,
   Package,
-  UserCheck
+  UserCheck,
+  Menu,
+  X
 } from 'lucide-react';
 import {
   DropdownMenu,
@@ -26,9 +28,13 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { useState } from 'react';
+import { useLocation } from 'react-router-dom';
 
 export function DashboardHeader() {
   const { user, profile, signOut } = useAuth();
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const location = useLocation();
 
   const getInitials = () => {
     if (profile?.first_name && profile?.last_name) {
@@ -37,150 +43,179 @@ export function DashboardHeader() {
     return user?.email?.[0]?.toUpperCase() || 'U';
   };
 
+  const navigationItems = [
+    { href: '/dashboard', label: 'Dashboard', icon: BarChart3 },
+    { href: '/appointments', label: 'Agendamentos', icon: Calendar },
+    { href: '/clients', label: 'Clientes', icon: Users },
+    { href: '/employees', label: 'Equipe', icon: UserCheck },
+    { href: '/financial', label: 'Financeiro', icon: DollarSign },
+    { href: '/loyalty', label: 'Fidelidade', icon: Gift },
+    { href: '/marketing', label: 'Marketing', icon: Mail },
+    { href: '/inventory', label: 'Estoque', icon: Package },
+    { href: '/reports', label: 'Relatórios', icon: BarChart3 },
+  ];
+
+  const isActive = (href: string) => location.pathname === href;
+
   return (
-    <GlassCard className="sticky top-0 z-50 mx-4 mt-4 px-6 py-4">
-      <nav className="flex items-center justify-between">
-        {/* Logo */}
-        <div className="flex items-center gap-3">
-          <a href="/dashboard" className="flex items-center gap-3">
-            <div className="relative">
-              <div className="w-10 h-10 bg-gradient-primary rounded-xl flex items-center justify-center shadow-lg">
-                <Zap className="w-6 h-6 text-white" />
-              </div>
-              <div className="absolute -top-1 -right-1 w-3 h-3 bg-green-400 rounded-full animate-pulse"></div>
-            </div>
-            <div>
-              <span className="font-bold text-xl gradient-text tracking-tight">GoAgendas</span>
-              {profile?.business_name && (
-                <p className="text-xs text-muted-foreground font-medium">{profile.business_name}</p>
-              )}
-            </div>
-          </a>
-        </div>
-        
-        {/* Navigation Links */}
-        <div className="hidden lg:flex items-center gap-1">
-          <Button variant="ghost" size="sm" asChild>
-            <a href="/appointments">
-              <Calendar className="w-4 h-4 mr-2" />
-              Agendamentos
-            </a>
-          </Button>
-          <Button variant="ghost" size="sm" asChild>
-            <a href="/clients">
-              <Users className="w-4 h-4 mr-2" />
-              Clientes
-            </a>
-          </Button>
-          <Button variant="ghost" size="sm" asChild>
-            <a href="/employees">
-              <UserCheck className="w-4 h-4 mr-2" />
-              Funcionários
-            </a>
-          </Button>
-          <Button variant="ghost" size="sm" asChild>
-            <a href="/financial">
-              <DollarSign className="w-4 h-4 mr-2" />
-              Financeiro
-            </a>
-          </Button>
-          <Button variant="ghost" size="sm" asChild>
-            <a href="/loyalty">
-              <Gift className="w-4 h-4 mr-2" />
-              Fidelidade
-            </a>
-          </Button>
-          <Button variant="ghost" size="sm" asChild>
-            <a href="/marketing">
-              <Mail className="w-4 h-4 mr-2" />
-              Marketing
-            </a>
-          </Button>
-          <Button variant="ghost" size="sm" asChild>
-            <a href="/inventory">
-              <Package className="w-4 h-4 mr-2" />
-              Estoque
-            </a>
-          </Button>
-          <Button variant="ghost" size="sm" asChild>
-            <a href="/reports">
-              <BarChart3 className="w-4 h-4 mr-2" />
-              Relatórios
-            </a>
-          </Button>
-        </div>
-        
-        {/* User Menu */}
-        <div className="flex items-center gap-2">
-          <Button variant="ghost" size="sm">
-            <Bell className="w-4 h-4" />
-          </Button>
-          
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="ghost" className="relative h-8 w-8 rounded-full">
-                <Avatar className="h-8 w-8">
-                  <AvatarImage src={profile?.avatar_url} alt="Profile" />
-                  <AvatarFallback className="bg-primary text-primary-foreground">
-                    {getInitials()}
-                  </AvatarFallback>
-                </Avatar>
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent className="w-56" align="end" forceMount>
-              <DropdownMenuLabel className="font-normal">
-                <div className="flex flex-col space-y-1">
-                  <p className="text-sm font-medium leading-none">
-                    {profile?.first_name 
-                      ? `${profile.first_name} ${profile.last_name || ''}`.trim()
-                      : 'Usuário'
-                    }
-                  </p>
-                  <p className="text-xs leading-none text-muted-foreground">
-                    {user?.email}
-                  </p>
+    <div className="nav-premium">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex items-center justify-between h-16">
+          {/* Logo */}
+          <div className="flex items-center gap-3">
+            <a href="/dashboard" className="flex items-center gap-3 group">
+              <div className="relative">
+                <div className="w-10 h-10 bg-gradient-primary rounded-2xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300">
+                  <Zap className="w-6 h-6 text-white" />
                 </div>
-              </DropdownMenuLabel>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem asChild>
-                <a href="/services">
-                  <Package className="mr-2 h-4 w-4" />
-                  <span>Serviços</span>
+                <div className="absolute -top-1 -right-1 w-3 h-3 bg-neon-green rounded-full animate-tech-pulse"></div>
+              </div>
+              <div>
+                <span className="font-bold text-xl gradient-text tracking-tight">GoAgendas</span>
+                {profile?.business_name && (
+                  <p className="text-xs text-muted-foreground font-medium leading-tight">{profile.business_name}</p>
+                )}
+              </div>
+            </a>
+          </div>
+          
+          {/* Desktop Navigation */}
+          <nav className="hidden lg:flex items-center gap-1">
+            {navigationItems.map((item) => (
+              <Button 
+                key={item.href}
+                variant="ghost" 
+                size="sm" 
+                asChild
+                className={cn(
+                  "nav-item",
+                  isActive(item.href) && "active bg-primary/10 text-primary"
+                )}
+              >
+                <a href={item.href}>
+                  <item.icon className="w-4 h-4" />
+                  <span className="hidden xl:inline">{item.label}</span>
                 </a>
-              </DropdownMenuItem>
-              <DropdownMenuItem asChild>
-                <a href="/calendar">
-                  <Calendar className="mr-2 h-4 w-4" />
-                  <span>Agenda</span>
-                </a>
-              </DropdownMenuItem>
-              <DropdownMenuItem asChild>
-                <a href="/settings">
-                  <User className="mr-2 h-4 w-4" />
-                  <span>Perfil</span>
-                </a>
-              </DropdownMenuItem>
-              <DropdownMenuItem asChild>
-                <a href="/biolink-editor">
-                  <Link2 className="mr-2 h-4 w-4" />
-                  <span>Editor BioLink</span>
-                </a>
-              </DropdownMenuItem>
-              <DropdownMenuItem asChild>
-                <a href="/settings">
-                  <Settings className="mr-2 h-4 w-4" />
-                  <span>Configurações</span>
-                </a>
-              </DropdownMenuItem>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem onClick={signOut}>
-                <LogOut className="mr-2 h-4 w-4" />
-                <span>Sair</span>
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
+              </Button>
+            ))}
+          </nav>
+          
+          {/* Right Side */}
+          <div className="flex items-center gap-3">
+            {/* Notifications */}
+            <Button variant="ghost" size="icon" className="relative">
+              <Bell className="w-4 h-4" />
+              <div className="absolute -top-1 -right-1 w-2 h-2 bg-primary rounded-full animate-pulse"></div>
+            </Button>
+
+            {/* Mobile Menu Button */}
+            <Button
+              variant="ghost"
+              size="icon"
+              className="lg:hidden"
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            >
+              {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+            </Button>
+            
+            {/* User Menu */}
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="ghost" className="relative h-10 w-10 rounded-full hover:scale-110 transition-transform duration-200">
+                  <Avatar className="h-10 w-10 border-2 border-border">
+                    <AvatarImage src={profile?.avatar_url} alt="Profile" />
+                    <AvatarFallback className="bg-gradient-primary text-primary-foreground font-semibold">
+                      {getInitials()}
+                    </AvatarFallback>
+                  </Avatar>
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent className="w-64 glass-card border-0" align="end" forceMount>
+                <DropdownMenuLabel className="font-normal p-4">
+                  <div className="flex flex-col space-y-2">
+                    <p className="text-sm font-semibold leading-none">
+                      {profile?.first_name 
+                        ? `${profile.first_name} ${profile.last_name || ''}`.trim()
+                        : 'Usuário'
+                      }
+                    </p>
+                    <p className="text-xs leading-none text-muted-foreground">
+                      {user?.email}
+                    </p>
+                    {profile?.business_name && (
+                      <p className="text-xs leading-none text-primary font-medium">
+                        {profile.business_name}
+                      </p>
+                    )}
+                  </div>
+                </DropdownMenuLabel>
+                <DropdownMenuSeparator className="bg-border/50" />
+                <DropdownMenuItem asChild className="cursor-pointer">
+                  <a href="/services" className="flex items-center gap-3 p-3">
+                    <Package className="w-4 h-4 text-muted-foreground" />
+                    <span>Serviços</span>
+                  </a>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild className="cursor-pointer">
+                  <a href="/calendar" className="flex items-center gap-3 p-3">
+                    <Calendar className="w-4 h-4 text-muted-foreground" />
+                    <span>Agenda</span>
+                  </a>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild className="cursor-pointer">
+                  <a href="/settings" className="flex items-center gap-3 p-3">
+                    <User className="w-4 h-4 text-muted-foreground" />
+                    <span>Perfil</span>
+                  </a>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild className="cursor-pointer">
+                  <a href="/biolink-editor" className="flex items-center gap-3 p-3">
+                    <Link2 className="w-4 h-4 text-muted-foreground" />
+                    <span>Editor BioLink</span>
+                  </a>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild className="cursor-pointer">
+                  <a href="/settings" className="flex items-center gap-3 p-3">
+                    <Settings className="w-4 h-4 text-muted-foreground" />
+                    <span>Configurações</span>
+                  </a>
+                </DropdownMenuItem>
+                <DropdownMenuSeparator className="bg-border/50" />
+                <DropdownMenuItem onClick={signOut} className="cursor-pointer text-destructive focus:text-destructive p-3">
+                  <LogOut className="w-4 h-4" />
+                  <span>Sair</span>
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </div>
         </div>
-      </nav>
-    </GlassCard>
+
+        {/* Mobile Navigation */}
+        {mobileMenuOpen && (
+          <div className="lg:hidden py-4 border-t border-border/50 animate-slide-up">
+            <nav className="flex flex-col gap-1">
+              {navigationItems.map((item) => (
+                <Button
+                  key={item.href}
+                  variant="ghost"
+                  size="sm"
+                  asChild
+                  className={cn(
+                    "justify-start nav-item",
+                    isActive(item.href) && "active bg-primary/10 text-primary"
+                  )}
+                  onClick={() => setMobileMenuOpen(false)}
+                >
+                  <a href={item.href}>
+                    <item.icon className="w-4 h-4" />
+                    {item.label}
+                  </a>
+                </Button>
+              ))}
+            </nav>
+          </div>
+        )}
+      </div>
+    </div>
   );
 }
