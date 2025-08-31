@@ -239,7 +239,11 @@
   }
   
   .hover-glow {
-    @apply transition-all duration-500 hover:shadow-glow;
+    @apply transition-all duration-500;
+  }
+  
+  .hover-glow:hover {
+    box-shadow: var(--shadow-glow);
   }
 
   .interactive-card {
