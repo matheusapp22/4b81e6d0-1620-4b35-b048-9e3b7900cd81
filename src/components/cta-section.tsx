@@ -35,17 +35,17 @@ export const CtaSection = () => {
               <Zap className="w-5 h-5 text-neon-blue animate-pulse" />
             </div>
 
-            <h2 className="text-hero leading-tight">
-              Pronto para{' '}
-              <span className="bg-gradient-to-r from-primary via-neon-blue to-neon-purple bg-clip-text text-transparent">
-                revolucionar
-              </span>{' '}
-              seu negócio?
+            <h2 className="text-4xl lg:text-5xl font-bold leading-tight">
+              Transforme sua empresa{' '}
+              <span className="bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
+                hoje mesmo
+              </span>
             </h2>
 
-            <p className="text-subtitle text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-              Junte-se a mais de 2.000 empresas que já transformaram 
-              sua gestão com o GoAgendas. Comece gratuitamente hoje mesmo.
+            <p className="text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
+              Junte-se a mais de 2.000 empresas que otimizaram sua gestão 
+              e aumentaram sua receita com o GoAgendas. Resultados garantidos 
+              ou seu dinheiro de volta.
             </p>
           </div>
 

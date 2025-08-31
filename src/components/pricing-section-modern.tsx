@@ -40,12 +40,12 @@ export const PricingSection = () => {
 
         {/* Pricing cards */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-5xl mx-auto">
-          {/* Free plan */}
-          <GlassCard variant="premium" className="p-8 space-y-8 relative overflow-hidden">
+          {/* Starter plan */}
+          <GlassCard variant="minimal" className="p-8 space-y-8 relative overflow-hidden border border-border/30">
             <div className="space-y-4">
               <div className="space-y-2">
-                <h3 className="text-title">Gratuito</h3>
-                <p className="text-muted-foreground">Perfeito para começar</p>
+                <h3 className="text-2xl font-bold">Starter</h3>
+                <p className="text-muted-foreground">Ideal para pequenos negócios</p>
               </div>
               
               <div className="space-y-2">
@@ -53,26 +53,26 @@ export const PricingSection = () => {
                   <span className="text-4xl font-bold">R$ 0</span>
                   <span className="text-muted-foreground">/mês</span>
                 </div>
-                <p className="text-sm text-muted-foreground">Para sempre, sem prazo de validade</p>
+                <p className="text-sm text-muted-foreground">14 dias de teste, depois R$ 29/mês</p>
               </div>
             </div>
 
             <div className="space-y-4">
-              <h4 className="font-semibold">Inclui:</h4>
+              <h4 className="font-semibold text-foreground">Recursos inclusos:</h4>
               <div className="space-y-3">
                 {[
-                  'Até 50 clientes',
+                  'Até 100 clientes ativos',
                   'Agendamentos ilimitados',
-                  'Calendário inteligente',
-                  'Notificações automáticas',
-                  'Relatórios básicos',
-                  'Suporte por email'
+                  'Calendário sincronizado',
+                  'Confirmações automáticas',
+                  'Relatórios essenciais',
+                  'Suporte por chat'
                 ].map((feature, index) => (
                   <div key={index} className="flex items-center gap-3">
                     <div className="w-5 h-5 rounded-full bg-primary/20 flex items-center justify-center">
                       <Check className="w-3 h-3 text-primary" />
                     </div>
-                    <span className="text-sm">{feature}</span>
+                    <span className="text-sm text-foreground">{feature}</span>
                   </div>
                 ))}
               </div>
@@ -82,61 +82,66 @@ export const PricingSection = () => {
               onClick={handleStartFree}
               variant="outline" 
               size="lg" 
-              className="w-full glass-card border-primary/30 hover:border-primary/50 hover:bg-primary/5 py-6"
+              className="w-full border-primary/30 hover:border-primary/50 hover:bg-primary/5 py-6 font-semibold"
             >
-              Começar Gratuitamente
+              Iniciar Teste Gratuito
               <ArrowRight className="ml-2 w-4 h-4" />
             </Button>
           </GlassCard>
 
-          {/* Pro plan */}
-          <GlassCard variant="neon" className="p-8 space-y-8 relative overflow-hidden">
-            {/* Popular badge */}
+          {/* Professional plan */}
+          <GlassCard variant="premium" className="p-8 space-y-8 relative overflow-hidden border-2 border-primary/30">
+            {/* Professional badge */}
             <div className="absolute top-0 right-8 transform -translate-y-1/2">
-              <div className="bg-gradient-primary px-6 py-2 rounded-full text-sm font-semibold text-white shadow-glow">
+              <div className="bg-gradient-primary px-6 py-3 rounded-full text-sm font-bold text-white shadow-premium">
                 <Zap className="w-4 h-4 inline mr-1" />
-                Mais Popular
+                Recomendado
               </div>
             </div>
 
             <div className="space-y-4">
               <div className="space-y-2">
-                <h3 className="text-title">Profissional</h3>
-                <p className="text-muted-foreground">Para negócios em crescimento</p>
+                <h3 className="text-2xl font-bold">Professional</h3>
+                <p className="text-muted-foreground">Para empresas estabelecidas</p>
               </div>
               
-              <div className="space-y-2">
+              <div className="space-y-3">
                 <div className="flex items-baseline gap-2">
-                  <span className="text-4xl font-bold bg-gradient-to-r from-primary to-neon-purple bg-clip-text text-transparent">
-                    R$ 49
+                  <span className="text-5xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
+                    R$ 79
                   </span>
-                  <span className="text-muted-foreground">/mês</span>
+                  <span className="text-muted-foreground text-lg">/mês</span>
                 </div>
-                <p className="text-sm text-muted-foreground">
-                  <span className="line-through text-muted-foreground/60">R$ 69/mês</span> 
-                  <span className="text-success font-medium ml-2">30% OFF no primeiro ano</span>
-                </p>
+                <div className="space-y-1">
+                  <p className="text-sm">
+                    <span className="line-through text-muted-foreground/60">R$ 119/mês</span> 
+                    <span className="text-success font-semibold ml-2 bg-success/10 px-2 py-1 rounded">33% OFF</span>
+                  </p>
+                  <p className="text-xs text-muted-foreground">Primeiro ano com desconto</p>
+                </div>
               </div>
             </div>
 
             <div className="space-y-4">
-              <h4 className="font-semibold">Tudo do Gratuito, mais:</h4>
+              <h4 className="font-semibold text-foreground">Tudo do Starter, mais:</h4>
               <div className="space-y-3">
                 {[
-                  'Clientes ilimitados',
-                  'Gestão de equipe completa',
-                  'Relatórios avançados',
-                  'Integração com pagamentos',
-                  'App mobile dedicado',
-                  'Suporte prioritário',
-                  'Backup automático',
-                  'Personalização da marca'
+                  'Clientes e agendamentos ilimitados',
+                  'Gestão completa de equipe',
+                  'Relatórios e analytics avançados',
+                  'Integração com gateways de pagamento',
+                  'API e integrações avançadas',
+                  'Suporte prioritário e telefônico',
+                  'Backup em nuvem automático',
+                  'White-label e personalização',
+                  'Multi-localização',
+                  'Treinamento personalizado'
                 ].map((feature, index) => (
                   <div key={index} className="flex items-center gap-3">
                     <div className="w-5 h-5 rounded-full bg-gradient-primary flex items-center justify-center shadow-glow">
                       <Check className="w-3 h-3 text-white" />
                     </div>
-                    <span className="text-sm">{feature}</span>
+                    <span className="text-sm text-foreground">{feature}</span>
                   </div>
                 ))}
               </div>
@@ -145,18 +150,20 @@ export const PricingSection = () => {
             <Button 
               onClick={handleStartFree}
               size="lg" 
-              className="w-full bg-gradient-primary hover:scale-105 transition-all duration-500 shadow-premium hover:shadow-glow py-6 relative overflow-hidden group"
+              className="w-full bg-gradient-primary hover:scale-105 transition-all duration-300 shadow-premium py-6 text-lg font-bold relative overflow-hidden group"
             >
               <span className="relative z-10 flex items-center justify-center gap-2">
-                Começar Teste Gratuito
-                <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                Iniciar Teste Profissional
+                <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
               </span>
               <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
             </Button>
 
-            <p className="text-xs text-center text-muted-foreground">
-              14 dias grátis • Cancele quando quiser • Sem taxa de setup
-            </p>
+            <div className="text-center space-y-2 pt-2">
+              <p className="text-sm text-muted-foreground">
+                ✓ 30 dias de teste gratuito  ✓ Setup assistido  ✓ Migração gratuita
+              </p>
+            </div>
           </GlassCard>
         </div>
 
