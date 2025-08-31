@@ -1,7 +1,6 @@
 import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
 import { useAuth } from '@/contexts/auth-context';
-import { Zap, Menu, X, Sparkles, Star } from 'lucide-react';
+import { Calendar, Menu, X } from 'lucide-react';
 import { useState } from 'react';
 
 export function Navigation() {
@@ -33,49 +32,40 @@ export function Navigation() {
   }
 
   return (
-    <nav className="nav-premium sticky top-0 z-50">
-      <div className="max-w-7xl mx-auto px-6 lg:px-8">
-        <div className="flex justify-between items-center h-20">
+    <nav className="sticky top-0 z-50 bg-background/95 backdrop-blur-sm border-b border-border">
+      <div className="max-w-6xl mx-auto px-6 lg:px-8">
+        <div className="flex justify-between items-center h-16">
           {/* Logo */}
-          <div className="flex items-center gap-4">
-            <div className="relative group">
-              <div className="w-12 h-12 bg-gradient-primary rounded-3xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-all duration-400">
-                <Zap className="w-7 h-7 text-white" />
-              </div>
-              <div className="absolute -top-1 -right-1 w-4 h-4 bg-success rounded-full animate-pulse"></div>
+          <div className="flex items-center gap-3">
+            <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
+              <Calendar className="w-5 h-5 text-primary-foreground" />
             </div>
-            <div>
-              <span className="font-bold text-2xl gradient-text tracking-tight">GoAgendas</span>
-              <Badge variant="secondary" className="ml-3 px-2 py-1 text-xs">
-                <Sparkles className="w-3 h-3 mr-1" />
-                Premium
-              </Badge>
-            </div>
+            <span className="text-xl font-semibold">GoAgendas</span>
           </div>
 
           {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center gap-8">
+          <div className="hidden md:flex items-center gap-6">
             {user ? (
               <>
-                <Button variant="elegant" asChild>
+                <Button variant="outline" asChild>
                   <a href="/dashboard">Dashboard</a>
                 </Button>
-                <Button variant="outline" onClick={signOut}>
+                <Button variant="ghost" onClick={signOut}>
                   Sair
                 </Button>
               </>
             ) : (
               <>
-                <Button variant="ghost" asChild className="nav-item">
-                  <a href="/#features">Recursos</a>
-                </Button>
-                <Button variant="ghost" asChild className="nav-item">
-                  <a href="/#pricing">Preços</a>
-                </Button>
-                <Button variant="elegant" asChild>
+                <a href="/#features" className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors">
+                  Recursos
+                </a>
+                <a href="/#pricing" className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors">
+                  Preços
+                </a>
+                <Button variant="ghost" asChild>
                   <a href="/auth">Entrar</a>
                 </Button>
-                <Button variant="futuristic" asChild>
+                <Button asChild>
                   <a href="/auth">Começar Grátis</a>
                 </Button>
               </>
@@ -88,7 +78,6 @@ export function Navigation() {
               variant="ghost"
               size="icon"
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="h-12 w-12 rounded-2xl hover:scale-110 transition-all duration-300"
             >
               {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
             </Button>
@@ -97,37 +86,33 @@ export function Navigation() {
 
         {/* Mobile Navigation */}
         {mobileMenuOpen && (
-          <div className="md:hidden py-8 border-t border-border/50 animate-slide-up">
-            <div className="flex flex-col gap-4">
+          <div className="md:hidden py-6 border-t border-border">
+            <div className="flex flex-col gap-3">
               {user ? (
                 <>
-                  <Button variant="elegant" className="justify-start h-12" asChild>
+                  <Button variant="outline" className="justify-start" asChild>
                     <a href="/dashboard" onClick={() => setMobileMenuOpen(false)}>
                       Dashboard
                     </a>
                   </Button>
-                  <Button variant="outline" className="justify-start h-12" onClick={() => { signOut(); setMobileMenuOpen(false); }}>
+                  <Button variant="ghost" className="justify-start" onClick={() => { signOut(); setMobileMenuOpen(false); }}>
                     Sair
                   </Button>
                 </>
               ) : (
                 <>
-                  <Button variant="ghost" className="justify-start nav-item h-12" asChild>
-                    <a href="/#features" onClick={() => setMobileMenuOpen(false)}>
-                      Recursos
-                    </a>
-                  </Button>
-                  <Button variant="ghost" className="justify-start nav-item h-12" asChild>
-                    <a href="/#pricing" onClick={() => setMobileMenuOpen(false)}>
-                      Preços
-                    </a>
-                  </Button>
-                  <Button variant="elegant" className="justify-start h-12" asChild>
+                  <a href="/#features" className="px-3 py-2 text-sm font-medium text-muted-foreground" onClick={() => setMobileMenuOpen(false)}>
+                    Recursos
+                  </a>
+                  <a href="/#pricing" className="px-3 py-2 text-sm font-medium text-muted-foreground" onClick={() => setMobileMenuOpen(false)}>
+                    Preços
+                  </a>
+                  <Button variant="ghost" className="justify-start" asChild>
                     <a href="/auth" onClick={() => setMobileMenuOpen(false)}>
                       Entrar
                     </a>
                   </Button>
-                  <Button variant="futuristic" className="justify-start h-12" asChild>
+                  <Button className="justify-start" asChild>
                     <a href="/auth" onClick={() => setMobileMenuOpen(false)}>
                       Começar Grátis
                     </a>

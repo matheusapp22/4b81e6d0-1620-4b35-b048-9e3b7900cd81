@@ -13,59 +13,57 @@ export function HeroSection() {
   };
 
   return (
-    <section className="min-h-screen bg-gradient-hero flex items-center justify-center px-6 md:px-8 relative overflow-hidden">
-      {/* Background Elements */}
-      <div className="absolute inset-0 dot-pattern opacity-20"></div>
-      <div className="absolute top-32 left-32 w-40 h-40 bg-primary/5 rounded-full blur-3xl animate-float"></div>
-      <div className="absolute bottom-32 right-32 w-32 h-32 bg-secondary/5 rounded-full blur-2xl animate-pulse"></div>
-      <div className="absolute top-1/2 left-1/4 w-20 h-20 bg-primary/3 rounded-full blur-xl animate-bounce-subtle"></div>
+    <section className="min-h-screen bg-background flex items-center justify-center px-6 md:px-8 relative overflow-hidden">
+      {/* Subtle Background Elements */}
+      <div className="absolute inset-0 bg-gradient-to-br from-background via-secondary/30 to-background"></div>
+      <div className="absolute top-1/4 left-1/4 w-64 h-64 bg-primary/5 rounded-full blur-3xl"></div>
+      <div className="absolute bottom-1/4 right-1/4 w-48 h-48 bg-primary/3 rounded-full blur-2xl"></div>
       
-      <div className="max-w-7xl mx-auto grid lg:grid-cols-2 gap-16 lg:gap-20 items-center relative z-10">
+      <div className="max-w-6xl mx-auto grid lg:grid-cols-2 gap-12 lg:gap-16 items-center relative z-10">
         {/* Left Side - Content */}
-        <div className="space-y-10 animate-slide-up text-center lg:text-left">
-          <div className="space-y-8">
-            <Badge variant="secondary" className="glass-card px-6 py-3 text-sm font-semibold border border-primary/20">
-              <Sparkles className="w-4 h-4 mr-2" />
-              Novo: IA + WhatsApp + Pagamentos Automáticos
+        <div className="space-y-8 text-center lg:text-left">
+          <div className="space-y-6">
+            <Badge variant="secondary" className="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium bg-secondary border border-border rounded-full">
+              <Sparkles className="w-4 h-4 text-primary" />
+              Novo: IA + WhatsApp + Pagamentos
             </Badge>
             
-            <h1 className="text-display leading-none">
-              <span className="gradient-text">Agendamento</span><br />
-              <span className="text-foreground">Inteligente</span><br />
-              <span className="text-foreground">para Profissionais</span>
+            <h1 className="text-display leading-tight">
+              <span className="block">Agendamento</span>
+              <span className="block gradient-text">Inteligente</span>
+              <span className="block">para Profissionais</span>
             </h1>
             
-            <p className="text-body text-muted-foreground max-w-2xl mx-auto lg:mx-0 leading-relaxed">
-              Automatize agendamentos, receba pagamentos e tenha relatórios em tempo real. 
-              A plataforma mais avançada para barbearias, clínicas e consultórios modernos.
+            <p className="text-subtitle text-muted-foreground max-w-lg mx-auto lg:mx-0">
+              Automatize agendamentos, receba pagamentos e tenha relatórios em tempo real.
+              A plataforma mais avançada para seu negócio.
             </p>
           </div>
           
-          <div className="flex flex-col sm:flex-row gap-6 justify-center lg:justify-start">
+          <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
             <Button 
-              variant="futuristic" 
-              size="hero" 
-              className="animate-pulse-glow w-full sm:w-auto group shadow-elevated"
+              size="lg" 
+              className="w-full sm:w-auto bg-primary hover:bg-primary-hover text-primary-foreground shadow-sm transition-colors"
               onClick={handleStartFree}
             >
-              <Zap className="w-6 h-6 group-hover:rotate-12 transition-transform duration-400" />
-              Começar Grátis Agora
+              Começar Grátis
+              <Zap className="w-4 h-4 ml-2" />
             </Button>
             <Dialog>
               <DialogTrigger asChild>
-                <Button variant="glass" size="lg" className="w-full sm:w-auto group shadow-card">
-                  <Play className="w-5 h-5 group-hover:scale-110 transition-transform duration-300" />
-                  Ver Demo ao Vivo
+                <Button variant="outline" size="lg" className="w-full sm:w-auto">
+                  <Play className="w-4 h-4 mr-2" />
+                  Ver Demo
                 </Button>
               </DialogTrigger>
-              <DialogContent className="max-w-6xl h-[90vh] glass-card border-0">
+              <DialogContent className="max-w-6xl h-[90vh]">
                 <DialogHeader>
                   <DialogTitle className="text-title flex items-center gap-3">
                     <Sparkles className="w-6 h-6 text-primary" />
-                    Demo ao Vivo - GoAgendas
+                    Demo - GoAgendas
                   </DialogTitle>
                 </DialogHeader>
-                <div className="w-full h-full rounded-3xl overflow-hidden shadow-elevated">
+                <div className="w-full h-full rounded-lg overflow-hidden">
                   <iframe
                     src="/dashboard"
                     className="w-full h-full border-0"
@@ -76,122 +74,115 @@ export function HeroSection() {
             </Dialog>
           </div>
           
-          <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-8 text-caption">
-            <div className="flex items-center gap-3">
-              <div className="w-3 h-3 bg-success rounded-full animate-pulse shadow-card"></div>
-              <span className="font-medium">Grátis até 20 agendamentos</span>
+          <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-6 text-caption">
+            <div className="flex items-center gap-2">
+              <div className="w-2 h-2 bg-success rounded-full"></div>
+              <span>Grátis até 20 agendamentos</span>
             </div>
-            <div className="flex items-center gap-3">
-              <div className="w-3 h-3 bg-primary rounded-full animate-pulse shadow-card"></div>
-              <span className="font-medium">Sem taxa de instalação</span>
+            <div className="flex items-center gap-2">
+              <div className="w-2 h-2 bg-primary rounded-full"></div>
+              <span>Sem taxa de instalação</span>
             </div>
-            <div className="flex items-center gap-3">
-              <div className="w-3 h-3 bg-secondary rounded-full animate-pulse shadow-card"></div>
-              <span className="font-medium">Suporte em português</span>
+            <div className="flex items-center gap-2">
+              <div className="w-2 h-2 bg-info rounded-full"></div>
+              <span>Suporte em português</span>
             </div>
           </div>
         </div>
         
         {/* Right Side - Dashboard Preview */}
-        <div className="relative animate-float order-first lg:order-last">
-          <GlassCard variant="premium" className="p-8 space-y-8 mx-4 lg:mx-0 group shadow-elevated">
+        <div className="relative order-first lg:order-last">
+          <div className="bg-card border border-border rounded-xl p-6 space-y-6 shadow-card">
             {/* Header */}
             <div className="flex items-center justify-between">
-              <h3 className="text-title font-bold">Dashboard Premium</h3>
-              <Badge className="status-indicator success px-3 py-2">
-                <Activity className="w-3 h-3" />
-                ONLINE
+              <h3 className="text-title font-semibold">Dashboard</h3>
+              <Badge className="bg-success/10 text-success border-success/20 border px-3 py-1 rounded-full text-xs font-medium">
+                <Activity className="w-3 h-3 mr-1" />
+                Online
               </Badge>
             </div>
             
             {/* Stats Cards */}
-            <div className="grid grid-cols-2 gap-6">
-              <GlassCard variant="minimal" className="p-6 space-y-4 group/card hover:scale-105 transition-all duration-400">
-                <div className="flex items-center gap-3">
-                  <Calendar className="w-5 h-5 text-primary" />
-                  <span className="text-caption font-medium">Hoje</span>
+            <div className="grid grid-cols-2 gap-4">
+              <div className="bg-secondary rounded-lg p-4 space-y-3">
+                <div className="flex items-center gap-2">
+                  <Calendar className="w-4 h-4 text-primary" />
+                  <span className="text-caption">Hoje</span>
                 </div>
-                <div className="metric-display text-3xl font-bold text-primary">12</div>
+                <div className="text-2xl font-bold text-foreground">12</div>
                 <div className="text-caption">agendamentos</div>
-              </GlassCard>
+              </div>
               
-              <GlassCard variant="minimal" className="p-6 space-y-4 group/card hover:scale-105 transition-all duration-400">
-                <div className="flex items-center gap-3">
-                  <CreditCard className="w-5 h-5 text-success" />
-                  <span className="text-caption font-medium">Receita</span>
+              <div className="bg-secondary rounded-lg p-4 space-y-3">
+                <div className="flex items-center gap-2">
+                  <CreditCard className="w-4 h-4 text-success" />
+                  <span className="text-caption">Receita</span>
                 </div>
-                <div className="metric-display text-3xl font-bold text-success">R$ 1.240</div>
+                <div className="text-2xl font-bold text-foreground">R$ 1.240</div>
                 <div className="text-caption">este mês</div>
-              </GlassCard>
+              </div>
             </div>
             
             {/* Recent Appointments */}
-            <div className="space-y-6 hidden md:block">
-              <h4 className="font-bold text-body">Próximos Agendamentos</h4>
-              <div className="space-y-4">
+            <div className="space-y-4 hidden md:block">
+              <h4 className="font-semibold text-body">Próximos Agendamentos</h4>
+              <div className="space-y-3">
                 {[
                   { time: "14:30", client: "João Silva", service: "Corte + Barba", status: "confirmed" },
                   { time: "15:00", client: "Maria Santos", service: "Manicure", status: "scheduled" },
                   { time: "16:30", client: "Pedro Costa", service: "Massagem", status: "confirmed" },
                 ].map((appointment, index) => (
-                  <GlassCard 
+                  <div 
                     key={index} 
-                    variant="minimal" 
-                    className="p-4 flex items-center gap-4 group/appointment animate-scale-in hover:scale-102 transition-all duration-400"
-                    style={{ animationDelay: `${index * 0.1}s` }}
+                    className="bg-secondary border border-border rounded-lg p-3 flex items-center gap-3"
                   >
-                    <div className="w-14 h-14 bg-gradient-primary rounded-3xl flex items-center justify-center group-hover/appointment:scale-110 transition-all duration-400 shadow-card">
-                      <Clock className="w-6 h-6 text-white" />
+                    <div className="w-10 h-10 bg-primary rounded-lg flex items-center justify-center">
+                      <Clock className="w-5 h-5 text-primary-foreground" />
                     </div>
-                    <div className="flex-1 min-w-0 space-y-2">
-                      <div className="font-bold text-sm truncate">{appointment.client}</div>
+                    <div className="flex-1 min-w-0">
+                      <div className="font-medium text-sm truncate">{appointment.client}</div>
                       <div className="text-caption truncate">{appointment.service}</div>
                     </div>
-                    <div className="text-right space-y-1">
-                      <div className="metric-display text-lg font-bold">{appointment.time}</div>
-                      <Badge className={`status-indicator ${appointment.status === 'confirmed' ? 'success' : 'info'} px-2 py-1`}>
+                    <div className="text-right">
+                      <div className="text-sm font-medium">{appointment.time}</div>
+                      <Badge className={`${appointment.status === 'confirmed' ? 'bg-success/10 text-success border-success/20' : 'bg-info/10 text-info border-info/20'} border rounded-full px-2 py-1 text-xs`}>
                         {appointment.status === 'confirmed' ? 'Confirmado' : 'Agendado'}
                       </Badge>
                     </div>
-                  </GlassCard>
+                  </div>
                 ))}
               </div>
             </div>
             
             {/* Quick Actions */}
-            <div className="grid grid-cols-3 gap-4">
-              <Button variant="minimal" size="sm" className="flex-col h-20 gap-3 group/btn">
-                <Bell className="w-5 h-5 group-hover/btn:animate-pulse" />
-                <span className="text-micro font-medium">Notificar</span>
+            <div className="grid grid-cols-3 gap-3">
+              <Button variant="outline" size="sm" className="flex-col h-16 gap-2">
+                <Bell className="w-4 h-4" />
+                <span className="text-micro">Notificar</span>
               </Button>
-              <Button variant="minimal" size="sm" className="flex-col h-20 gap-3 group/btn">
-                <BarChart3 className="w-5 h-5 group-hover/btn:scale-110 transition-transform duration-300" />
-                <span className="text-micro font-medium">Relatório</span>
+              <Button variant="outline" size="sm" className="flex-col h-16 gap-2">
+                <BarChart3 className="w-4 h-4" />
+                <span className="text-micro">Relatório</span>
               </Button>
-              <Button variant="minimal" size="sm" className="flex-col h-20 gap-3 group/btn">
-                <Users className="w-5 h-5 group-hover/btn:scale-110 transition-transform duration-300" />
-                <span className="text-micro font-medium">Clientes</span>
+              <Button variant="outline" size="sm" className="flex-col h-16 gap-2">
+                <Users className="w-4 h-4" />
+                <span className="text-micro">Clientes</span>
               </Button>
             </div>
 
             {/* Rating Section */}
-            <div className="flex items-center justify-center gap-3 pt-4 border-t border-border/50">
+            <div className="flex items-center justify-center gap-3 pt-4 border-t border-border">
               <div className="flex items-center gap-1">
                 {[...Array(5)].map((_, i) => (
                   <Star 
                     key={i} 
-                    className="w-4 h-4 fill-yellow-400 text-yellow-400 animate-pulse" 
-                    style={{ animationDelay: `${i * 0.1}s` }}
+                    className="w-4 h-4 fill-yellow-400 text-yellow-400" 
                   />
                 ))}
               </div>
-              <span className="text-caption font-bold">5.0 • Excelente</span>
+              <span className="text-caption font-medium">5.0 • Excelente</span>
             </div>
-          </GlassCard>
-          
-          {/* Floating Elements */}
-          <div className="absolute -top-8 -right-8 w-20 h-20 bg-gradient-neon rounded-full animate-pulse-glow opacity-40 hidden sm:block"></div>
-          <div className="absolute -bottom-8 -left-8 w-16 h-16 bg-success/20 rounded-full animate-pulse opacity-60 hidden sm:block"></div>
+          </div>
         </div>
       </div>
     </section>
