@@ -229,7 +229,7 @@ const BioLink = () => {
         </Button>
       </div>
 
-      <div className={`container mx-auto px-4 py-8 max-w-md ${getFontSizeClass()}`}>
+      <div className={`container mx-auto px-4 py-8 max-w-md ${getFontSizeClass()} relative z-10`}>
         {/* Profile Section */}
         <div className="text-center mb-8">
           {/* Avatar */}
@@ -448,7 +448,7 @@ const BioLink = () => {
                         Agendar
                       </Button>
                     </DialogTrigger>
-                    <DialogContent className="mx-4 max-w-[calc(100vw-2rem)]" style={{ backgroundColor: profile?.card_background_color || 'rgba(255,255,255,0.1)' }}>
+                    <DialogContent className="mx-4 max-w-[calc(100vw-2rem)] max-h-[90vh] overflow-y-auto" style={{ backgroundColor: profile?.card_background_color || 'rgba(255,255,255,0.1)' }}>
                       <DialogHeader>
                         <DialogTitle style={{ color: profile?.text_primary_color || '#ffffff' }}>Agendar {service.name}</DialogTitle>
                       </DialogHeader>

@@ -180,14 +180,19 @@ export const BookingForm = ({ service, businessProfile }: BookingFormProps) => {
       {availableSlots.length > 0 && (
         <div>
           <label className="block text-white font-medium mb-2">Selecione o horário</label>
-          <div className="grid grid-cols-3 gap-2">
+          <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
             {availableSlots.map((slot) => (
               <Button
                 key={slot}
-                variant={selectedTime === slot ? "neon" : "outline"}
+                variant={selectedTime === slot ? "default" : "outline"}
                 size="sm"
                 onClick={() => setSelectedTime(slot)}
-                className="text-sm"
+                className="text-sm h-10"
+                style={{
+                  backgroundColor: selectedTime === slot ? '#10b981' : 'transparent',
+                  borderColor: 'rgba(255,255,255,0.3)',
+                  color: '#ffffff'
+                }}
               >
                 {slot}
               </Button>
@@ -274,9 +279,12 @@ export const BookingForm = ({ service, businessProfile }: BookingFormProps) => {
 
           <Button
             type="submit"
-            variant="neon"
             disabled={loading || !selectedDate || !selectedTime}
-            className="w-full"
+            className="w-full h-12 text-base font-semibold"
+            style={{
+              backgroundColor: '#10b981',
+              color: '#ffffff'
+            }}
           >
             {loading ? 'Agendando...' : 'Confirmar Agendamento'}
           </Button>
