@@ -52,7 +52,7 @@ export default function Dashboard() {
       
       <DashboardHeader />
       
-      <main className="container mx-auto px-6 lg:px-8 py-12 space-y-12 relative z-10 mt-12">
+      <main className="container mx-auto px-6 lg:px-8 py-12 space-y-12 relative z-10 mt-20">
         <div className="animate-slide-up">
           <DashboardGreeting />
         </div>
