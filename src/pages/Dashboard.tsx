@@ -5,6 +5,7 @@ import { useScrollAnimation } from '@/hooks/use-scroll-animation';
 import { DashboardHeader } from '@/components/dashboard/dashboard-header';
 import { DashboardGreeting } from '@/components/dashboard/dashboard-greeting';
 import { DashboardStats } from '@/components/dashboard/dashboard-stats';
+import { GoalsProgress } from '@/components/dashboard/goals-progress';
 import { StatsChart } from '@/components/dashboard/stats-chart';
 import { TodayAppointments } from '@/components/dashboard/today-appointments';
 import { NextAppointment } from '@/components/dashboard/next-appointment';
@@ -55,6 +56,10 @@ export default function Dashboard() {
         
         <div className="animate-slide-up" style={{ animationDelay: '0.1s' }}>
           <DashboardStats />
+        </div>
+        
+        <div className="animate-slide-up" style={{ animationDelay: '0.15s' }}>
+          <GoalsProgress />
         </div>
         
         <div className="animate-slide-up" style={{ animationDelay: '0.2s' }}>
