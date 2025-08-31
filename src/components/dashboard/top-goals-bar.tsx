@@ -95,92 +95,47 @@ export function TopGoalsBar() {
   const progress = Math.min((totalAppointments / currentGoal.value) * 100, 100);
 
   return (
-    <div className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-xl border-b border-border/50">
+    <div className="fixed top-0 left-0 right-0 z-50 bg-background/90 backdrop-blur-md border-b border-border/30">
       <div className="container mx-auto px-6">
-        <div className="flex items-center gap-6 py-3">
-          {/* Current Goal Icon */}
+        <div className="flex items-center gap-4 py-2">
+          {/* Goal Info */}
           <div className="flex items-center gap-3">
-            <div className={`p-2 rounded-lg bg-secondary/10`}>
-              <currentGoal.icon className={`w-4 h-4 ${currentGoal.color}`} />
-            </div>
-            <div className="min-w-0">
-              <div className="flex items-center gap-2">
-                <span className="text-sm font-medium">Meta:</span>
-                <span className="text-sm font-bold gradient-text">{currentGoal.label}</span>
-              </div>
-            </div>
+            <currentGoal.icon className={`w-4 h-4 ${currentGoal.color}`} />
+            <span className="text-sm font-semibold gradient-text">{currentGoal.label}</span>
           </div>
 
           {/* Progress Bar */}
-          <div className="flex-1 max-w-md">
+          <div className="flex-1 max-w-sm">
             <div className="relative">
               <Progress 
                 value={progress} 
-                className="h-2 bg-secondary/20"
+                className="h-1.5 bg-secondary/20"
               />
-              {progress > 80 && (
-                <div className="absolute inset-0 bg-gradient-primary opacity-40 rounded-full animate-glow-pulse blur-[1px]"></div>
+              {progress > 90 && (
+                <div className="absolute inset-0 bg-gradient-primary opacity-50 rounded-full animate-glow-pulse blur-[1px]"></div>
               )}
             </div>
           </div>
 
-          {/* Stats */}
-          <div className="flex items-center gap-4 text-sm">
-            <div className="text-center">
-              <div className="font-bold gradient-text">
-                {totalAppointments.toLocaleString('pt-BR')}
-              </div>
-              <div className="text-xs text-muted-foreground">Total</div>
-            </div>
-            
-            <div className="w-px h-8 bg-border"></div>
-            
-            <div className="text-center">
-              <div className="font-bold text-primary">
-                {progress.toFixed(1)}%
-              </div>
-              <div className="text-xs text-muted-foreground">Progresso</div>
-            </div>
-
-            <div className="w-px h-8 bg-border"></div>
-            
-            <div className="text-center">
-              <div className="font-bold text-muted-foreground">
-                {Math.max(0, currentGoal.value - totalAppointments).toLocaleString('pt-BR')}
-              </div>
-              <div className="text-xs text-muted-foreground">Restantes</div>
-            </div>
+          {/* Current Progress */}
+          <div className="flex items-center gap-2 text-sm">
+            <span className="font-medium">{totalAppointments.toLocaleString('pt-BR')}</span>
+            <span className="text-muted-foreground">de</span>
+            <span className="font-medium">{currentGoal.value.toLocaleString('pt-BR')}</span>
           </div>
 
-          {/* Milestones indicators */}
-          <div className="flex items-center gap-1">
-            {MILESTONES.map((milestone) => {
-              const isAchieved = totalAppointments >= milestone.value;
-              const isCurrent = milestone.value === currentGoal.value;
-              
-              return (
-                <div
-                  key={milestone.value}
-                  className={`w-2 h-2 rounded-full transition-all duration-300 ${
-                    isAchieved 
-                      ? 'bg-success animate-pulse' 
-                      : isCurrent
-                      ? 'bg-primary/50 animate-pulse'
-                      : 'bg-secondary/30'
-                  }`}
-                  title={`${milestone.label} - ${isAchieved ? 'Conquistado' : 'Pendente'}`}
-                />
-              );
-            })}
+          {/* Percentage */}
+          <div className="text-sm font-bold text-primary min-w-[50px] text-right">
+            {progress.toFixed(1)}%
           </div>
         </div>
       </div>
 
-      {/* Achievement celebration overlay */}
+      {/* Achievement celebration */}
       {progress >= 100 && (
-        <div className="absolute inset-0 bg-gradient-primary/10 animate-pulse pointer-events-none">
+        <div className="absolute inset-0 bg-gradient-primary/5 animate-pulse pointer-events-none">
           <div className="absolute right-4 top-1/2 -translate-y-1/2">
-            <Trophy className="w-6 h-6 text-warning animate-bounce" />
+            <Trophy className="w-4 h-4 text-warning animate-bounce" />
           </div>
         </div>
       )}
