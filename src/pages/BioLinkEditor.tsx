@@ -193,7 +193,14 @@ export const BioLinkEditor = () => {
   };
 
   const handleSave = async () => {
-    if (!user) return;
+    if (!user || !formData.business_name) {
+      toast({
+        title: "Nome do negócio obrigatório",
+        description: "Por favor, preencha o nome do negócio antes de salvar.",
+        variant: "destructive",
+      });
+      return;
+    }
 
     setLoading(true);
     try {
@@ -211,7 +218,7 @@ export const BioLinkEditor = () => {
       }
 
       // Update profile
-      const { error } = await supabase
+      const { error: profileError } = await supabase
         .from('profiles')
         .update({
           business_name: formData.business_name,
@@ -247,13 +254,35 @@ export const BioLinkEditor = () => {
         })
         .eq('user_id', user.id);
 
-      if (error) throw error;
+      if (profileError) throw profileError;
+
+      // Create a new bio link
+      // First deactivate all existing bio links
+      await supabase
+        .from('bio_links')
+        .update({ is_active: false })
+        .eq('user_id', user.id);
+
+      const { error: bioLinkError } = await supabase
+        .from('bio_links')
+        .insert({
+          user_id: user.id,
+          name: `${formData.business_name} - ${new Date().toLocaleDateString('pt-BR')}`,
+          slug: formData.business_name,
+          is_active: true,
+          ...formData,
+          avatar_url: avatarUrl,
+          banner_url: bannerUrl,
+        });
+
+      if (bioLinkError) throw bioLinkError;
 
       await refreshProfile();
+      await fetchBioLinks();
       
       toast({
-        title: "Perfil atualizado!",
-        description: "Suas alterações foram salvas com sucesso.",
+        title: "Bio link criado!",
+        description: "Suas alterações foram salvas e o bio link foi criado com sucesso.",
       });
     } catch (error: any) {
       toast({
@@ -486,16 +515,16 @@ export const BioLinkEditor = () => {
   const fullBioLinkUrl = formData.business_name ? `${window.location.origin}/bio/${formData.business_name}` : '';
 
   return (
-    <div className="container mx-auto p-6 space-y-6">
+    <div className="container mx-auto p-4 sm:p-6 space-y-4 sm:space-y-6">
       {/* Header */}
-      <div className="flex justify-between items-center">
+      <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4">
         <div>
-          <h1 className="text-3xl font-bold">Editor do BioLink</h1>
-          <p className="text-muted-foreground">Personalize sua página pública de agendamentos</p>
+          <h1 className="text-2xl sm:text-3xl font-bold">Editor do BioLink</h1>
+          <p className="text-muted-foreground text-sm sm:text-base">Personalize sua página pública de agendamentos</p>
         </div>
-        <div className="flex gap-3">
+        <div className="flex flex-col sm:flex-row gap-2 sm:gap-3">
           {bioLinkUrl ? (
-            <Button variant="outline" asChild>
+            <Button variant="outline" asChild className="w-full sm:w-auto">
               <a href={bioLinkUrl} target="_blank" rel="noopener noreferrer">
                 <Eye className="w-4 h-4 mr-2" />
                 Visualizar
@@ -511,18 +540,18 @@ export const BioLinkEditor = () => {
             <Save className="w-4 h-4 mr-2" />
             {loading ? 'Salvando...' : 'Salvar'}
           </Button>
-          <Button onClick={createBioLink} disabled={loading || !formData.business_name} variant="outline">
-            <Plus className="w-4 h-4 mr-2" />
-            Criar Bio Link
+          <Button onClick={handleSave} disabled={loading} className="w-full sm:w-auto">
+            <Save className="w-4 h-4 mr-2" />
+            {loading ? 'Salvando...' : 'Salvar e Criar Link'}
           </Button>
         </div>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-6">
         {/* Profile Information */}
-        <GlassCard className="p-6">
-          <h2 className="text-xl font-semibold mb-4 flex items-center gap-2">
-            <User className="w-5 h-5" />
+        <GlassCard className="p-4 sm:p-6">
+          <h2 className="text-lg sm:text-xl font-semibold mb-4 flex items-center gap-2">
+            <User className="w-4 h-4 sm:w-5 sm:h-5" />
             Informações do Perfil
           </h2>
           
@@ -581,7 +610,7 @@ export const BioLinkEditor = () => {
               </div>
             </div>
 
-            <div className="grid grid-cols-2 gap-3">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               <div>
                 <Label htmlFor="first_name">Nome</Label>
                 <Input
@@ -650,9 +679,9 @@ export const BioLinkEditor = () => {
         </GlassCard>
 
         {/* BioLink Configuration */}
-        <GlassCard className="p-6">
-          <h2 className="text-xl font-semibold mb-4 flex items-center gap-2">
-            <Link2 className="w-5 h-5" />
+        <GlassCard className="p-4 sm:p-6">
+          <h2 className="text-lg sm:text-xl font-semibold mb-4 flex items-center gap-2">
+            <Link2 className="w-4 h-4 sm:w-5 sm:h-5" />
             Configurações do BioLink
           </h2>
           
@@ -699,7 +728,7 @@ export const BioLinkEditor = () => {
             <div className="space-y-4">
               <h3 className="text-lg font-medium">Cores e Tema</h3>
               
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
                   <Label htmlFor="use_gradient_background">Tipo de Fundo</Label>
                   <div className="flex items-center gap-2 mt-2">
@@ -716,7 +745,7 @@ export const BioLinkEditor = () => {
               </div>
 
               {formData.use_gradient_background ? (
-                <div className="grid grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
                     <Label htmlFor="background_gradient_start">Cor Inicial do Gradiente</Label>
                     <div className="flex items-center gap-2 mt-2">
@@ -775,7 +804,7 @@ export const BioLinkEditor = () => {
                 </div>
               )}
 
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
                   <Label htmlFor="text_primary_color">Cor do Texto Principal</Label>
                   <div className="flex items-center gap-2 mt-2">
@@ -814,7 +843,7 @@ export const BioLinkEditor = () => {
                 </div>
               </div>
 
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
                   <Label htmlFor="button_background_color">Cor dos Botões</Label>
                   <div className="flex items-center gap-2 mt-2">
@@ -853,7 +882,7 @@ export const BioLinkEditor = () => {
                 </div>
               </div>
 
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
                   <Label htmlFor="card_background_color">Cor de Fundo dos Cards</Label>
                   <Input
@@ -879,7 +908,7 @@ export const BioLinkEditor = () => {
             <div className="space-y-4">
               <h3 className="text-lg font-medium">Tipografia e Estilo</h3>
               
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
                   <Label htmlFor="font_family">Fonte</Label>
                   <select
@@ -911,7 +940,7 @@ export const BioLinkEditor = () => {
                 </div>
               </div>
 
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
                   <Label htmlFor="border_radius">Arredondamento</Label>
                   <select
@@ -946,9 +975,9 @@ export const BioLinkEditor = () => {
         </GlassCard>
 
         {/* Business Hours */}
-        <GlassCard className="p-6">
-          <h2 className="text-xl font-semibold mb-4 flex items-center gap-2">
-            <Clock className="w-5 h-5" />
+        <GlassCard className="p-4 sm:p-6">
+          <h2 className="text-lg sm:text-xl font-semibold mb-4 flex items-center gap-2">
+            <Clock className="w-4 h-4 sm:w-5 sm:h-5" />
             Horários de Funcionamento
           </h2>
           
@@ -958,9 +987,9 @@ export const BioLinkEditor = () => {
               
               return (
                 <Card key={index} className="p-3">
-                  <div className="flex items-center justify-between">
+                  <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
                     <div className="flex items-center gap-3">
-                      <span className="font-medium min-w-[80px]">{dayName}</span>
+                      <span className="font-medium min-w-[80px] text-sm sm:text-base">{dayName}</span>
                       <label className="flex items-center gap-2">
                         <input
                           type="checkbox"
@@ -973,19 +1002,19 @@ export const BioLinkEditor = () => {
                     </div>
                     
                     {dayHour?.is_working && (
-                      <div className="flex items-center gap-2">
+                      <div className="flex items-center gap-2 text-sm">
                         <Input
                           type="time"
                           value={dayHour.start_time || '09:00'}
                           onChange={(e) => updateBusinessHours(index, 'start_time', e.target.value)}
-                          className="w-24"
+                          className="w-20 sm:w-24"
                         />
                         <span>às</span>
                         <Input
                           type="time"
                           value={dayHour.end_time || '18:00'}
                           onChange={(e) => updateBusinessHours(index, 'end_time', e.target.value)}
-                          className="w-24"
+                          className="w-20 sm:w-24"
                         />
                       </div>
                     )}
@@ -999,9 +1028,9 @@ export const BioLinkEditor = () => {
 
       {/* Link Generator */}
       {formData.business_name && (
-        <GlassCard className="p-6">
-          <h2 className="text-xl font-semibold mb-4 flex items-center gap-2">
-            <Link2 className="w-5 h-5" />
+        <GlassCard className="p-4 sm:p-6">
+          <h2 className="text-lg sm:text-xl font-semibold mb-4 flex items-center gap-2">
+            <Link2 className="w-4 h-4 sm:w-5 sm:h-5" />
             Link do Cliente
           </h2>
           
@@ -1034,7 +1063,7 @@ export const BioLinkEditor = () => {
               </p>
             </div>
 
-            <div className="flex gap-3">
+            <div className="flex flex-col sm:flex-row gap-3">
               <Button
                 variant="outline"
                 className="flex-1"
@@ -1071,16 +1100,22 @@ export const BioLinkEditor = () => {
         </GlassCard>
       )}
 
-      {/* Bio Links Saved */}
-      {bioLinks.length > 0 && (
-        <GlassCard className="p-6">
-          <h2 className="text-xl font-semibold mb-4">Bio Links Salvos</h2>
+      {/* Links Salvos */}
+      <GlassCard className="p-4 sm:p-6">
+        <h2 className="text-lg sm:text-xl font-semibold mb-4 flex items-center gap-2">
+          <Link2 className="w-4 h-4 sm:w-5 sm:h-5" />
+          Links Salvos
+        </h2>
+        {bioLinks.length > 0 ? (
           <div className="space-y-3">
             {bioLinks.map((bioLink) => (
-              <div key={bioLink.id} className="flex items-center justify-between p-3 border rounded-lg">
+              <div key={bioLink.id} className="flex flex-col sm:flex-row sm:items-center justify-between p-3 border rounded-lg gap-3">
                 <div className="flex-1">
-                  <p className="font-medium">{bioLink.name}</p>
-                  <p className="text-sm text-muted-foreground">/bio/{bioLink.slug}</p>
+                  <p className="font-medium text-sm sm:text-base">{bioLink.name}</p>
+                  <p className="text-xs sm:text-sm text-muted-foreground">/bio/{bioLink.slug}</p>
+                  <p className="text-xs text-muted-foreground">
+                    Criado em: {new Date(bioLink.created_at).toLocaleDateString('pt-BR')}
+                  </p>
                 </div>
                 <div className="flex items-center gap-3">
                   <div className="flex items-center gap-2">
@@ -1097,20 +1132,29 @@ export const BioLinkEditor = () => {
                     variant="outline"
                     size="icon"
                     onClick={() => deleteBioLink(bioLink.id)}
+                    className="h-8 w-8"
                   >
-                    <Trash2 className="w-4 h-4" />
+                    <Trash2 className="w-3 h-3" />
                   </Button>
                 </div>
               </div>
             ))}
           </div>
-        </GlassCard>
-      )}
+        ) : (
+          <div className="text-center py-8">
+            <Link2 className="w-12 h-12 mx-auto text-muted-foreground mb-4" />
+            <p className="text-muted-foreground mb-4">Nenhum link salvo ainda</p>
+            <p className="text-sm text-muted-foreground">
+              Preencha as informações e salve para criar seu primeiro bio link
+            </p>
+          </div>
+        )}
+      </GlassCard>
 
       {/* Testimonials Management */}
-      <GlassCard className="p-6">
-        <h2 className="text-xl font-semibold mb-4 flex items-center gap-2">
-          <Camera className="w-5 h-5" />
+      <GlassCard className="p-4 sm:p-6">
+        <h2 className="text-lg sm:text-xl font-semibold mb-4 flex items-center gap-2">
+          <Camera className="w-4 h-4 sm:w-5 sm:h-5" />
           Depoimentos (Fotos)
         </h2>
         
@@ -1204,7 +1248,7 @@ export const BioLinkEditor = () => {
           {testimonials.length > 0 && (
             <div>
               <h3 className="text-lg font-medium mb-4">Depoimentos Existentes ({testimonials.length}/10)</h3>
-              <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 sm:gap-4">
                 {testimonials.map((testimonial) => (
                   <div key={testimonial.id} className="relative group">
                     <img
@@ -1234,8 +1278,8 @@ export const BioLinkEditor = () => {
 
       {/* Preview */}
       {bioLinkUrl && (
-        <GlassCard className="p-6">
-          <h2 className="text-xl font-semibold mb-4">Preview do BioLink</h2>
+        <GlassCard className="p-4 sm:p-6">
+          <h2 className="text-lg sm:text-xl font-semibold mb-4">Preview do BioLink</h2>
           <div className="bg-gradient-hero rounded-lg p-4">
             <div className="max-w-md mx-auto">
               {/* Banner */}
