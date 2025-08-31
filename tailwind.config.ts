@@ -71,6 +71,8 @@ const config: Config = {
           DEFAULT: "hsl(var(--surface))",
           alt: "hsl(var(--surface-alt))",
         },
+        'neon-blue': "hsl(var(--neon-blue))",
+        'neon-purple': "hsl(var(--neon-purple))",
       },
       borderRadius: {
         'lg': 'var(--radius-lg)',
