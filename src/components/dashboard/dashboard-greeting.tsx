@@ -15,6 +15,8 @@ export function DashboardGreeting() {
   };
 
   const getName = () => {
+    console.log('Profile data:', profile);
+    console.log('First name:', profile?.first_name);
     if (profile?.first_name) {
       return profile.first_name;
     }
