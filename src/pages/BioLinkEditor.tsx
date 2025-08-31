@@ -495,14 +495,19 @@ export const BioLinkEditor = () => {
           <p className="text-muted-foreground">Personalize sua página pública de agendamentos</p>
         </div>
         <div className="flex gap-3">
-          {bioLinkUrl && (
-            <Button variant="outline" asChild>
+          <Button variant="outline" asChild={!!bioLinkUrl} disabled={!bioLinkUrl}>
+            {bioLinkUrl ? (
               <a href={bioLinkUrl} target="_blank" rel="noopener noreferrer">
                 <Eye className="w-4 h-4 mr-2" />
                 Visualizar
               </a>
-            </Button>
-          )}
+            ) : (
+              <>
+                <Eye className="w-4 h-4 mr-2" />
+                Visualizar
+              </>
+            )}
+          </Button>
           <Button onClick={handleSave} disabled={loading}>
             <Save className="w-4 h-4 mr-2" />
             {loading ? 'Salvando...' : 'Salvar'}
