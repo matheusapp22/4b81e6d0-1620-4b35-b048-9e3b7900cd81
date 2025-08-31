@@ -125,27 +125,27 @@ export function StatsChart() {
   }
 
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+    <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8">
       {/* Revenue Chart */}
       <GlassCard variant="premium" hover className="group chart-premium">
-        <div className="p-8 space-y-6">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-4">
-              <div className="p-3 rounded-2xl bg-success/10 group-hover:bg-success/20 transition-all duration-400 shadow-card">
-                <DollarSign className="w-6 h-6 text-success" />
+        <div className="p-4 sm:p-6 lg:p-8 space-y-4 lg:space-y-6">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+            <div className="flex items-center gap-3 lg:gap-4">
+              <div className="p-2 lg:p-3 rounded-xl lg:rounded-2xl bg-success/10 group-hover:bg-success/20 transition-all duration-400 shadow-card">
+                <DollarSign className="w-5 h-5 lg:w-6 lg:h-6 text-success" />
               </div>
               <div>
-                <h4 className="font-bold text-body">Receita</h4>
-                <p className="text-caption">Últimos 7 dias</p>
+                <h4 className="font-bold text-sm lg:text-body">Receita</h4>
+                <p className="text-xs lg:text-caption text-muted-foreground">Últimos 7 dias</p>
               </div>
             </div>
-            <Badge className="status-indicator success px-3 py-1">
+            <Badge className="status-indicator success px-2 py-1 lg:px-3 lg:py-1 text-xs">
               <TrendingUp className="w-3 h-3" />
               +24%
             </Badge>
           </div>
           
-          <div className="h-40">
+          <div className="h-32 sm:h-36 lg:h-40">
             <ResponsiveContainer width="100%" height="100%">
               <AreaChart data={data}>
                 <defs>
@@ -158,7 +158,7 @@ export function StatsChart() {
                   dataKey="day" 
                   axisLine={false}
                   tickLine={false}
-                  tick={{ fontSize: 12, fill: 'hsl(var(--muted-foreground))', fontWeight: 500 }}
+                  tick={{ fontSize: 10, fill: 'hsl(var(--muted-foreground))', fontWeight: 500 }}
                 />
                 <YAxis hide />
                 <Tooltip content={<CustomTooltip />} />
@@ -166,10 +166,10 @@ export function StatsChart() {
                   type="monotone"
                   dataKey="revenue"
                   stroke="hsl(var(--success))"
-                  strokeWidth={3}
+                  strokeWidth={2}
                   fill="url(#revenueGradient)"
-                  dot={{ fill: 'hsl(var(--success))', strokeWidth: 0, r: 4 }}
-                  activeDot={{ r: 6, stroke: 'hsl(var(--success))', strokeWidth: 2, fill: 'white' }}
+                  dot={{ fill: 'hsl(var(--success))', strokeWidth: 0, r: 3 }}
+                  activeDot={{ r: 5, stroke: 'hsl(var(--success))', strokeWidth: 2, fill: 'white' }}
                   name="Receita"
                 />
               </AreaChart>
@@ -180,38 +180,38 @@ export function StatsChart() {
 
       {/* Appointments Chart */}
       <GlassCard variant="premium" hover className="group chart-premium">
-        <div className="p-8 space-y-6">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-4">
-              <div className="p-3 rounded-2xl bg-primary/10 group-hover:bg-primary/20 transition-all duration-400 shadow-card">
-                <Calendar className="w-6 h-6 text-primary" />
+        <div className="p-4 sm:p-6 lg:p-8 space-y-4 lg:space-y-6">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+            <div className="flex items-center gap-3 lg:gap-4">
+              <div className="p-2 lg:p-3 rounded-xl lg:rounded-2xl bg-primary/10 group-hover:bg-primary/20 transition-all duration-400 shadow-card">
+                <Calendar className="w-5 h-5 lg:w-6 lg:h-6 text-primary" />
               </div>
               <div>
-                <h4 className="font-bold text-body">Agendamentos</h4>
-                <p className="text-caption">Últimos 7 dias</p>
+                <h4 className="font-bold text-sm lg:text-body">Agendamentos</h4>
+                <p className="text-xs lg:text-caption text-muted-foreground">Últimos 7 dias</p>
               </div>
             </div>
-            <Badge className="status-indicator info px-3 py-1">
+            <Badge className="status-indicator info px-2 py-1 lg:px-3 lg:py-1 text-xs">
               <Activity className="w-3 h-3" />
               +12%
             </Badge>
           </div>
           
-          <div className="h-40">
+          <div className="h-32 sm:h-36 lg:h-40">
             <ResponsiveContainer width="100%" height="100%">
               <BarChart data={data} barCategoryGap="30%">
                 <XAxis 
                   dataKey="day" 
                   axisLine={false}
                   tickLine={false}
-                  tick={{ fontSize: 12, fill: 'hsl(var(--muted-foreground))', fontWeight: 500 }}
+                  tick={{ fontSize: 10, fill: 'hsl(var(--muted-foreground))', fontWeight: 500 }}
                 />
                 <YAxis hide />
                 <Tooltip content={<CustomTooltip />} />
                 <Bar 
                   dataKey="appointments" 
                   fill="hsl(var(--primary))"
-                  radius={[8, 8, 0, 0]}
+                  radius={[6, 6, 0, 0]}
                   className="data-point"
                   name="Agendamentos"
                 />
@@ -223,31 +223,31 @@ export function StatsChart() {
 
       {/* Clients Chart */}
       <GlassCard variant="premium" hover className="group chart-premium">
-        <div className="p-8 space-y-6">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-4">
-              <div className="p-3 rounded-2xl bg-neon-purple/10 group-hover:bg-neon-purple/20 transition-all duration-400 shadow-card">
-                <Users className="w-6 h-6 text-neon-purple" />
+        <div className="p-4 sm:p-6 lg:p-8 space-y-4 lg:space-y-6">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+            <div className="flex items-center gap-3 lg:gap-4">
+              <div className="p-2 lg:p-3 rounded-xl lg:rounded-2xl bg-neon-purple/10 group-hover:bg-neon-purple/20 transition-all duration-400 shadow-card">
+                <Users className="w-5 h-5 lg:w-6 lg:h-6 text-neon-purple" />
               </div>
               <div>
-                <h4 className="font-bold text-body">Novos Clientes</h4>
-                <p className="text-caption">Últimos 7 dias</p>
+                <h4 className="font-bold text-sm lg:text-body">Novos Clientes</h4>
+                <p className="text-xs lg:text-caption text-muted-foreground">Últimos 7 dias</p>
               </div>
             </div>
-            <Badge className="status-indicator success px-3 py-1">
+            <Badge className="status-indicator success px-2 py-1 lg:px-3 lg:py-1 text-xs">
               <TrendingUp className="w-3 h-3" />
               +8%
             </Badge>
           </div>
           
-          <div className="h-40">
+          <div className="h-32 sm:h-36 lg:h-40">
             <ResponsiveContainer width="100%" height="100%">
               <LineChart data={data}>
                 <XAxis 
                   dataKey="day" 
                   axisLine={false}
                   tickLine={false}
-                  tick={{ fontSize: 12, fill: 'hsl(var(--muted-foreground))', fontWeight: 500 }}
+                  tick={{ fontSize: 10, fill: 'hsl(var(--muted-foreground))', fontWeight: 500 }}
                 />
                 <YAxis hide />
                 <Tooltip content={<CustomTooltip />} />
@@ -255,9 +255,9 @@ export function StatsChart() {
                   type="monotone" 
                   dataKey="clients" 
                   stroke="hsl(var(--neon-purple))" 
-                  strokeWidth={3}
-                  dot={{ fill: 'hsl(var(--neon-purple))', strokeWidth: 0, r: 4 }}
-                  activeDot={{ r: 6, stroke: 'hsl(var(--neon-purple))', strokeWidth: 2, fill: 'white' }}
+                  strokeWidth={2}
+                  dot={{ fill: 'hsl(var(--neon-purple))', strokeWidth: 0, r: 3 }}
+                  activeDot={{ r: 5, stroke: 'hsl(var(--neon-purple))', strokeWidth: 2, fill: 'white' }}
                   className="data-point"
                   name="Clientes"
                 />

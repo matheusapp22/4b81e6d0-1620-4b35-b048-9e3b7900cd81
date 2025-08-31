@@ -165,7 +165,7 @@ export function DashboardStats() {
   }
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+    <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4 sm:gap-6 lg:gap-8">
       {statsData.map((stat, index) => (
         <GlassCard 
           key={stat.title} 
@@ -174,29 +174,29 @@ export function DashboardStats() {
           className="group animate-scale-in"
           style={{ animationDelay: `${index * 0.1}s` }}
         >
-          <div className="p-8 space-y-6">
+          <div className="p-4 sm:p-6 lg:p-8 space-y-4 lg:space-y-6">
             {/* Header with Icon and Trend */}
             <div className="flex items-center justify-between">
-              <div className={`p-4 rounded-3xl ${stat.bgColor} group-hover:scale-110 transition-all duration-400 shadow-card`}>
-                <stat.icon className={`w-6 h-6 ${stat.color}`} />
+              <div className={`p-3 lg:p-4 rounded-2xl lg:rounded-3xl ${stat.bgColor} group-hover:scale-110 transition-all duration-400 shadow-card`}>
+                <stat.icon className={`w-5 h-5 lg:w-6 lg:h-6 ${stat.color}`} />
               </div>
               
-              <Badge className={`status-indicator ${stat.isPositive ? 'success' : 'warning'} px-3 py-1`}>
+              <Badge className={`status-indicator ${stat.isPositive ? 'success' : 'warning'} px-2 py-1 lg:px-3 lg:py-1 text-xs`}>
                 <stat.trendIcon className="w-3 h-3" />
                 {stat.trend}
               </Badge>
             </div>
             
             {/* Content */}
-            <div className="space-y-3">
-              <p className="text-caption text-muted-foreground font-medium">
+            <div className="space-y-2 lg:space-y-3">
+              <p className="text-xs sm:text-sm lg:text-caption text-muted-foreground font-medium">
                 {stat.title}
               </p>
-              <p className="metric-display gradient-text">
+              <p className="text-lg sm:text-xl lg:text-2xl xl:text-3xl font-bold gradient-text">
                 {stat.value}
               </p>
-              <p className="text-micro text-muted-foreground flex items-center gap-2">
-                <div className={`w-2 h-2 rounded-full ${stat.isPositive ? 'bg-success' : 'bg-warning'} animate-pulse`}></div>
+              <p className="text-xs lg:text-micro text-muted-foreground flex items-center gap-2">
+                <div className={`w-2 h-2 rounded-full ${stat.isPositive ? 'bg-success' : 'bg-warning'} animate-pulse flex-shrink-0`}></div>
                 {stat.description}
               </p>
             </div>

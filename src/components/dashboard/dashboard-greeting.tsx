@@ -38,42 +38,42 @@ export function DashboardGreeting() {
       <div className="absolute bottom-6 left-6 w-12 h-12 bg-secondary/10 rounded-full animate-pulse"></div>
       <div className="absolute top-1/2 right-1/4 w-6 h-6 bg-primary/20 rounded-full animate-bounce-subtle"></div>
       
-      <div className="relative z-10 p-10">
-        <div className="flex items-center justify-between">
-          <div className="space-y-6 flex-1">
+      <div className="relative z-10 p-6 sm:p-8 lg:p-10">
+        <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6">
+          <div className="space-y-4 lg:space-y-6 flex-1">
             {/* Status Badge */}
-            <div className="flex items-center gap-3">
-              <Badge className="status-indicator success px-4 py-2">
+            <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3">
+              <Badge className="status-indicator success px-3 py-1.5 sm:px-4 sm:py-2">
                 <Activity className="w-3 h-3" />
                 Sistema Online
               </Badge>
-              <Badge variant="secondary" className="px-4 py-2 bg-secondary/10 text-secondary border border-secondary/20">
+              <Badge variant="secondary" className="px-3 py-1.5 sm:px-4 sm:py-2 bg-secondary/10 text-secondary border border-secondary/20">
                 <Sparkles className="w-3 h-3 mr-1" />
                 Premium Dashboard
               </Badge>
             </div>
             
             {/* Main Greeting */}
-            <div className="space-y-3">
-              <h1 className="text-display gradient-text leading-none">
-                {getGreeting()}, {getName()}
+            <div className="space-y-2 lg:space-y-3">
+              <h1 className="text-2xl sm:text-3xl lg:text-display font-bold gradient-text leading-none">
+                {getGreeting()}, {getName()}!
               </h1>
-              <p className="text-body text-muted-foreground max-w-lg leading-relaxed">
+              <p className="text-sm sm:text-base lg:text-body text-muted-foreground max-w-lg leading-relaxed">
                 Bem-vindo ao seu centro de comando. Aqui você tem controle total do seu negócio 
                 com insights em tempo real e automações inteligentes.
               </p>
             </div>
             
             {/* Date and Quick Info */}
-            <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
-              <div className="flex items-center gap-3 text-caption">
-                <Calendar className="w-4 h-4 text-muted-foreground" />
+            <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 lg:gap-4">
+              <div className="flex items-center gap-2 lg:gap-3 text-xs sm:text-sm lg:text-caption">
+                <Calendar className="w-4 h-4 text-muted-foreground flex-shrink-0" />
                 <span className="capitalize font-medium">{today}</span>
               </div>
               
               <div className="flex items-center gap-2">
-                <div className="w-2 h-2 bg-success rounded-full animate-pulse"></div>
-                <span className="text-micro text-success font-medium">
+                <div className="w-2 h-2 bg-success rounded-full animate-pulse flex-shrink-0"></div>
+                <span className="text-xs lg:text-micro text-success font-medium">
                   Tudo funcionando perfeitamente
                 </span>
               </div>
