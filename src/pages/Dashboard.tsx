@@ -11,6 +11,7 @@ import { TodayAppointments } from '@/components/dashboard/today-appointments';
 import { NextAppointment } from '@/components/dashboard/next-appointment';
 import { QuickActions } from '@/components/dashboard/quick-actions';
 import { AppointmentModal } from '@/components/dashboard/appointment-modal';
+import { SupportBuddy } from '@/components/dashboard/support-buddy';
 
 export default function Dashboard() {
   const { user, loading } = useAuth();
@@ -83,6 +84,7 @@ export default function Dashboard() {
       </main>
       
       <AppointmentModal />
+      <SupportBuddy />
     </div>
   );
 }
