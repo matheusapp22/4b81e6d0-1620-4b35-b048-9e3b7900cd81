@@ -127,9 +127,8 @@ export const BookingForm = ({ service, businessProfile }: BookingFormProps) => {
         appointment_date: format(selectedDate, 'yyyy-MM-dd'),
         start_time: selectedTime,
         end_time: calculateEndTime(selectedTime, service.duration),
-        notes: values.notes,
         status: 'scheduled',
-        payment_status: 'pending',
+        payment_status: 'paid',
         payment_amount: service.price,
       });
 
