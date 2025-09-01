@@ -1,5 +1,6 @@
 import { Button } from '@/components/ui/button';
 import { GlassCard } from '@/components/ui/glass-card';
+import { ThemeToggle } from '@/components/ui/theme-toggle';
 import { useAuth } from '@/contexts/auth-context';
 import { Link } from 'react-router-dom';
 import { 
@@ -19,8 +20,6 @@ import {
   UserCheck,
   Menu,
   X,
-  Moon,
-  Sun,
   Sparkles
 } from 'lucide-react';
 import {
@@ -40,7 +39,6 @@ import { cn } from '@/lib/utils';
 export function DashboardHeader() {
   const { user, profile, signOut } = useAuth();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [darkMode, setDarkMode] = useState(false);
   const location = useLocation();
 
   const getInitials = () => {
@@ -63,11 +61,6 @@ export function DashboardHeader() {
   ];
 
   const isActive = (href: string) => location.pathname === href;
-
-  const toggleDarkMode = () => {
-    setDarkMode(!darkMode);
-    document.documentElement.classList.toggle('dark');
-  };
 
   return (
     <div className="nav-premium sticky top-0 z-40 mt-16">
@@ -136,19 +129,8 @@ export function DashboardHeader() {
           
           {/* Right Side Actions */}
           <div className="flex items-center gap-3">
-            {/* Dark Mode Toggle */}
-            <Button 
-              variant="ghost" 
-              size="icon" 
-              onClick={toggleDarkMode}
-              className="relative h-11 w-11 rounded-2xl hover:scale-110 transition-all duration-300"
-            >
-              {darkMode ? (
-                <Sun className="w-5 h-5 text-warning animate-rotate-subtle" />
-              ) : (
-                <Moon className="w-5 h-5 text-primary" />
-              )}
-            </Button>
+            {/* Theme Toggle */}
+            <ThemeToggle />
 
             {/* Notifications */}
             <Button variant="ghost" size="icon" className="relative h-11 w-11 rounded-2xl hover:scale-110 transition-all duration-300">

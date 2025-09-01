@@ -1,5 +1,6 @@
 import { Button } from '@/components/ui/button';
 import { useAuth } from '@/contexts/auth-context';
+import { ThemeToggle } from '@/components/ui/theme-toggle';
 import { Calendar, Menu, X } from 'lucide-react';
 import { useState } from 'react';
 
@@ -53,6 +54,7 @@ export function Navigation() {
                 <Button variant="ghost" onClick={signOut}>
                   Sair
                 </Button>
+                <ThemeToggle />
               </>
             ) : (
               <>
@@ -68,6 +70,7 @@ export function Navigation() {
                 <Button asChild>
                   <a href="/auth">Começar Grátis</a>
                 </Button>
+                <ThemeToggle />
               </>
             )}
           </div>
