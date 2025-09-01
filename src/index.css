@@ -12,32 +12,32 @@
     --primary-glow: 250 84% 70%;
     
     /* Neutral Secondary Colors */
-    --secondary: 0 0% 15%; /* Dark Gray */
-    --secondary-hover: 0 0% 20%;
-    --secondary-foreground: 0 0% 95%;
+    --secondary: 220 14% 96%; /* Light Gray */
+    --secondary-hover: 220 14% 90%;
+    --secondary-foreground: 220 9% 46%;
     
-    /* Black Theme Backgrounds */
-    --background: 0 0% 0%; /* Pure Black */
-    --background-alt: 0 0% 3%; /* Very Dark Black */
-    --foreground: 0 0% 95%; /* Light Gray */
+    /* Light Theme Backgrounds */
+    --background: 0 0% 100%; /* Pure White */
+    --background-alt: 220 14% 96%; /* Very Light Gray */
+    --foreground: 222 84% 5%; /* Very Dark */
     
     /* Card Surfaces */
-    --card: 0 0% 5%;
-    --card-foreground: 0 0% 95%;
-    --surface: 0 0% 5%;
-    --surface-alt: 0 0% 3%;
+    --card: 0 0% 100%;
+    --card-foreground: 222 84% 5%;
+    --surface: 0 0% 100%;
+    --surface-alt: 220 14% 96%;
     
     /* Text Colors */
-    --muted: 0 0% 10%;
-    --muted-foreground: 0 0% 60%; /* Light Gray */
+    --muted: 220 14% 96%;
+    --muted-foreground: 220 9% 46%; /* Medium Gray */
     
     /* Borders */
-    --border: 0 0% 15%; /* Dark Gray */
-    --border-muted: 0 0% 10%;
+    --border: 220 13% 91%; /* Light Gray */
+    --border-muted: 220 14% 96%;
     
     /* Interactive States */
-    --accent: 0 0% 10%;
-    --accent-foreground: 0 0% 95%;
+    --accent: 220 14% 96%;
+    --accent-foreground: 222 84% 5%;
     
     /* Status Colors */
     --success: 142 71% 45%; /* #10B981 - Emerald */
@@ -50,15 +50,15 @@
     --info-foreground: 0 0% 100%;
 
     /* Glass & Effects */
-    --glass-bg: 255 255 255 / 0.9;
-    --glass-border: 240 6% 90% / 0.8;
+    --glass-bg: 0 0% 100% / 0.9;
+    --glass-border: 220 13% 91% / 0.8;
     --backdrop-blur: 12px;
     
     /* Modern Shadows */
-    --shadow-subtle: 0 1px 2px 0 rgb(0 0 0 / 0.05);
-    --shadow-card: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
-    --shadow-elevated: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
-    --shadow-premium: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+    --shadow-subtle: 0 1px 2px 0 hsl(0 0% 0% / 0.05);
+    --shadow-card: 0 1px 3px 0 hsl(0 0% 0% / 0.1), 0 1px 2px -1px hsl(0 0% 0% / 0.1);
+    --shadow-elevated: 0 4px 6px -1px hsl(0 0% 0% / 0.1), 0 2px 4px -2px hsl(0 0% 0% / 0.1);
+    --shadow-premium: 0 10px 15px -3px hsl(0 0% 0% / 0.1), 0 4px 6px -4px hsl(0 0% 0% / 0.1);
     
     /* Modern Gradients */
     --gradient-primary: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--primary-glow)));
@@ -85,27 +85,27 @@
 
   .dark {
     /* Modern Dark Mode */
-    --background: 240 10% 4%; /* #0F172A - Very Dark Blue */
-    --background-alt: 240 6% 8%; /* #1E293B - Dark Blue Gray */
-    --foreground: 0 0% 98%; /* #FAFAFA - Off White */
+    --background: 222 84% 5%; /* Very Dark */
+    --background-alt: 220 14% 10%; /* Dark Gray */
+    --foreground: 210 40% 98%; /* Off White */
     
-    --card: 240 6% 8%;
-    --card-foreground: 0 0% 98%;
-    --surface: 240 6% 8%;
-    --surface-alt: 240 10% 4%;
+    --card: 220 14% 10%;
+    --card-foreground: 210 40% 98%;
+    --surface: 220 14% 10%;
+    --surface-alt: 222 84% 5%;
     
     --primary: 250 84% 60%; /* Same indigo but brighter for dark */
-    --secondary: 240 6% 8%;
-    --secondary-foreground: 0 0% 98%;
+    --secondary: 220 14% 10%;
+    --secondary-foreground: 210 40% 98%;
     
-    --muted: 240 6% 8%;
-    --muted-foreground: 240 5% 65%; /* #94A3B8 - Light Slate */
+    --muted: 220 14% 10%;
+    --muted-foreground: 215 20% 65%; /* Light Slate */
     
-    --border: 240 6% 12%;
-    --border-muted: 240 6% 8%;
+    --border: 220 14% 20%;
+    --border-muted: 220 14% 10%;
     
-    --glass-bg: 240 6% 8% / 0.9;
-    --glass-border: 240 6% 20% / 0.8;
+    --glass-bg: 220 14% 10% / 0.9;
+    --glass-border: 220 14% 20% / 0.8;
   }
 
   * {
@@ -163,8 +163,8 @@
 
   /* Modern Glass Effects */
   .glass-card {
-    background: rgb(255 255 255 / 0.9);
-    border: 1px solid rgb(240 240 240 / 0.8);
+    background: hsl(var(--glass-bg));
+    border: 1px solid hsl(var(--glass-border));
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
     box-shadow: var(--shadow-card);
@@ -426,7 +426,7 @@
     left: -100%;
     width: 100%;
     height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+    background: linear-gradient(90deg, transparent, hsl(0 0% 100% / 0.2), transparent);
     animation: shimmer 2s infinite;
   }
   
