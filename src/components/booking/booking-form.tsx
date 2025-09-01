@@ -140,6 +140,37 @@ export const BookingForm = ({ service, businessProfile }: BookingFormProps) => {
     }
 
     console.log('Booking successful!');
+    
+    // Send notification email to business owner
+    try {
+      const { data: profileData } = await supabase
+        .from('profiles')
+        .select('email, business_name')
+        .eq('user_id', businessProfile.user_id)
+        .single();
+
+      if (profileData) {
+        await supabase.functions.invoke('send-notification', {
+          body: {
+            type: 'appointment_created',
+            businessEmail: profileData.email,
+            businessName: profileData.business_name || 'Seu Negócio',
+            clientName: values.client_name,
+            serviceName: service.name,
+            appointmentDate: format(selectedDate, 'yyyy-MM-dd'),
+            appointmentTime: selectedTime,
+            servicePrice: service.price,
+            clientPhone: values.client_phone,
+            clientEmail: values.client_email,
+          }
+        });
+        console.log('Notification email sent to business owner');
+      }
+    } catch (emailError) {
+      console.error('Error sending notification email:', emailError);
+      // Don't throw here - booking was successful even if email failed
+    }
+
     toast({
       title: "Agendamento realizado!",
       description: "Seu agendamento foi confirmado. Você receberá uma confirmação em breve.",
