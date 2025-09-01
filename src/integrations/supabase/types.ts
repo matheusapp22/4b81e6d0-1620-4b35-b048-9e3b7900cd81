@@ -1303,7 +1303,10 @@ export type Database = {
       }
     }
     Functions: {
-      [_ in never]: never
+      debug_appointment_policy: {
+        Args: { p_service_id: string; p_user_id: string }
+        Returns: Json
+      }
     }
     Enums: {
       [_ in never]: never
