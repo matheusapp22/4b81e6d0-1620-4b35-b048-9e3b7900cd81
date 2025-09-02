@@ -68,16 +68,59 @@ export function TodayAppointments() {
 
   const updateAppointmentStatus = async (appointmentId: string, status: string) => {
     try {
+      // Get appointment details before updating for email notification
+      const appointment = appointments.find(apt => apt.id === appointmentId);
+      
+      let updateData: any = { status };
+      
+      // If cancelling, also update payment_status to remove from revenue
+      if (status === 'cancelled') {
+        updateData.payment_status = 'cancelled';
+      }
+      
       const { error } = await supabase
         .from('appointments')
-        .update({ status })
+        .update(updateData)
         .eq('id', appointmentId);
 
       if (error) throw error;
 
+      // Send cancellation email if status is cancelled
+      if (status === 'cancelled' && appointment) {
+        try {
+          const { data: profileData } = await supabase
+            .from('profiles')
+            .select('email, business_name')
+            .eq('user_id', user?.id)
+            .single();
+
+          if (profileData) {
+            const today = new Date().toISOString().split('T')[0];
+            
+            await supabase.functions.invoke('send-notification', {
+              body: {
+                type: 'appointment_cancelled',
+                businessEmail: profileData.email,
+                businessName: profileData.business_name || 'Seu Negócio',
+                clientName: appointment.client_name,
+                serviceName: appointment.services.name,
+                appointmentDate: today,
+                appointmentTime: appointment.start_time,
+                servicePrice: appointment.services.price,
+                clientPhone: appointment.client_phone,
+              }
+            });
+            console.log('Cancellation notification email sent');
+          }
+        } catch (emailError) {
+          console.error('Error sending cancellation email:', emailError);
+          // Don't throw here - status update was successful even if email failed
+        }
+      }
+
       setAppointments(prev => 
         prev.map(apt => 
-          apt.id === appointmentId ? { ...apt, status } : apt
+          apt.id === appointmentId ? { ...apt, status, ...updateData } : apt
         )
       );
 
