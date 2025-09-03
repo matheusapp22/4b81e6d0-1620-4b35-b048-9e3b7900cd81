@@ -67,7 +67,7 @@ export function PricingSection() {
   useScrollAnimation();
   
   return (
-    <section className="py-32 px-6 bg-gradient-to-b from-muted/30 to-background relative overflow-hidden">
+    <section id="pricing" className="py-32 px-6 bg-gradient-to-b from-muted/30 to-background relative overflow-hidden">
       {/* Background Elements */}
       <div className="absolute inset-0 dot-pattern opacity-15"></div>
       <div className="absolute top-20 left-20 w-40 h-40 bg-primary/2 rounded-full blur-3xl animate-float"></div>

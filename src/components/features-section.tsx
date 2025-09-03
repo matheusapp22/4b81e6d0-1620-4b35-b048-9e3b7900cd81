@@ -95,7 +95,7 @@ export function FeaturesSection() {
   useScrollAnimation();
   
   return (
-    <section className="py-24 bg-secondary/30 px-6 relative overflow-hidden">
+    <section id="features" className="py-24 bg-secondary/30 px-6 relative overflow-hidden">
       {/* Animated Background */}
       <div className="absolute inset-0 dot-pattern opacity-15"></div>
       <div className="absolute top-10 right-10 w-32 h-32 bg-primary/5 rounded-full blur-2xl animate-float"></div>
