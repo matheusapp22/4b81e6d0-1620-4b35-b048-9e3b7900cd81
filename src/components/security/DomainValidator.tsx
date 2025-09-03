@@ -1,5 +1,4 @@
 import { useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
 
 // Lista de domínios autorizados para produção
 const ALLOWED_DOMAINS = [
@@ -13,8 +12,6 @@ const ALLOWED_DOMAINS = [
 ];
 
 export function DomainValidator({ children }: { children: React.ReactNode }) {
-  const navigate = useNavigate();
-
   useEffect(() => {
     const currentDomain = window.location.hostname;
     
@@ -51,7 +48,7 @@ export function DomainValidator({ children }: { children: React.ReactNode }) {
         window.top!.location.href = 'about:blank';
       }
     }
-  }, [navigate]);
+  }, []);
 
   return <>{children}</>;
 }
