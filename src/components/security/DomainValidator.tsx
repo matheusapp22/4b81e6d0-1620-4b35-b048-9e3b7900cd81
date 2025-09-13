@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 // Lista de domínios autorizados para produção
 const ALLOWED_DOMAINS = [
@@ -12,6 +12,8 @@ const ALLOWED_DOMAINS = [
 ];
 
 export function DomainValidator({ children }: { children: React.ReactNode }) {
+  const [isAuthorized, setIsAuthorized] = useState(true);
+
   useEffect(() => {
     const currentDomain = window.location.hostname;
     
@@ -24,8 +26,8 @@ export function DomainValidator({ children }: { children: React.ReactNode }) {
     });
 
     if (!isAllowed && process.env.NODE_ENV === 'production') {
-      // Redireciona para página de erro ou bloqueia acesso
-      window.location.href = 'about:blank';
+      // Em vez de redirecionar, define o estado como não autorizado
+      setIsAuthorized(false);
       return;
     }
 
@@ -41,14 +43,39 @@ export function DomainValidator({ children }: { children: React.ReactNode }) {
         });
         
         if (!isParentAllowed) {
-          window.top!.location.href = 'about:blank';
+          setIsAuthorized(false);
         }
       } catch {
         // Se não conseguir verificar o parent, bloqueia
-        window.top!.location.href = 'about:blank';
+        setIsAuthorized(false);
       }
     }
   }, []);
+
+  // Se não autorizado, mostra mensagem de acesso negado
+  if (!isAuthorized) {
+    return (
+      <div style={{
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        height: '100vh',
+        backgroundColor: '#f5f5f5',
+        fontFamily: 'Arial, sans-serif'
+      }}>
+        <div style={{
+          textAlign: 'center',
+          padding: '2rem',
+          backgroundColor: 'white',
+          borderRadius: '8px',
+          boxShadow: '0 2px 10px rgba(0,0,0,0.1)'
+        }}>
+          <h1 style={{ color: '#dc3545', marginBottom: '1rem' }}>Acesso Não Autorizado</h1>
+          <p style={{ color: '#6c757d' }}>Este domínio não está autorizado a acessar esta aplicação.</p>
+        </div>
+      </div>
+    );
+  }
 
   return <>{children}</>;
 }
