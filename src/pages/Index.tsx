@@ -3,6 +3,7 @@ import { useAuth } from '@/contexts/auth-context';
 import { useNavigate } from 'react-router-dom';
 import { Navigation } from '@/components/navigation';
 import { HeroSection } from '@/components/hero-section';
+import { BioLinkDemo } from '@/components/bio-link-demo';
 import { FeaturesSection } from '@/components/features-section';
 import { PricingSection } from '@/components/pricing-section';
 
@@ -34,6 +35,7 @@ const Index = () => {
     <div className="min-h-screen bg-background">
       <Navigation />
       <HeroSection />
+      <BioLinkDemo />
       <FeaturesSection />
       <PricingSection />
     </div>
