@@ -1,7 +1,13 @@
 import { serve } from "https://deno.land/std@0.190.0/http/server.ts";
+import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.39.3';
 import { Resend } from "npm:resend@2.0.0";
 
 const resend = new Resend(Deno.env.get("RESEND_API_KEY"));
+
+// Configurar cliente Supabase para o edge function
+const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
+const supabaseServiceKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
+const supabase = createClient(supabaseUrl, supabaseServiceKey);
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -20,6 +26,74 @@ interface NotificationRequest {
   servicePrice: number;
   clientPhone?: string;
   clientEmail?: string;
+  userId?: string;
+}
+
+// Função para enviar push notification
+async function sendPushNotification(userId: string, title: string, body: string) {
+  try {
+    console.log(`Enviando push notification para user ${userId}`);
+
+    // Buscar as inscrições push do usuário
+    const { data: subscriptions, error } = await supabase
+      .from('push_subscriptions')
+      .select('*')
+      .eq('user_id', userId);
+
+    if (error) {
+      console.error('Erro ao buscar inscrições push:', error);
+      return;
+    }
+
+    if (!subscriptions || subscriptions.length === 0) {
+      console.log('Nenhuma inscrição push encontrada para o usuário');
+      return;
+    }
+
+    // Preparar payload da notificação
+    const payload = JSON.stringify({
+      title,
+      body,
+      primaryKey: crypto.randomUUID(),
+    });
+
+    // Enviar notificação para cada inscrição
+    for (const sub of subscriptions) {
+      try {
+        const subscription = JSON.parse(sub.subscription);
+        
+        // Usar Web Push API para enviar notificação
+        const response = await fetch('https://fcm.googleapis.com/fcm/send', {
+          method: 'POST',
+          headers: {
+            'Authorization': `key=${Deno.env.get('FCM_SERVER_KEY')}`,
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            to: subscription.endpoint.split('/').pop(),
+            notification: {
+              title,
+              body,
+              icon: '/favicon.ico',
+            },
+            data: {
+              primaryKey: crypto.randomUUID(),
+            }
+          }),
+        });
+
+        if (!response.ok) {
+          console.error('Erro ao enviar push notification:', await response.text());
+        } else {
+          console.log('Push notification enviada com sucesso');
+        }
+      } catch (pushError) {
+        console.error('Erro ao processar inscrição push:', pushError);
+      }
+    }
+  } catch (error) {
+    console.error('Erro geral ao enviar push notification:', error);
+  }
 }
 
 const handler = async (req: Request): Promise<Response> => {
@@ -39,7 +113,8 @@ const handler = async (req: Request): Promise<Response> => {
       appointmentTime, 
       servicePrice,
       clientPhone,
-      clientEmail 
+      clientEmail,
+      userId 
     }: NotificationRequest = await req.json();
 
     console.log(`Sending ${type} notification to ${businessEmail}`);
@@ -163,6 +238,22 @@ const handler = async (req: Request): Promise<Response> => {
     });
 
     console.log("Email sent successfully:", emailResponse);
+
+    // Enviar push notification se userId foi fornecido
+    if (userId) {
+      let pushTitle: string;
+      let pushBody: string;
+
+      if (type === 'appointment_created') {
+        pushTitle = '🎉 Novo Agendamento!';
+        pushBody = `${clientName} agendou ${serviceName} para ${new Date(appointmentDate).toLocaleDateString('pt-BR')} às ${appointmentTime}`;
+      } else {
+        pushTitle = '❌ Agendamento Cancelado';
+        pushBody = `Agendamento de ${clientName} para ${serviceName} foi cancelado`;
+      }
+
+      await sendPushNotification(userId, pushTitle, pushBody);
+    }
 
     return new Response(JSON.stringify(emailResponse), {
       status: 200,
