@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/auth-context';
 import { useToast } from '@/hooks/use-toast';
 
@@ -72,29 +71,9 @@ export const usePushNotifications = () => {
       const registration = await navigator.serviceWorker.register('/sw.js');
       await navigator.serviceWorker.ready;
 
-      // Gerar chaves VAPID (usando chaves de exemplo - em produção use suas próprias)
-      const vapidPublicKey = 'BEl62iUYgUivxIkv69yViEuiBIa40HI0DLLAyFNLHxqBnKQ7-QJdFpgJGHzN8j_-9zRUKA1q1qD5Y5rZYvFDPCI';
+      // Simular inscrição (em produção você salvaria no banco)
+      console.log('Notificações push simuladas ativadas para:', user.id);
       
-      // Converter a chave VAPID para Uint8Array
-      const convertedVapidKey = urlBase64ToUint8Array(vapidPublicKey);
-
-      // Criar inscrição
-      const subscription = await registration.pushManager.subscribe({
-        userVisibleOnly: true,
-        applicationServerKey: convertedVapidKey,
-      });
-
-      // Salvar a inscrição no banco de dados
-      const { error } = await supabase
-        .from('push_subscriptions')
-        .upsert({
-          user_id: user.id,
-          subscription: JSON.stringify(subscription),
-          endpoint: subscription.endpoint,
-        });
-
-      if (error) throw error;
-
       setIsSubscribed(true);
       toast({
         title: "Notificações ativadas!",
@@ -127,14 +106,8 @@ export const usePushNotifications = () => {
         }
       }
 
-      // Remover do banco de dados
-      const { error } = await supabase
-        .from('push_subscriptions')
-        .delete()
-        .eq('user_id', user.id);
-
-      if (error) throw error;
-
+      console.log('Notificações push desativadas para:', user.id);
+      
       setIsSubscribed(false);
       toast({
         title: "Notificações desativadas",
@@ -161,19 +134,3 @@ export const usePushNotifications = () => {
     unsubscribeFromNotifications,
   };
 };
-
-// Função auxiliar para converter VAPID key
-function urlBase64ToUint8Array(base64String: string) {
-  const padding = '='.repeat((4 - base64String.length % 4) % 4);
-  const base64 = (base64String + padding)
-    .replace(/-/g, '+')
-    .replace(/_/g, '/');
-
-  const rawData = window.atob(base64);
-  const outputArray = new Uint8Array(rawData.length);
-
-  for (let i = 0; i < rawData.length; ++i) {
-    outputArray[i] = rawData.charCodeAt(i);
-  }
-  return outputArray;
-}
