@@ -6,6 +6,8 @@ const ALLOWED_DOMAINS = [
   '127.0.0.1',
   '.lovable.dev',
   '.sandbox.lovable.dev',
+  '.lovable.app',
+  'lovable.app',
   // Adicione seus domínios de produção aqui
   // 'seudominio.com',
   // 'www.seudominio.com'
