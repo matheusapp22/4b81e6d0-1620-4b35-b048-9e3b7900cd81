@@ -8,6 +8,8 @@ const ALLOWED_DOMAINS = [
   '.sandbox.lovable.dev',
   '.lovable.app',
   'lovable.app',
+  '.lovableproject.com',
+  'lovableproject.com',
   // Adicione seus domínios de produção aqui
   // 'seudominio.com',
   // 'www.seudominio.com'
