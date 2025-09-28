@@ -470,6 +470,23 @@ export const BioLinkEditor = () => {
     }
   };
 
+  const copyBioLinkUrl = async (slug: string) => {
+    const url = `${window.location.origin}/bio/${slug}`;
+    try {
+      await navigator.clipboard.writeText(url);
+      toast({
+        title: "Link copiado!",
+        description: "O link do bio foi copiado para a área de transferência.",
+      });
+    } catch (error) {
+      toast({
+        title: "Erro",
+        description: "Não foi possível copiar o link.",
+        variant: "destructive",
+      });
+    }
+  };
+
   const addTestimonial = async () => {
     if (!user || !testimonialFile) return;
 
@@ -1140,7 +1157,16 @@ export const BioLinkEditor = () => {
                     Criado em: {new Date(bioLink.created_at).toLocaleDateString('pt-BR')}
                   </p>
                 </div>
-                <div className="flex items-center gap-3">
+                <div className="flex items-center gap-2">
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => copyBioLinkUrl(bioLink.slug)}
+                    className="h-8 px-3 text-xs"
+                  >
+                    <Copy className="w-3 h-3 mr-1" />
+                    Copiar Link
+                  </Button>
                   <div className="flex items-center gap-2">
                     <Label htmlFor={`bio-link-${bioLink.id}`} className="text-sm">
                       {bioLink.is_active ? 'Ativo' : 'Inativo'}
