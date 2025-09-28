@@ -9,6 +9,8 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
+import { useSubscriptionLimits } from '@/hooks/use-subscription-limits';
+import { UpgradePrompt } from '@/components/ui/upgrade-prompt';
 
 interface Service {
   id: string;
@@ -27,6 +29,13 @@ export function Services() {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const { user } = useAuth();
   const { toast } = useToast();
+  const { 
+    limits, 
+    usage, 
+    canCreateService, 
+    getRemainingCount, 
+    refreshUsage 
+  } = useSubscriptionLimits();
 
   const [formData, setFormData] = useState({
     name: '',
@@ -62,6 +71,16 @@ export function Services() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
+    // Check limits for new services
+    if (!editingService && !canCreateService()) {
+      toast({
+        title: "Limite atingido!",
+        description: `Você atingiu o limite de ${limits.services_limit} serviços do plano ${limits.plan_type.toUpperCase()}`,
+        variant: "destructive",
+      });
+      return;
+    }
+    
     try {
       if (editingService) {
         const { error } = await supabase
@@ -96,6 +115,7 @@ export function Services() {
       resetForm();
       setIsDialogOpen(false);
       fetchServices();
+      refreshUsage(); // Refresh usage after creating/updating service
     } catch (error: any) {
       toast({
         title: 'Erro ao salvar serviço',
@@ -170,20 +190,27 @@ export function Services() {
     <div className="min-h-screen bg-gradient-hero p-6">
       <div className="max-w-6xl mx-auto">
         <div className="flex justify-between items-center mb-8">
-          <h1 className="text-3xl font-bold gradient-text">Serviços</h1>
-          <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-            <DialogTrigger asChild>
-              <Button 
-                onClick={() => {
-                  resetForm();
-                  setIsDialogOpen(true);
-                }}
-                className="gap-2"
-              >
-                <Plus className="w-4 h-4" />
-                Novo Serviço
-              </Button>
-            </DialogTrigger>
+          <div>
+            <h1 className="text-3xl font-bold gradient-text">Serviços</h1>
+            <p className="text-sm text-muted-foreground mt-1">
+              {usage.services_count} de {limits.services_limit === -1 ? '∞' : limits.services_limit} serviços utilizados
+            </p>
+          </div>
+          
+          {canCreateService() ? (
+            <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+              <DialogTrigger asChild>
+                <Button 
+                  onClick={() => {
+                    resetForm();
+                    setIsDialogOpen(true);
+                  }}
+                  className="gap-2"
+                >
+                  <Plus className="w-4 h-4" />
+                  Novo Serviço
+                </Button>
+              </DialogTrigger>
             <DialogContent className="glass-card">
               <DialogHeader>
                 <DialogTitle>
@@ -263,7 +290,35 @@ export function Services() {
               </form>
             </DialogContent>
           </Dialog>
+          ) : (
+            <Button 
+              disabled
+              className="gap-2"
+            >
+              <Plus className="w-4 h-4" />
+              Limite Atingido
+            </Button>
+          )}
         </div>
+
+        {!canCreateService() && (
+          <div className="mb-6">
+            <UpgradePrompt
+              feature="serviços"
+              currentPlan={limits.plan_type}
+              requiredPlan="pro"
+              remaining={getRemainingCount('services')}
+              limit={limits.services_limit}
+              onUpgrade={() => {
+                // Implementar redirecionamento para upgrade
+                toast({
+                  title: "Upgrade em breve!",
+                  description: "A funcionalidade de upgrade estará disponível em breve.",
+                });
+              }}
+            />
+          </div>
+        )}
 
         <div className="grid gap-4">
           {services.map((service) => (

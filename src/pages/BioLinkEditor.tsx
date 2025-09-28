@@ -13,6 +13,8 @@ import { Card } from '@/components/ui/card';
 import { Switch } from '@/components/ui/switch';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Upload, Clock, Save, Eye, Image as ImageIcon, User, Link2, Copy, Share2, QrCode, Plus, Trash2, Camera, Star } from 'lucide-react';
+import { useSubscriptionLimits } from '@/hooks/use-subscription-limits';
+import { UpgradePrompt } from '@/components/ui/upgrade-prompt';
 
 interface BusinessHours {
   id: string;
@@ -50,6 +52,14 @@ export const BioLinkEditor = () => {
   const [testimonials, setTestimonials] = useState<Testimonial[]>([]);
   const [newTestimonial, setNewTestimonial] = useState({ client_name: '', description: '', rating: 5 });
   const [testimonialFile, setTestimonialFile] = useState<File | null>(null);
+  const { 
+    limits, 
+    usage, 
+    canCreateBioLink, 
+    canCreateTestimonial, 
+    getRemainingCount, 
+    refreshUsage 
+  } = useSubscriptionLimits();
   const [formData, setFormData] = useState({
     business_name: '',
     first_name: '',
@@ -302,6 +312,7 @@ export const BioLinkEditor = () => {
 
       await refreshProfile();
       await fetchBioLinks();
+      refreshUsage(); // Refresh usage after creating bio link
       
       toast({
         title: "Bio link criado!",
@@ -490,6 +501,16 @@ export const BioLinkEditor = () => {
   const addTestimonial = async () => {
     if (!user || !testimonialFile) return;
 
+    // Check testimonial limits
+    if (!canCreateTestimonial()) {
+      toast({
+        title: "Limite atingido!",
+        description: `Você atingiu o limite de ${limits.testimonials_limit} depoimentos do plano ${limits.plan_type.toUpperCase()}`,
+        variant: "destructive",
+      });
+      return;
+    }
+
     try {
       setLoading(true);
 
@@ -510,6 +531,7 @@ export const BioLinkEditor = () => {
       if (error) throw error;
 
       await fetchTestimonials();
+      refreshUsage(); // Refresh usage after creating testimonial
       setNewTestimonial({ client_name: '', description: '', rating: 5 });
       setTestimonialFile(null);
       
