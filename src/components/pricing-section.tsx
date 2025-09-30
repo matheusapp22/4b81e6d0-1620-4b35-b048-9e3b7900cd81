@@ -1,8 +1,12 @@
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { GlassCard } from "@/components/ui/glass-card";
 import { Badge } from "@/components/ui/badge";
 import { useScrollAnimation } from "@/hooks/use-scroll-animation";
-import { Check, Star, Zap, Crown, Sparkles, TrendingUp } from "lucide-react";
+import { Check, Star, Zap, Crown } from "lucide-react";
+import { CheckoutModal } from "@/components/checkout-modal";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "@/contexts/auth-context";
 
 const plans = [
   {
@@ -65,6 +69,33 @@ const plans = [
 
 export function PricingSection() {
   useScrollAnimation();
+  const navigate = useNavigate();
+  const { user } = useAuth();
+  const [checkoutOpen, setCheckoutOpen] = useState(false);
+  const [selectedPlan, setSelectedPlan] = useState<{
+    type: 'pro' | 'premium';
+    name: string;
+    price: string;
+  } | null>(null);
+
+  const handlePlanClick = (planName: string) => {
+    if (planName === "Free") {
+      navigate("/auth");
+    } else if (planName === "Premium") {
+      window.location.href = "mailto:contato@agendafacil.com?subject=Interesse no Plano Premium";
+    } else if (planName === "Pro") {
+      if (!user) {
+        navigate("/auth");
+      } else {
+        setSelectedPlan({
+          type: 'pro',
+          name: 'Pro',
+          price: 'R$ 29'
+        });
+        setCheckoutOpen(true);
+      }
+    }
+  };
   
   return (
     <section id="pricing" className="py-32 px-6 bg-gradient-to-b from-muted/30 to-background relative overflow-hidden">
@@ -138,6 +169,7 @@ export function PricingSection() {
                 variant={plan.variant} 
                 size="lg" 
                 className="w-full group/btn"
+                onClick={() => handlePlanClick(plan.name)}
               >
                 {plan.name === "Premium" && <Crown className="w-4 h-4 mr-2 group-hover/btn:rotate-12 transition-transform duration-300" />}
                 {plan.name === "Pro" && <Zap className="w-4 h-4 mr-2 group-hover/btn:scale-110 transition-transform duration-300" />}
@@ -200,6 +232,16 @@ export function PricingSection() {
           </GlassCard>
         </div>
       </div>
+
+      {selectedPlan && (
+        <CheckoutModal
+          open={checkoutOpen}
+          onOpenChange={setCheckoutOpen}
+          planType={selectedPlan.type}
+          planName={selectedPlan.name}
+          planPrice={selectedPlan.price}
+        />
+      )}
     </section>
   );
 }

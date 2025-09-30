@@ -51,3 +51,9 @@ security_update_password_require_reauthentication = true
 
 [functions.send-notification]
 verify_jwt = false
+
+[functions.sunize-webhook]
+verify_jwt = false
+
+[functions.create-sunize-transaction]
+verify_jwt = true
