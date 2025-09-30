@@ -12,7 +12,7 @@ import { Badge } from '@/components/ui/badge';
 import { Card } from '@/components/ui/card';
 import { Switch } from '@/components/ui/switch';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
-import { Upload, Clock, Save, Eye, Image as ImageIcon, User, Link2, Copy, Share2, QrCode, Plus, Trash2, Camera, Star } from 'lucide-react';
+import { Upload, Clock, Save, Eye, Image as ImageIcon, User, Link2, Copy, Share2, QrCode, Plus, Trash2, Camera, Star, Edit, AlertCircle } from 'lucide-react';
 import { useSubscriptionLimits } from '@/hooks/use-subscription-limits';
 import { UpgradePrompt } from '@/components/ui/upgrade-prompt';
 
@@ -30,6 +30,32 @@ interface BioLink {
   slug: string;
   is_active: boolean;
   created_at: string;
+  business_name?: string;
+  description?: string;
+  whatsapp_link?: string;
+  instagram_link?: string;
+  website_link?: string;
+  background_color?: string;
+  background_gradient_start?: string;
+  background_gradient_end?: string;
+  card_background_color?: string;
+  card_border_color?: string;
+  primary_color?: string;
+  secondary_color?: string;
+  accent_color?: string;
+  text_primary_color?: string;
+  text_secondary_color?: string;
+  button_background_color?: string;
+  button_text_color?: string;
+  section_header_color?: string;
+  font_family?: string;
+  font_size?: string;
+  font_color?: string;
+  border_radius?: string;
+  shadow_intensity?: string;
+  use_gradient_background?: boolean;
+  avatar_url?: string;
+  banner_url?: string;
 }
 
 interface Testimonial {
@@ -52,6 +78,7 @@ export const BioLinkEditor = () => {
   const [testimonials, setTestimonials] = useState<Testimonial[]>([]);
   const [newTestimonial, setNewTestimonial] = useState({ client_name: '', description: '', rating: 5 });
   const [testimonialFile, setTestimonialFile] = useState<File | null>(null);
+  const [editingBioLinkId, setEditingBioLinkId] = useState<string | null>(null);
   const { 
     limits, 
     usage, 
@@ -267,13 +294,20 @@ export const BioLinkEditor = () => {
       if (profileError) throw profileError;
 
       // Update or create bio link
-      // Check if there's an active bio link
-      const { data: existingBioLink } = await supabase
-        .from('bio_links')
-        .select('id')
-        .eq('user_id', user.id)
-        .eq('is_active', true)
-        .single();
+      // If we're editing a specific bio link, update it directly
+      let targetBioLinkId = editingBioLinkId;
+      
+      // If not editing a specific one, check if there's an active bio link
+      if (!targetBioLinkId) {
+        const { data: existingBioLink } = await supabase
+          .from('bio_links')
+          .select('id')
+          .eq('user_id', user.id)
+          .eq('is_active', true)
+          .single();
+        
+        targetBioLinkId = existingBioLink?.id || null;
+      }
 
       const bioLinkData = {
         user_id: user.id,
@@ -309,12 +343,12 @@ export const BioLinkEditor = () => {
       };
 
       let bioLinkError;
-      if (existingBioLink) {
+      if (targetBioLinkId) {
         // Update existing bio link
         const { error } = await supabase
           .from('bio_links')
           .update(bioLinkData)
-          .eq('id', existingBioLink.id);
+          .eq('id', targetBioLinkId);
         bioLinkError = error;
       } else {
         // Create new bio link
@@ -325,14 +359,17 @@ export const BioLinkEditor = () => {
       }
 
       if (bioLinkError) throw bioLinkError;
+      
+      // Clear editing state
+      setEditingBioLinkId(null);
 
       await refreshProfile();
       await fetchBioLinks();
       refreshUsage(); // Refresh usage after creating/updating bio link
       
       toast({
-        title: existingBioLink ? "Bio link atualizado!" : "Bio link criado!",
-        description: existingBioLink 
+        title: targetBioLinkId ? "Bio link atualizado!" : "Bio link criado!",
+        description: targetBioLinkId 
           ? "Suas alterações foram salvas com sucesso." 
           : "Suas alterações foram salvas e o bio link foi criado com sucesso.",
       });
@@ -516,6 +553,48 @@ export const BioLinkEditor = () => {
     }
   };
 
+  const loadBioLinkForEditing = (bioLink: BioLink) => {
+    setEditingBioLinkId(bioLink.id);
+    setFormData({
+      business_name: bioLink.business_name || '',
+      first_name: profile?.first_name || '',
+      last_name: profile?.last_name || '',
+      phone: profile?.phone || '',
+      email: profile?.email || '',
+      whatsapp_link: bioLink.whatsapp_link || '',
+      instagram_link: bioLink.instagram_link || '',
+      website_link: bioLink.website_link || '',
+      font_color: bioLink.font_color || '#ffffff',
+      description: bioLink.description || '',
+      background_color: bioLink.background_color || '#1a1a2e',
+      background_gradient_start: bioLink.background_gradient_start || '#16213e',
+      background_gradient_end: bioLink.background_gradient_end || '#0f172a',
+      card_background_color: bioLink.card_background_color || 'rgba(255,255,255,0.1)',
+      card_border_color: bioLink.card_border_color || 'rgba(255,255,255,0.2)',
+      primary_color: bioLink.primary_color || '#6366f1',
+      secondary_color: bioLink.secondary_color || '#8b5cf6',
+      accent_color: bioLink.accent_color || '#06b6d4',
+      text_primary_color: bioLink.text_primary_color || '#ffffff',
+      text_secondary_color: bioLink.text_secondary_color || 'rgba(255,255,255,0.8)',
+      button_background_color: bioLink.button_background_color || '#10b981',
+      button_text_color: bioLink.button_text_color || '#ffffff',
+      section_header_color: bioLink.section_header_color || '#ffffff',
+      font_family: bioLink.font_family || 'Inter',
+      font_size: bioLink.font_size || 'medium',
+      border_radius: bioLink.border_radius || 'medium',
+      shadow_intensity: bioLink.shadow_intensity || 'medium',
+      use_gradient_background: bioLink.use_gradient_background ?? true,
+    });
+    
+    // Scroll to top to show form
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    
+    toast({
+      title: "Editando Bio Link",
+      description: "Os dados do bio link foram carregados no formulário.",
+    });
+  };
+
   const addTestimonial = async () => {
     if (!user || !testimonialFile) return;
 
@@ -616,16 +695,42 @@ export const BioLinkEditor = () => {
               Visualizar
             </Button>
           )}
-          <Button onClick={handleSave} disabled={loading}>
-            <Save className="w-4 h-4 mr-2" />
-            {loading ? 'Salvando...' : 'Salvar'}
-          </Button>
           <Button onClick={handleSave} disabled={loading} className="w-full sm:w-auto">
             <Save className="w-4 h-4 mr-2" />
-            {loading ? 'Salvando...' : 'Salvar e Criar Link'}
+            {loading ? 'Salvando...' : editingBioLinkId ? 'Atualizar Bio Link' : 'Salvar'}
           </Button>
         </div>
       </div>
+
+      {/* Editing Mode Indicator */}
+      {editingBioLinkId && (
+        <div className="flex items-center gap-3 p-4 bg-primary/10 border border-primary/20 rounded-lg">
+          <AlertCircle className="w-5 h-5 text-primary flex-shrink-0" />
+          <div className="flex-1">
+            <div className="flex items-center gap-2 mb-1">
+              <Badge variant="default" className="bg-primary">
+                Modo de Edição
+              </Badge>
+            </div>
+            <p className="text-sm text-muted-foreground">
+              Você está editando um bio link existente. As alterações serão aplicadas ao link selecionado.
+            </p>
+          </div>
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={() => {
+              setEditingBioLinkId(null);
+              toast({
+                title: "Modo de edição cancelado",
+                description: "Voltando ao modo de criação/atualização padrão.",
+              });
+            }}
+          >
+            Cancelar
+          </Button>
+        </div>
+      )}
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-6">
         {/* Profile Information */}
@@ -1198,6 +1303,15 @@ export const BioLinkEditor = () => {
                   </p>
                 </div>
                 <div className="flex items-center gap-2">
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => loadBioLinkForEditing(bioLink)}
+                    className="h-8 px-3 text-xs"
+                  >
+                    <Edit className="w-3 h-3 mr-1" />
+                    Editar
+                  </Button>
                   <Button
                     variant="outline"
                     size="sm"
