@@ -266,57 +266,75 @@ export const BioLinkEditor = () => {
 
       if (profileError) throw profileError;
 
-      // Create a new bio link
-      // First deactivate all existing bio links
-      await supabase
+      // Update or create bio link
+      // Check if there's an active bio link
+      const { data: existingBioLink } = await supabase
         .from('bio_links')
-        .update({ is_active: false })
-        .eq('user_id', user.id);
+        .select('id')
+        .eq('user_id', user.id)
+        .eq('is_active', true)
+        .single();
 
-      const { error: bioLinkError } = await supabase
-        .from('bio_links')
-        .insert({
-          user_id: user.id,
-          name: `${formData.business_name} - ${new Date().toLocaleDateString('pt-BR')}`,
-          slug: formData.business_name,
-          is_active: true,
-          business_name: formData.business_name,
-          description: formData.description,
-          whatsapp_link: formData.whatsapp_link,
-          instagram_link: formData.instagram_link,
-          website_link: formData.website_link,
-          background_color: formData.background_color,
-          background_gradient_start: formData.background_gradient_start,
-          background_gradient_end: formData.background_gradient_end,
-          card_background_color: formData.card_background_color,
-          card_border_color: formData.card_border_color,
-          primary_color: formData.primary_color,
-          secondary_color: formData.secondary_color,
-          accent_color: formData.accent_color,
-          text_primary_color: formData.text_primary_color,
-          text_secondary_color: formData.text_secondary_color,
-          button_background_color: formData.button_background_color,
-          button_text_color: formData.button_text_color,
-          section_header_color: formData.section_header_color,
-          font_family: formData.font_family,
-          font_size: formData.font_size,
-          font_color: formData.font_color,
-          border_radius: formData.border_radius,
-          shadow_intensity: formData.shadow_intensity,
-          use_gradient_background: formData.use_gradient_background,
-          avatar_url: avatarUrl,
-          banner_url: bannerUrl,
-        });
+      const bioLinkData = {
+        user_id: user.id,
+        name: `${formData.business_name} - ${new Date().toLocaleDateString('pt-BR')}`,
+        slug: formData.business_name,
+        is_active: true,
+        business_name: formData.business_name,
+        description: formData.description,
+        whatsapp_link: formData.whatsapp_link,
+        instagram_link: formData.instagram_link,
+        website_link: formData.website_link,
+        background_color: formData.background_color,
+        background_gradient_start: formData.background_gradient_start,
+        background_gradient_end: formData.background_gradient_end,
+        card_background_color: formData.card_background_color,
+        card_border_color: formData.card_border_color,
+        primary_color: formData.primary_color,
+        secondary_color: formData.secondary_color,
+        accent_color: formData.accent_color,
+        text_primary_color: formData.text_primary_color,
+        text_secondary_color: formData.text_secondary_color,
+        button_background_color: formData.button_background_color,
+        button_text_color: formData.button_text_color,
+        section_header_color: formData.section_header_color,
+        font_family: formData.font_family,
+        font_size: formData.font_size,
+        font_color: formData.font_color,
+        border_radius: formData.border_radius,
+        shadow_intensity: formData.shadow_intensity,
+        use_gradient_background: formData.use_gradient_background,
+        avatar_url: avatarUrl,
+        banner_url: bannerUrl,
+      };
+
+      let bioLinkError;
+      if (existingBioLink) {
+        // Update existing bio link
+        const { error } = await supabase
+          .from('bio_links')
+          .update(bioLinkData)
+          .eq('id', existingBioLink.id);
+        bioLinkError = error;
+      } else {
+        // Create new bio link
+        const { error } = await supabase
+          .from('bio_links')
+          .insert(bioLinkData);
+        bioLinkError = error;
+      }
 
       if (bioLinkError) throw bioLinkError;
 
       await refreshProfile();
       await fetchBioLinks();
-      refreshUsage(); // Refresh usage after creating bio link
+      refreshUsage(); // Refresh usage after creating/updating bio link
       
       toast({
-        title: "Bio link criado!",
-        description: "Suas alterações foram salvas e o bio link foi criado com sucesso.",
+        title: existingBioLink ? "Bio link atualizado!" : "Bio link criado!",
+        description: existingBioLink 
+          ? "Suas alterações foram salvas com sucesso." 
+          : "Suas alterações foram salvas e o bio link foi criado com sucesso.",
       });
     } catch (error: any) {
       toast({
