@@ -1360,10 +1360,6 @@ export type Database = {
       }
     }
     Functions: {
-      debug_appointment_policy: {
-        Args: { p_service_id: string; p_user_id: string }
-        Returns: Json
-      }
       log_security_event: {
         Args: {
           p_event_data?: Json
