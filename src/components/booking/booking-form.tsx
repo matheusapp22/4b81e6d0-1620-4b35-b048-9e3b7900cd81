@@ -98,24 +98,6 @@ export const BookingForm = ({ service, businessProfile }: BookingFormProps) => {
 
   setLoading(true);
   try {
-    console.log('=== DEBUGGING BOOKING PROCESS ===');
-    console.log('Selected date:', selectedDate);
-    console.log('Selected time:', selectedTime);
-    console.log('Business profile user_id:', businessProfile.user_id);
-    console.log('Service ID:', service.id);
-    console.log('Service details:', service);
-    console.log('Form values:', values);
-    
-    // Test policy check first
-    const { data: policyCheck, error: policyError } = await supabase
-      .rpc('debug_appointment_policy', {
-        p_user_id: businessProfile.user_id,
-        p_service_id: service.id
-      });
-    
-    console.log('Policy check result:', policyCheck);
-    console.log('Policy check error:', policyError);
-
     const { error } = await supabase
       .from('appointments')
       .insert({
