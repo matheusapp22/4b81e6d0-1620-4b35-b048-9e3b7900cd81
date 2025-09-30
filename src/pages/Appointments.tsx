@@ -11,6 +11,8 @@ import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Badge } from '@/components/ui/badge';
+import { useSubscriptionLimits } from '@/hooks/use-subscription-limits';
+import { UpgradePrompt } from '@/components/ui/upgrade-prompt';
 
 interface Appointment {
   id: string;
@@ -58,14 +60,15 @@ const paymentStatusColors = {
 };
 
 export function Appointments() {
+  const { user } = useAuth();
+  const { toast } = useToast();
+  const { canCreateAppointment, getRemainingCount, limits } = useSubscriptionLimits();
   const [appointments, setAppointments] = useState<Appointment[]>([]);
   const [services, setServices] = useState<Service[]>([]);
   const [clients, setClients] = useState<Client[]>([]);
   const [loading, setLoading] = useState(true);
   const [editingAppointment, setEditingAppointment] = useState<Appointment | null>(null);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
-  const { user } = useAuth();
-  const { toast } = useToast();
 
   const [formData, setFormData] = useState({
     appointment_date: '',
@@ -160,6 +163,15 @@ export function Appointments() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    
+    if (!editingAppointment && !canCreateAppointment()) {
+      toast({
+        title: "Limite atingido",
+        description: `Você atingiu o limite de agendamentos do plano ${limits.plan_type.toUpperCase()}`,
+        variant: "destructive",
+      });
+      return;
+    }
     
     const selectedService = services.find(s => s.id === formData.service_id);
     if (!selectedService) {
@@ -304,25 +316,37 @@ export function Appointments() {
       <div className="max-w-6xl mx-auto">
         <div className="flex justify-between items-center mb-8">
           <h1 className="text-3xl font-bold gradient-text">Agendamentos</h1>
-          <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-            <DialogTrigger asChild>
-              <Button 
-                onClick={() => {
-                  resetForm();
-                  setIsDialogOpen(true);
-                }}
-                className="gap-2"
-              >
-                <Plus className="w-4 h-4" />
-                Novo Agendamento
-              </Button>
-            </DialogTrigger>
-            <DialogContent className="glass-card max-w-2xl">
-              <DialogHeader>
-                <DialogTitle>
-                  {editingAppointment ? 'Editar Agendamento' : 'Novo Agendamento'}
-                </DialogTitle>
-              </DialogHeader>
+          <div className="flex flex-col items-end gap-4">
+            {!canCreateAppointment() && (
+              <UpgradePrompt
+                feature="agendamentos"
+                currentPlan={limits.plan_type}
+                requiredPlan={limits.appointments_per_month === 20 ? "pro" : "premium"}
+                remaining={getRemainingCount('appointments')}
+                limit={limits.appointments_per_month}
+              />
+            )}
+            
+            <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+              <DialogTrigger asChild>
+                <Button 
+                  onClick={() => {
+                    resetForm();
+                    setIsDialogOpen(true);
+                  }}
+                  className="gap-2"
+                  disabled={!canCreateAppointment()}
+                >
+                  <Plus className="w-4 h-4" />
+                  Novo Agendamento
+                </Button>
+              </DialogTrigger>
+              <DialogContent className="glass-card max-w-2xl">
+                <DialogHeader>
+                  <DialogTitle>
+                    {editingAppointment ? 'Editar Agendamento' : 'Novo Agendamento'}
+                  </DialogTitle>
+                </DialogHeader>
               <form onSubmit={handleSubmit} className="space-y-4">
                 <div className="grid grid-cols-2 gap-4">
                   <div>
@@ -480,6 +504,7 @@ export function Appointments() {
               </form>
             </DialogContent>
           </Dialog>
+          </div>
         </div>
 
         <div className="grid gap-4">

@@ -12,6 +12,8 @@ import { useToast } from '@/hooks/use-toast';
 import { Plus, Send, Users, Gift, Zap, TrendingUp } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { useSubscriptionLimits } from '@/hooks/use-subscription-limits';
+import { UpgradePrompt } from '@/components/ui/upgrade-prompt';
 
 interface Campaign {
   id: string;
@@ -55,6 +57,7 @@ interface Referral {
 export function Marketing() {
   const { user } = useAuth();
   const { toast } = useToast();
+  const { canAccessFeature, limits } = useSubscriptionLimits();
   const [campaigns, setCampaigns] = useState<Campaign[]>([]);
   const [promotions, setPromotions] = useState<Promotion[]>([]);
   const [referrals, setReferrals] = useState<Referral[]>([]);
@@ -253,6 +256,22 @@ export function Marketing() {
             {[...Array(3)].map((_, i) => (
               <div key={i} className="h-24 bg-muted animate-pulse rounded-lg" />
             ))}
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (!canAccessFeature('can_use_marketing')) {
+    return (
+      <div className="min-h-screen bg-background">
+        <div className="container mx-auto px-4 py-8 flex items-center justify-center">
+          <div className="max-w-2xl w-full">
+            <UpgradePrompt
+              feature="Marketing & Campanhas"
+              currentPlan={limits.plan_type}
+              requiredPlan="pro"
+            />
           </div>
         </div>
       </div>

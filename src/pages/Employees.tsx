@@ -10,6 +10,8 @@ import { useToast } from '@/hooks/use-toast';
 import { Plus, Edit, Trash2, Users, TrendingUp, DollarSign } from 'lucide-react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
+import { useSubscriptionLimits } from '@/hooks/use-subscription-limits';
+import { UpgradePrompt } from '@/components/ui/upgrade-prompt';
 
 interface Employee {
   id: string;
@@ -26,6 +28,7 @@ interface Employee {
 export function Employees() {
   const { user } = useAuth();
   const { toast } = useToast();
+  const { canCreateEmployee, getRemainingCount, limits } = useSubscriptionLimits();
   const [employees, setEmployees] = useState<Employee[]>([]);
   const [loading, setLoading] = useState(true);
   const [dialogOpen, setDialogOpen] = useState(false);
@@ -69,6 +72,15 @@ export function Employees() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    
+    if (!editingEmployee && !canCreateEmployee()) {
+      toast({
+        title: "Limite atingido",
+        description: `Você atingiu o limite de funcionários do plano ${limits.plan_type.toUpperCase()}`,
+        variant: "destructive",
+      });
+      return;
+    }
     
     try {
       if (editingEmployee) {
@@ -184,9 +196,21 @@ export function Employees() {
             <p className="text-muted-foreground">Gerencie sua equipe e comissões</p>
           </div>
           
+          {!canCreateEmployee() && (
+            <div className="mb-4">
+              <UpgradePrompt
+                feature="funcionários"
+                currentPlan={limits.plan_type}
+                requiredPlan={limits.employees_limit === 1 ? "pro" : "premium"}
+                remaining={getRemainingCount('employees')}
+                limit={limits.employees_limit}
+              />
+            </div>
+          )}
+          
           <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
             <DialogTrigger asChild>
-              <Button onClick={() => resetForm()} className="gap-2">
+              <Button onClick={() => resetForm()} className="gap-2" disabled={!canCreateEmployee()}>
                 <Plus className="h-4 w-4" />
                 Adicionar Funcionário
               </Button>

@@ -12,6 +12,8 @@ import { Plus, Package, AlertTriangle, TrendingUp, TrendingDown, Edit, Trash2 } 
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Textarea } from '@/components/ui/textarea';
+import { useSubscriptionLimits } from '@/hooks/use-subscription-limits';
+import { UpgradePrompt } from '@/components/ui/upgrade-prompt';
 
 interface Product {
   id: string;
@@ -39,6 +41,7 @@ interface StockMovement {
 export function Inventory() {
   const { user } = useAuth();
   const { toast } = useToast();
+  const { canAccessFeature, limits } = useSubscriptionLimits();
   const [products, setProducts] = useState<Product[]>([]);
   const [movements, setMovements] = useState<StockMovement[]>([]);
   const [loading, setLoading] = useState(true);
@@ -307,6 +310,22 @@ export function Inventory() {
             {[...Array(3)].map((_, i) => (
               <div key={i} className="h-24 bg-muted animate-pulse rounded-lg" />
             ))}
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (!canAccessFeature('can_use_inventory')) {
+    return (
+      <div className="min-h-screen bg-background">
+        <div className="container mx-auto px-4 py-8 flex items-center justify-center">
+          <div className="max-w-2xl w-full">
+            <UpgradePrompt
+              feature="Controle de Estoque"
+              currentPlan={limits.plan_type}
+              requiredPlan="pro"
+            />
           </div>
         </div>
       </div>

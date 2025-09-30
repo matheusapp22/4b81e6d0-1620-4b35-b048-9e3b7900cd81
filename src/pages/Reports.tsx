@@ -5,6 +5,8 @@ import { useAuth } from '@/contexts/auth-context';
 import { supabase } from '@/integrations/supabase/client';
 import { BarChart3, Calendar, DollarSign, TrendingUp, Users, Clock } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { useSubscriptionLimits } from '@/hooks/use-subscription-limits';
+import { UpgradePrompt } from '@/components/ui/upgrade-prompt';
 
 interface ReportData {
   totalAppointments: number;
@@ -17,6 +19,8 @@ interface ReportData {
 }
 
 export function Reports() {
+  const { user } = useAuth();
+  const { canAccessFeature, limits } = useSubscriptionLimits();
   const [reportData, setReportData] = useState<ReportData>({
     totalAppointments: 0,
     completedAppointments: 0,
@@ -31,7 +35,6 @@ export function Reports() {
     start: new Date(new Date().getFullYear(), new Date().getMonth(), 1).toISOString().split('T')[0],
     end: new Date().toISOString().split('T')[0]
   });
-  const { user } = useAuth();
 
   useEffect(() => {
     if (user) {
@@ -142,7 +145,23 @@ export function Reports() {
     );
   }
 
-  const completionRate = reportData.totalAppointments > 0 
+  if (!canAccessFeature('can_use_analytics')) {
+    return (
+      <div className="min-h-screen bg-gradient-hero p-6">
+        <div className="max-w-6xl mx-auto flex items-center justify-center min-h-screen">
+          <div className="max-w-2xl w-full">
+            <UpgradePrompt
+              feature="Relatórios e Analytics"
+              currentPlan={limits.plan_type}
+              requiredPlan="pro"
+            />
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  const completionRate = reportData.totalAppointments > 0
     ? (reportData.completedAppointments / reportData.totalAppointments * 100).toFixed(1)
     : '0';
 

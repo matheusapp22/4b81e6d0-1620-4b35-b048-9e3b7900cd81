@@ -7,6 +7,8 @@ import { Star, Gift, Trophy, Users, TrendingUp } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { useSubscriptionLimits } from '@/hooks/use-subscription-limits';
+import { UpgradePrompt } from '@/components/ui/upgrade-prompt';
 
 interface LoyaltyClient {
   id: string;
@@ -42,6 +44,7 @@ interface ClientSubscription {
 export function Loyalty() {
   const { user } = useAuth();
   const { toast } = useToast();
+  const { canAccessFeature, limits } = useSubscriptionLimits();
   const [loyaltyClients, setLoyaltyClients] = useState<LoyaltyClient[]>([]);
   const [transactions, setTransactions] = useState<LoyaltyTransaction[]>([]);
   const [subscriptions, setSubscriptions] = useState<ClientSubscription[]>([]);
@@ -172,6 +175,22 @@ export function Loyalty() {
             {[...Array(3)].map((_, i) => (
               <div key={i} className="h-24 bg-muted animate-pulse rounded-lg" />
             ))}
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (!canAccessFeature('can_use_loyalty')) {
+    return (
+      <div className="min-h-screen bg-background">
+        <div className="container mx-auto px-4 py-8 flex items-center justify-center">
+          <div className="max-w-2xl w-full">
+            <UpgradePrompt
+              feature="Programa de Fidelidade"
+              currentPlan={limits.plan_type}
+              requiredPlan="premium"
+            />
           </div>
         </div>
       </div>
