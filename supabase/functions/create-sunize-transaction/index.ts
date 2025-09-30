@@ -73,7 +73,7 @@ Deno.serve(async (req) => {
             is_physical: false
           }
         ],
-        ip: req.headers.get('x-forwarded-for') || '0.0.0.0',
+        ip: (req.headers.get('x-forwarded-for') || '').split(',')[0].trim() || '127.0.0.1',
         customer: {
           name: body.customer.name,
           email: body.customer.email,
