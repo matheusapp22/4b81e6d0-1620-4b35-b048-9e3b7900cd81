@@ -12,6 +12,7 @@ import { NextAppointment } from '@/components/dashboard/next-appointment';
 import { QuickActions } from '@/components/dashboard/quick-actions';
 import { AppointmentModal } from '@/components/dashboard/appointment-modal';
 import { SupportBuddy } from '@/components/dashboard/support-buddy';
+import { DashboardUpgradeBanner } from '@/components/dashboard/upgrade-banner';
 
 export default function Dashboard() {
   const { user, loading } = useAuth();
@@ -58,25 +59,29 @@ export default function Dashboard() {
           <DashboardGreeting />
         </div>
         
-        <div className="animate-slide-up" style={{ animationDelay: '0.1s' }}>
-          <DashboardStats />
+        <div className="animate-slide-up" style={{ animationDelay: '0.15s' }}>
+          <DashboardUpgradeBanner />
         </div>
         
         <div className="animate-slide-up" style={{ animationDelay: '0.2s' }}>
+          <DashboardStats />
+        </div>
+        
+        <div className="animate-slide-up" style={{ animationDelay: '0.3s' }}>
           <StatsChart />
         </div>
         
-        <div className="grid grid-cols-1 xl:grid-cols-3 gap-12 animate-slide-up" style={{ animationDelay: '0.3s' }}>
+        <div className="grid grid-cols-1 xl:grid-cols-3 gap-12 animate-slide-up" style={{ animationDelay: '0.4s' }}>
           <div className="xl:col-span-2 space-y-12">
-            <div className="animate-scale-in" style={{ animationDelay: '0.4s' }}>
+            <div className="animate-scale-in" style={{ animationDelay: '0.5s' }}>
               <TodayAppointments />
             </div>
           </div>
           <div className="space-y-12">
-            <div className="animate-scale-in" style={{ animationDelay: '0.5s' }}>
+            <div className="animate-scale-in" style={{ animationDelay: '0.6s' }}>
               <NextAppointment />
             </div>
-            <div className="animate-scale-in" style={{ animationDelay: '0.6s' }}>
+            <div className="animate-scale-in" style={{ animationDelay: '0.7s' }}>
               <QuickActions />
             </div>
           </div>
