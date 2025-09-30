@@ -52,6 +52,36 @@ Deno.serve(async (req) => {
     const amount = planPrices[body.plan_type];
 
     // Cria transação na Sunize
+    console.log('Criando transação na Sunize...');
+    console.log('API Key presente:', !!Deno.env.get('SUNIZE_API_KEY'));
+    console.log('API Secret presente:', !!Deno.env.get('SUNIZE_API_SECRET'));
+    
+    const requestBody = {
+      external_id: `sub_${user.id}_${Date.now()}`,
+      total_amount: amount,
+      payment_method: 'PIX',
+      items: [
+        {
+          id: body.plan_type,
+          title: `Plano ${body.plan_type === 'pro' ? 'Pro' : 'Premium'}`,
+          description: `Assinatura mensal - Plano ${body.plan_type}`,
+          price: amount,
+          quantity: 1,
+          is_physical: false
+        }
+      ],
+      ip: (req.headers.get('x-forwarded-for') || '').split(',')[0].trim() || '127.0.0.1',
+      customer: {
+        name: body.customer.name,
+        email: body.customer.email,
+        phone: body.customer.phone,
+        document_type: body.customer.document_type,
+        document: body.customer.document
+      }
+    };
+    
+    console.log('Request body:', JSON.stringify(requestBody, null, 2));
+    
     const sunizeResponse = await fetch('https://api.sunize.com.br/v1/transactions', {
       method: 'POST',
       headers: {
@@ -59,30 +89,10 @@ Deno.serve(async (req) => {
         'x-api-key': Deno.env.get('SUNIZE_API_KEY') ?? '',
         'x-api-secret': Deno.env.get('SUNIZE_API_SECRET') ?? '',
       },
-      body: JSON.stringify({
-        external_id: `sub_${user.id}_${Date.now()}`,
-        total_amount: amount,
-        payment_method: 'PIX',
-        items: [
-          {
-            id: body.plan_type,
-            title: `Plano ${body.plan_type === 'pro' ? 'Pro' : 'Premium'}`,
-            description: `Assinatura mensal - Plano ${body.plan_type}`,
-            price: amount,
-            quantity: 1,
-            is_physical: false
-          }
-        ],
-        ip: (req.headers.get('x-forwarded-for') || '').split(',')[0].trim() || '127.0.0.1',
-        customer: {
-          name: body.customer.name,
-          email: body.customer.email,
-          phone: body.customer.phone,
-          document_type: body.customer.document_type,
-          document: body.customer.document
-        }
-      })
+      body: JSON.stringify(requestBody)
     });
+    
+    console.log('Sunize response status:', sunizeResponse.status);
 
     if (!sunizeResponse.ok) {
       const errorData = await sunizeResponse.text();
