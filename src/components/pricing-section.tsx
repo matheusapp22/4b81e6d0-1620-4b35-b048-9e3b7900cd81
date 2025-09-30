@@ -40,7 +40,7 @@ const plans = [
       "Google Agenda + Zoom",
       "Suporte prioritário"
     ],
-    cta: "Testar 7 Dias Grátis",
+    cta: "Assinar por R$ 29/mês",
     variant: "futuristic" as const,
     popular: true,
     bgColor: "bg-gradient-tech"
@@ -60,7 +60,7 @@ const plans = [
       "Onboarding dedicado",
       "Suporte 24/7"
     ],
-    cta: "Falar com Vendas",
+    cta: "Assinar por R$ 59/mês",
     variant: "neon" as const,
     popular: false,
     bgColor: "bg-gradient-primary/5"
@@ -82,7 +82,16 @@ export function PricingSection() {
     if (planName === "Free") {
       navigate("/auth");
     } else if (planName === "Premium") {
-      window.location.href = "mailto:contato@agendafacil.com?subject=Interesse no Plano Premium";
+      if (!user) {
+        navigate("/auth");
+      } else {
+        setSelectedPlan({
+          type: 'premium',
+          name: 'Premium',
+          price: 'R$ 59'
+        });
+        setCheckoutOpen(true);
+      }
     } else if (planName === "Pro") {
       if (!user) {
         navigate("/auth");
