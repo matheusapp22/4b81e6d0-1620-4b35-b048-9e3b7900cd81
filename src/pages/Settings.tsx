@@ -92,23 +92,20 @@ export function Settings() {
     try {
       const { error } = await supabase
         .from('profiles')
-        .upsert({
-          user_id: user?.id,
-          email: user?.email,
+        .update({
           first_name: profile.first_name,
           last_name: profile.last_name,
           business_name: profile.business_name,
           phone: profile.phone,
           timezone: profile.timezone,
           language: profile.language
-        }, {
-          onConflict: 'user_id'
-        });
+        })
+        .eq('user_id', user?.id);
 
       if (error) throw error;
       
       toast({ title: 'Perfil atualizado com sucesso!' });
-      refreshProfile();
+      await refreshProfile();
     } catch (error: any) {
       toast({
         title: 'Erro ao atualizar perfil',
