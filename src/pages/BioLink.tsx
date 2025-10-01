@@ -92,6 +92,8 @@ const BioLink = () => {
 
       if (bioLinkError || !bioLinkData) {
         console.error('Bio link not found:', bioLinkError);
+        setProfile(null);
+        setLoading(false);
         return;
       }
 
