@@ -40,6 +40,11 @@ export const TestimonialsCarousel = ({ testimonials, className = '' }: Testimoni
 
   const handleTouchMove = (e: React.TouchEvent) => {
     touchEndX.current = e.touches[0].clientX;
+    // Prevent scrolling while swiping
+    const distance = Math.abs(touchStartX.current - touchEndX.current);
+    if (distance > 10) {
+      e.preventDefault();
+    }
   };
 
   const handleTouchEnd = () => {
@@ -81,7 +86,8 @@ export const TestimonialsCarousel = ({ testimonials, className = '' }: Testimoni
       <div className="relative">
         <Card className="overflow-hidden">
           <CardContent 
-            className="p-0"
+            className="p-0 select-none"
+            style={{ touchAction: 'pan-y' }}
             onTouchStart={handleTouchStart}
             onTouchMove={handleTouchMove}
             onTouchEnd={handleTouchEnd}
