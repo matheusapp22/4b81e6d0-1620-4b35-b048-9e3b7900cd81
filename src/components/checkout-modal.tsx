@@ -88,6 +88,7 @@ export function CheckoutModal({ open, onOpenChange, planType, planName, planPric
       const { data, error } = await supabase.functions.invoke('create-sunize-transaction', {
         body: {
           plan_type: planType,
+          period_months: selectedPeriod,
           customer: {
             name: formData.name,
             email: formData.email,

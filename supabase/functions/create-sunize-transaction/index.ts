@@ -7,6 +7,7 @@ const corsHeaders = {
 
 interface CreateTransactionRequest {
   plan_type: 'pro' | 'premium';
+  period_months: number; // 1, 6 ou 12
   customer: {
     name: string;
     email: string;
@@ -43,29 +44,43 @@ Deno.serve(async (req) => {
 
     const body: CreateTransactionRequest = await req.json();
 
-    // Define valores dos planos
+    // Define valores base dos planos (mensal)
     const planPrices = {
       pro: 29.00,
       premium: 59.00
     };
 
-    const amount = planPrices[body.plan_type];
+    const monthlyPrice = planPrices[body.plan_type];
+    const months = body.period_months || 1;
+    
+    // Aplicar descontos conforme o período
+    let discount = 1; // sem desconto
+    if (months === 6) {
+      discount = 0.85; // 15% de desconto
+    } else if (months === 12) {
+      discount = 0.70; // 30% de desconto
+    }
+    
+    const totalAmount = monthlyPrice * months * discount;
 
     // Cria transação na Sunize
     console.log('Criando transação na Sunize...');
     console.log('API Key presente:', !!Deno.env.get('SUNIZE_API_KEY'));
     console.log('API Secret presente:', !!Deno.env.get('SUNIZE_API_SECRET'));
     
+    const periodLabel = months === 1 ? '1 Mês' : months === 6 ? '6 Meses' : '1 Ano';
+    const discountLabel = months === 6 ? ' (15% OFF)' : months === 12 ? ' (30% OFF)' : '';
+    
     const requestBody = {
       external_id: `sub_${user.id}_${Date.now()}`,
-      total_amount: amount,
+      total_amount: totalAmount,
       payment_method: 'PIX',
       items: [
         {
-          id: body.plan_type,
-          title: `Plano ${body.plan_type === 'pro' ? 'Pro' : 'Premium'}`,
-          description: `Assinatura mensal - Plano ${body.plan_type}`,
-          price: amount,
+          id: `${body.plan_type}_${months}m`,
+          title: `Plano ${body.plan_type === 'pro' ? 'Pro' : 'Premium'} - ${periodLabel}`,
+          description: `Assinatura ${periodLabel} - Plano ${body.plan_type}${discountLabel}`,
+          price: totalAmount,
           quantity: 1,
           is_physical: false
         }
@@ -109,7 +124,7 @@ Deno.serve(async (req) => {
         transaction_id: transaction.id,
         pix_payload: transaction.pix?.payload,
         status: transaction.status,
-        amount: transaction.total_value || amount
+        amount: transaction.total_value || totalAmount
       }),
       { 
         status: 200,
