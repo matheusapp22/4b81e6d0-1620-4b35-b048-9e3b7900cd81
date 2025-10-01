@@ -6,6 +6,8 @@ import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { Clock, User, MapPin, Phone, Calendar as CalendarIcon, CheckCircle, RotateCcw, Activity, Sparkles } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/auth-context';
+import { useToast } from '@/hooks/use-toast';
+import { useNavigate } from 'react-router-dom';
 
 interface NextAppointment {
   id: string;
@@ -25,7 +27,10 @@ interface NextAppointment {
 export function NextAppointment() {
   const [nextAppointment, setNextAppointment] = useState<NextAppointment | null>(null);
   const [loading, setLoading] = useState(true);
+  const [updating, setUpdating] = useState(false);
   const { user } = useAuth();
+  const { toast } = useToast();
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (!user) return;
@@ -173,6 +178,41 @@ export function NextAppointment() {
     }
   };
 
+  const handleConfirm = async () => {
+    if (!nextAppointment || updating) return;
+
+    try {
+      setUpdating(true);
+      const { error } = await supabase
+        .from('appointments')
+        .update({ status: 'confirmed' })
+        .eq('id', nextAppointment.id);
+
+      if (error) throw error;
+
+      toast({
+        title: "Agendamento confirmado!",
+        description: "O cliente será notificado da confirmação.",
+      });
+
+      // Refresh the appointment
+      setNextAppointment({ ...nextAppointment, status: 'confirmed' });
+    } catch (error: any) {
+      toast({
+        title: "Erro ao confirmar",
+        description: error.message,
+        variant: "destructive",
+      });
+    } finally {
+      setUpdating(false);
+    }
+  };
+
+  const handleReschedule = () => {
+    if (!nextAppointment) return;
+    navigate(`/appointments?appointmentId=${nextAppointment.id}`);
+  };
+
   return (
     <GlassCard variant="premium" hover className="group">
       <div className="p-8 space-y-8">
@@ -254,11 +294,23 @@ export function NextAppointment() {
 
         {/* Action Buttons */}
         <div className="flex gap-4">
-          <Button size="default" className="flex-1 group/btn" variant="futuristic">
+          <Button 
+            size="default" 
+            className="flex-1 group/btn" 
+            variant="futuristic"
+            onClick={handleConfirm}
+            disabled={updating || nextAppointment.status === 'confirmed'}
+          >
             <CheckCircle className="w-4 h-4 group-hover/btn:scale-110 transition-transform duration-300" />
-            Confirmar
+            {nextAppointment.status === 'confirmed' ? 'Confirmado' : 'Confirmar'}
           </Button>
-          <Button size="default" variant="elegant" className="flex-1 group/btn">
+          <Button 
+            size="default" 
+            variant="elegant" 
+            className="flex-1 group/btn"
+            onClick={handleReschedule}
+            disabled={updating}
+          >
             <RotateCcw className="w-4 h-4 group-hover/btn:rotate-180 transition-transform duration-400" />
             Reagendar
           </Button>
