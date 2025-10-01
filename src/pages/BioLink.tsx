@@ -82,25 +82,56 @@ const BioLink = () => {
 
   const fetchBusinessData = async () => {
     try {
-      // Fetch business profile by business_name (using as username)
-      const { data: profileData, error: profileError } = await supabase
-        .from('public_profiles')
+      // Fetch bio_link by slug
+      const { data: bioLinkData, error: bioLinkError } = await supabase
+        .from('bio_links')
         .select('*')
-        .eq('business_name', username)
+        .eq('slug', username)
+        .eq('is_active', true)
         .maybeSingle();
 
-      if (profileError || !profileData) {
-        console.error('Profile not found:', profileError);
+      if (bioLinkError || !bioLinkData) {
+        console.error('Bio link not found:', bioLinkError);
         return;
       }
 
-      setProfile(profileData);
+      // Use bio_link data as profile
+      setProfile({
+        user_id: bioLinkData.user_id,
+        business_name: bioLinkData.business_name,
+        avatar_url: bioLinkData.avatar_url,
+        banner_url: bioLinkData.banner_url,
+        description: bioLinkData.description,
+        whatsapp_link: bioLinkData.whatsapp_link,
+        instagram_link: bioLinkData.instagram_link,
+        website_link: bioLinkData.website_link,
+        font_color: bioLinkData.font_color,
+        background_color: bioLinkData.background_color,
+        background_gradient_start: bioLinkData.background_gradient_start,
+        background_gradient_end: bioLinkData.background_gradient_end,
+        card_background_color: bioLinkData.card_background_color,
+        card_border_color: bioLinkData.card_border_color,
+        primary_color: bioLinkData.primary_color,
+        secondary_color: bioLinkData.secondary_color,
+        accent_color: bioLinkData.accent_color,
+        text_primary_color: bioLinkData.text_primary_color,
+        text_secondary_color: bioLinkData.text_secondary_color,
+        button_background_color: bioLinkData.button_background_color,
+        button_text_color: bioLinkData.button_text_color,
+        section_header_color: bioLinkData.section_header_color,
+        font_family: bioLinkData.font_family,
+        font_size: bioLinkData.font_size,
+        border_radius: bioLinkData.border_radius,
+        shadow_intensity: bioLinkData.shadow_intensity,
+        use_gradient_background: bioLinkData.use_gradient_background,
+        timezone: 'America/Sao_Paulo'
+      } as BusinessProfile);
 
       // Fetch services
       const { data: servicesData } = await supabase
         .from('services')
         .select('*')
-        .eq('user_id', profileData.user_id)
+        .eq('user_id', bioLinkData.user_id)
         .eq('is_active', true);
 
       if (servicesData) setServices(servicesData);
@@ -109,7 +140,7 @@ const BioLink = () => {
       const { data: hoursData } = await supabase
         .from('business_hours')
         .select('*')
-        .eq('user_id', profileData.user_id)
+        .eq('user_id', bioLinkData.user_id)
         .order('day_of_week');
 
       if (hoursData) setBusinessHours(hoursData);
@@ -118,7 +149,7 @@ const BioLink = () => {
       const { data: testimonialsData } = await supabase
         .from('testimonials')
         .select('*')
-        .eq('user_id', profileData.user_id)
+        .eq('user_id', bioLinkData.user_id)
         .eq('is_active', true)
         .order('display_order');
 
