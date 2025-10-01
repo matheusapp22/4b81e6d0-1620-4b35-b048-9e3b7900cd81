@@ -240,6 +240,10 @@ export const BioLinkEditor = () => {
       return;
     }
 
+    console.log('=== INÍCIO DO SALVAMENTO ===');
+    console.log('User ID:', user.id);
+    console.log('FormData:', formData);
+
     setLoading(true);
     try {
       let avatarUrl = profile?.avatar_url;
@@ -247,11 +251,13 @@ export const BioLinkEditor = () => {
 
       // Upload avatar if selected
       if (avatarFile) {
+        console.log('Fazendo upload do avatar...');
         avatarUrl = await uploadImage(avatarFile, 'avatars');
       }
 
       // Upload banner if selected
       if (bannerFile) {
+        console.log('Fazendo upload do banner...');
         bannerUrl = await uploadImage(bannerFile, 'banners');
       }
 
@@ -294,7 +300,7 @@ export const BioLinkEditor = () => {
         .eq('user_id', user.id);
 
       if (profileError) {
-        console.error('Erro ao atualizar perfil:', profileError);
+        console.error('ERRO AO ATUALIZAR PERFIL:', profileError);
         throw profileError;
       }
       
