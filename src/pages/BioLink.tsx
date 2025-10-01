@@ -187,8 +187,19 @@ const BioLink = () => {
   };
 
   const getWhatsAppLink = () => {
-    // Use custom WhatsApp link if provided, otherwise use phone from profile
-    if (profile?.whatsapp_link) return profile.whatsapp_link;
+    // Use custom WhatsApp link if provided
+    if (profile?.whatsapp_link) {
+      const link = profile.whatsapp_link;
+      // Check if it's already a full URL
+      if (link.startsWith('http://') || link.startsWith('https://')) {
+        return link;
+      }
+      // If it's just a number, format it properly
+      const cleanPhone = link.replace(/\D/g, '');
+      return `https://wa.me/55${cleanPhone}?text=Olá! Gostaria de agendar um horário.`;
+    }
+    
+    // Fallback to phone from profile
     if (!profile?.phone) return '#';
     const cleanPhone = profile.phone.replace(/\D/g, '');
     return `https://wa.me/55${cleanPhone}?text=Olá! Gostaria de agendar um horário.`;
