@@ -101,6 +101,8 @@ export function Settings() {
           phone: profile.phone,
           timezone: profile.timezone,
           language: profile.language
+        }, {
+          onConflict: 'user_id'
         });
 
       if (error) throw error;
