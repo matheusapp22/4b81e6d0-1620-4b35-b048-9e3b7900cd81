@@ -1360,6 +1360,40 @@ export type Database = {
       }
     }
     Functions: {
+      get_public_profile_data: {
+        Args: { p_user_id: string }
+        Returns: {
+          accent_color: string
+          avatar_url: string
+          background_color: string
+          background_gradient_end: string
+          background_gradient_start: string
+          banner_url: string
+          border_radius: string
+          business_name: string
+          button_background_color: string
+          button_text_color: string
+          card_background_color: string
+          card_border_color: string
+          description: string
+          font_color: string
+          font_family: string
+          font_size: string
+          instagram_link: string
+          language: string
+          primary_color: string
+          secondary_color: string
+          section_header_color: string
+          shadow_intensity: string
+          text_primary_color: string
+          text_secondary_color: string
+          timezone: string
+          use_gradient_background: boolean
+          user_id: string
+          website_link: string
+          whatsapp_link: string
+        }[]
+      }
       log_security_event: {
         Args: {
           p_event_data?: Json
