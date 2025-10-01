@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { ChevronLeft, ChevronRight, Star } from 'lucide-react';
 import { Button } from './ui/button';
 import { Card, CardContent } from './ui/card';
@@ -18,6 +18,8 @@ interface TestimonialsCarouselProps {
 
 export const TestimonialsCarousel = ({ testimonials, className = '' }: TestimonialsCarouselProps) => {
   const [currentIndex, setCurrentIndex] = useState(0);
+  const touchStartX = useRef<number>(0);
+  const touchEndX = useRef<number>(0);
 
   if (!testimonials || testimonials.length === 0) {
     return null;
@@ -29,6 +31,35 @@ export const TestimonialsCarousel = ({ testimonials, className = '' }: Testimoni
 
   const prevTestimonial = () => {
     setCurrentIndex((prev) => (prev - 1 + testimonials.length) % testimonials.length);
+  };
+
+  const handleTouchStart = (e: React.TouchEvent) => {
+    touchStartX.current = e.touches[0].clientX;
+  };
+
+  const handleTouchMove = (e: React.TouchEvent) => {
+    touchEndX.current = e.touches[0].clientX;
+  };
+
+  const handleTouchEnd = () => {
+    if (!touchStartX.current || !touchEndX.current) return;
+    
+    const distance = touchStartX.current - touchEndX.current;
+    const minSwipeDistance = 50;
+
+    if (Math.abs(distance) > minSwipeDistance) {
+      if (distance > 0) {
+        // Swipe left - next testimonial
+        nextTestimonial();
+      } else {
+        // Swipe right - previous testimonial
+        prevTestimonial();
+      }
+    }
+
+    // Reset values
+    touchStartX.current = 0;
+    touchEndX.current = 0;
   };
 
   const currentTestimonial = testimonials[currentIndex];
@@ -50,9 +81,14 @@ export const TestimonialsCarousel = ({ testimonials, className = '' }: Testimoni
       
       <div className="relative">
         <Card className="overflow-hidden">
-          <CardContent className="p-0">
+          <CardContent 
+            className="p-0 touch-pan-y"
+            onTouchStart={handleTouchStart}
+            onTouchMove={handleTouchMove}
+            onTouchEnd={handleTouchEnd}
+          >
             {/* Image */}
-            <div className="aspect-square relative">
+            <div className="aspect-square relative select-none">
               <img
                 src={currentTestimonial.image_url}
                 alt={`Depoimento de ${currentTestimonial.client_name || 'cliente'}`}
