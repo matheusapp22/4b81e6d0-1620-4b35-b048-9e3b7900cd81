@@ -89,7 +89,18 @@ export function Settings() {
   const handleProfileSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
+    if (!user?.id) {
+      toast({
+        title: 'Erro',
+        description: 'Usuário não autenticado',
+        variant: 'destructive'
+      });
+      return;
+    }
+    
     try {
+      console.log('Atualizando perfil para user_id:', user.id);
+      
       const { error } = await supabase
         .from('profiles')
         .update({
@@ -100,13 +111,18 @@ export function Settings() {
           timezone: profile.timezone,
           language: profile.language
         })
-        .eq('user_id', user?.id);
+        .eq('user_id', user.id);
 
-      if (error) throw error;
+      if (error) {
+        console.error('Erro ao atualizar perfil:', error);
+        throw error;
+      }
       
+      console.log('Perfil atualizado com sucesso');
       toast({ title: 'Perfil atualizado com sucesso!' });
       await refreshProfile();
     } catch (error: any) {
+      console.error('Erro no handleProfileSubmit:', error);
       toast({
         title: 'Erro ao atualizar perfil',
         description: error.message,

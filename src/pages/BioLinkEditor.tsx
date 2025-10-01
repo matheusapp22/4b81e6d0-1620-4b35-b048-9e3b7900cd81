@@ -256,6 +256,8 @@ export const BioLinkEditor = () => {
       }
 
       // Update profile
+      console.log('Atualizando perfil no BioLinkEditor para user_id:', user.id);
+      
       const { error: profileError } = await supabase
         .from('profiles')
         .update({
@@ -263,7 +265,6 @@ export const BioLinkEditor = () => {
           first_name: formData.first_name,
           last_name: formData.last_name,
           phone: formData.phone,
-          email: formData.email,
           whatsapp_link: formData.whatsapp_link,
           instagram_link: formData.instagram_link,
           website_link: formData.website_link,
@@ -292,7 +293,12 @@ export const BioLinkEditor = () => {
         })
         .eq('user_id', user.id);
 
-      if (profileError) throw profileError;
+      if (profileError) {
+        console.error('Erro ao atualizar perfil:', profileError);
+        throw profileError;
+      }
+      
+      console.log('Perfil atualizado com sucesso no BioLinkEditor');
 
       // Update or create bio link
       // If we're editing a specific bio link, update it directly
