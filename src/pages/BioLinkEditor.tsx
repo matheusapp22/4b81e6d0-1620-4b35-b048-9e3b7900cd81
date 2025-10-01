@@ -670,8 +670,11 @@ export const BioLinkEditor = () => {
     }
   };
 
-  const bioLinkUrl = formData.business_name ? `/bio/${formData.business_name}` : '';
-  const fullBioLinkUrl = formData.business_name ? `${window.location.origin}/bio/${formData.business_name}` : '';
+  // Use the active bio link if available, otherwise use formData
+  const activeBioLink = bioLinks.find(link => link.is_active);
+  const bioLinkSlug = activeBioLink?.slug || formData.business_name;
+  const bioLinkUrl = bioLinkSlug ? `/bio/${bioLinkSlug}` : '';
+  const fullBioLinkUrl = bioLinkSlug ? `${window.location.origin}/bio/${bioLinkSlug}` : '';
 
   return (
     <div className="container mx-auto p-4 sm:p-6 space-y-4 sm:space-y-6">
