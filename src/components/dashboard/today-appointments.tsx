@@ -64,6 +64,27 @@ export function TodayAppointments() {
     };
 
     fetchTodayAppointments();
+
+    // Real-time updates for appointments
+    const channel = supabase
+      .channel('today-appointments-changes')
+      .on(
+        'postgres_changes',
+        {
+          event: '*',
+          schema: 'public',
+          table: 'appointments',
+          filter: `user_id=eq.${user.id}`
+        },
+        () => {
+          fetchTodayAppointments();
+        }
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
   }, [user]);
 
   const updateAppointmentStatus = async (appointmentId: string, status: string) => {

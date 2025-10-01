@@ -78,6 +78,27 @@ export function NextAppointment() {
     };
 
     fetchNextAppointment();
+
+    // Real-time updates for appointments
+    const channel = supabase
+      .channel('next-appointment-changes')
+      .on(
+        'postgres_changes',
+        {
+          event: '*',
+          schema: 'public',
+          table: 'appointments',
+          filter: `user_id=eq.${user.id}`
+        },
+        () => {
+          fetchNextAppointment();
+        }
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
   }, [user]);
 
   if (loading) {

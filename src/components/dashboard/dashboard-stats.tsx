@@ -89,6 +89,39 @@ export function DashboardStats() {
     };
 
     fetchStats();
+
+    // Real-time updates for appointments
+    const channel = supabase
+      .channel('dashboard-stats-changes')
+      .on(
+        'postgres_changes',
+        {
+          event: '*',
+          schema: 'public',
+          table: 'appointments',
+          filter: `user_id=eq.${user.id}`
+        },
+        () => {
+          fetchStats();
+        }
+      )
+      .on(
+        'postgres_changes',
+        {
+          event: '*',
+          schema: 'public',
+          table: 'clients',
+          filter: `user_id=eq.${user.id}`
+        },
+        () => {
+          fetchStats();
+        }
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
   }, [user]);
 
   const statsData = [
