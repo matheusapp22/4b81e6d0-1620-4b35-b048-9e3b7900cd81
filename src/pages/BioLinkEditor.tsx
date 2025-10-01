@@ -1321,6 +1321,45 @@ export const BioLinkEditor = () => {
                     <Copy className="w-3 h-3 mr-1" />
                     Copiar Link
                   </Button>
+                  <Dialog>
+                    <DialogTrigger asChild>
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        className="h-8 px-3 text-xs"
+                      >
+                        <QrCode className="w-3 h-3 mr-1" />
+                        QR Code
+                      </Button>
+                    </DialogTrigger>
+                    <DialogContent>
+                      <DialogHeader>
+                        <DialogTitle>QR Code do Bio Link</DialogTitle>
+                      </DialogHeader>
+                      <div className="flex flex-col items-center gap-4">
+                        <img
+                          src={generateQRCode(`${window.location.origin}/bio/${bioLink.slug}`)}
+                          alt="QR Code"
+                          className="w-64 h-64 border rounded-lg"
+                        />
+                        <p className="text-sm text-center text-muted-foreground">
+                          Escaneie este QR Code para acessar o bio link
+                        </p>
+                        <Button
+                          variant="outline"
+                          className="w-full"
+                          onClick={() => {
+                            const link = document.createElement('a');
+                            link.href = generateQRCode(`${window.location.origin}/bio/${bioLink.slug}`);
+                            link.download = `qrcode-${bioLink.slug}.png`;
+                            link.click();
+                          }}
+                        >
+                          Baixar QR Code
+                        </Button>
+                      </div>
+                    </DialogContent>
+                  </Dialog>
                   <div className="flex items-center gap-2">
                     <Label htmlFor={`bio-link-${bioLink.id}`} className="text-sm">
                       {bioLink.is_active ? 'Ativo' : 'Inativo'}
