@@ -3,6 +3,7 @@ import { useAuth } from '@/contexts/auth-context';
 import { supabase } from '@/integrations/supabase/client';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { QRCodeSVG } from 'qrcode.react';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { GlassCard } from '@/components/ui/glass-card';
@@ -1275,15 +1276,14 @@ export const BioLinkEditor = () => {
               <div className="text-center">
                 <Label className="text-sm font-medium">QR Code</Label>
                 <div className="mt-2 flex justify-center">
-                  <img
-                    src={generateQRCode(fullBioLinkUrl)}
-                    alt="QR Code do BioLink"
-                    className="w-32 h-32 border rounded-lg bg-white p-2"
-                    onError={(e) => {
-                      console.error('Erro ao carregar QR Code');
-                      e.currentTarget.src = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="200" height="200"%3E%3Crect width="200" height="200" fill="%23f0f0f0"/%3E%3Ctext x="100" y="100" text-anchor="middle" font-size="14" fill="%23666"%3EErro ao gerar QR%3C/text%3E%3C/svg%3E';
-                    }}
-                  />
+                  <div className="p-4 bg-white rounded-lg border">
+                    <QRCodeSVG 
+                      value={fullBioLinkUrl}
+                      size={128}
+                      level="H"
+                      includeMargin={false}
+                    />
+                  </div>
                 </div>
                 <p className="text-xs text-muted-foreground mt-2">
                   Clientes podem escanear para acessar diretamente
@@ -1346,11 +1346,14 @@ export const BioLinkEditor = () => {
                         <DialogTitle>QR Code do Bio Link</DialogTitle>
                       </DialogHeader>
                       <div className="flex flex-col items-center gap-4">
-                        <img
-                          src={generateQRCode(`${window.location.origin}/bio/${bioLink.slug}`)}
-                          alt="QR Code"
-                          className="w-64 h-64 border rounded-lg"
-                        />
+                        <div className="p-4 bg-white rounded-lg">
+                          <QRCodeSVG 
+                            value={`${window.location.origin}/bio/${bioLink.slug}`}
+                            size={256}
+                            level="H"
+                            includeMargin={true}
+                          />
+                        </div>
                         <p className="text-sm text-center text-muted-foreground">
                           Escaneie este QR Code para acessar o bio link
                         </p>
@@ -1358,10 +1361,24 @@ export const BioLinkEditor = () => {
                           variant="outline"
                           className="w-full"
                           onClick={() => {
-                            const link = document.createElement('a');
-                            link.href = generateQRCode(`${window.location.origin}/bio/${bioLink.slug}`);
-                            link.download = `qrcode-${bioLink.slug}.png`;
-                            link.click();
+                            const svg = document.querySelector('svg');
+                            if (svg) {
+                              const svgData = new XMLSerializer().serializeToString(svg);
+                              const canvas = document.createElement('canvas');
+                              const ctx = canvas.getContext('2d');
+                              const img = new Image();
+                              img.onload = () => {
+                                canvas.width = img.width;
+                                canvas.height = img.height;
+                                ctx?.drawImage(img, 0, 0);
+                                const pngFile = canvas.toDataURL('image/png');
+                                const downloadLink = document.createElement('a');
+                                downloadLink.href = pngFile;
+                                downloadLink.download = `qrcode-${bioLink.slug}.png`;
+                                downloadLink.click();
+                              };
+                              img.src = 'data:image/svg+xml;base64,' + btoa(svgData);
+                            }
                           }}
                         >
                           Baixar QR Code
