@@ -1271,19 +1271,25 @@ export const BioLinkEditor = () => {
             </div>
 
             {/* QR Code */}
-            <div className="text-center">
-              <Label className="text-sm font-medium">QR Code</Label>
-              <div className="mt-2 flex justify-center">
-                <img
-                  src={generateQRCode(fullBioLinkUrl)}
-                  alt="QR Code do BioLink"
-                  className="w-32 h-32 border rounded-lg"
-                />
+            {fullBioLinkUrl && (
+              <div className="text-center">
+                <Label className="text-sm font-medium">QR Code</Label>
+                <div className="mt-2 flex justify-center">
+                  <img
+                    src={generateQRCode(fullBioLinkUrl)}
+                    alt="QR Code do BioLink"
+                    className="w-32 h-32 border rounded-lg bg-white p-2"
+                    onError={(e) => {
+                      console.error('Erro ao carregar QR Code');
+                      e.currentTarget.src = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="200" height="200"%3E%3Crect width="200" height="200" fill="%23f0f0f0"/%3E%3Ctext x="100" y="100" text-anchor="middle" font-size="14" fill="%23666"%3EErro ao gerar QR%3C/text%3E%3C/svg%3E';
+                    }}
+                  />
+                </div>
+                <p className="text-xs text-muted-foreground mt-2">
+                  Clientes podem escanear para acessar diretamente
+                </p>
               </div>
-              <p className="text-xs text-muted-foreground mt-2">
-                Clientes podem escanear para acessar diretamente
-              </p>
-            </div>
+            )}
           </div>
         </GlassCard>
       )}
