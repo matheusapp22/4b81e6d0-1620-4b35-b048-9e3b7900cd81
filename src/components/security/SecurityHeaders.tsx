@@ -10,19 +10,13 @@ export function SecurityHeaders() {
       "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://uhgceuwfwslqwkytgdoi.supabase.co",
       "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
       "font-src 'self' https://fonts.gstatic.com",
-      "img-src 'self' data: blob: https: https://uhgceuwfwslqwkytgdoi.supabase.co",
+      "img-src 'self' data: blob: https://uhgceuwfwslqwkytgdoi.supabase.co https://*.supabase.co",
       "connect-src 'self' https://uhgceuwfwslqwkytgdoi.supabase.co wss://uhgceuwfwslqwkytgdoi.supabase.co",
-      "frame-ancestors 'none'",
+      "frame-ancestors 'self' https://lovable.dev https://*.lovable.dev",
       "base-uri 'self'",
       "form-action 'self'"
     ].join('; ');
     document.head.appendChild(cspMeta);
-
-    // Adiciona X-Frame-Options
-    const frameMeta = document.createElement('meta');
-    frameMeta.httpEquiv = 'X-Frame-Options';
-    frameMeta.content = 'DENY';
-    document.head.appendChild(frameMeta);
 
     // Adiciona X-Content-Type-Options
     const contentTypeMeta = document.createElement('meta');
@@ -39,7 +33,6 @@ export function SecurityHeaders() {
     // Remove as meta tags ao desmontar
     return () => {
       document.head.removeChild(cspMeta);
-      document.head.removeChild(frameMeta);
       document.head.removeChild(contentTypeMeta);
       document.head.removeChild(referrerMeta);
     };

@@ -30,10 +30,9 @@ export function DomainValidator({ children }: { children: React.ReactNode }) {
     });
 
     if (!isAllowed && process.env.NODE_ENV === 'production') {
-      // Em desenvolvimento, sempre permite acesso
       console.warn('Domain not in allowed list:', currentDomain);
-      // setIsAuthorized(false);
-      // return;
+      setIsAuthorized(false);
+      return;
     }
 
     // Adiciona proteção contra iframe embedding em domínios não autorizados
