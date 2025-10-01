@@ -35,6 +35,7 @@ export const TestimonialsCarousel = ({ testimonials, className = '' }: Testimoni
 
   const handleTouchStart = (e: React.TouchEvent) => {
     touchStartX.current = e.touches[0].clientX;
+    touchEndX.current = e.touches[0].clientX;
   };
 
   const handleTouchMove = (e: React.TouchEvent) => {
@@ -42,8 +43,6 @@ export const TestimonialsCarousel = ({ testimonials, className = '' }: Testimoni
   };
 
   const handleTouchEnd = () => {
-    if (!touchStartX.current || !touchEndX.current) return;
-    
     const distance = touchStartX.current - touchEndX.current;
     const minSwipeDistance = 50;
 
@@ -82,7 +81,7 @@ export const TestimonialsCarousel = ({ testimonials, className = '' }: Testimoni
       <div className="relative">
         <Card className="overflow-hidden">
           <CardContent 
-            className="p-0 touch-pan-y"
+            className="p-0"
             onTouchStart={handleTouchStart}
             onTouchMove={handleTouchMove}
             onTouchEnd={handleTouchEnd}
