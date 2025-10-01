@@ -11,6 +11,7 @@ import { useToast } from '@/hooks/use-toast';
 import { Plus, TrendingUp, TrendingDown, DollarSign, Calendar } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { BackButton } from '@/components/ui/back-button';
 
 interface CashFlowEntry {
   id: string;

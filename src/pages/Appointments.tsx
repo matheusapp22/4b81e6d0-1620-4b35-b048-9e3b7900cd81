@@ -13,6 +13,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Badge } from '@/components/ui/badge';
 import { useSubscriptionLimits } from '@/hooks/use-subscription-limits';
 import { UpgradePrompt } from '@/components/ui/upgrade-prompt';
+import { BackButton } from '@/components/ui/back-button';
 
 interface Appointment {
   id: string;
@@ -314,6 +315,9 @@ export function Appointments() {
   return (
     <div className="min-h-screen bg-gradient-hero p-6">
       <div className="max-w-6xl mx-auto">
+        <div className="mb-6">
+          <BackButton to="/dashboard" />
+        </div>
         <div className="flex justify-between items-center mb-8">
           <h1 className="text-3xl font-bold gradient-text">Agendamentos</h1>
           <div className="flex flex-col items-end gap-4">

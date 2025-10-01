@@ -10,6 +10,7 @@ import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Switch } from '@/components/ui/switch';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { BackButton } from '@/components/ui/back-button';
 
 interface BusinessHour {
   id: string;
@@ -186,6 +187,9 @@ export function Settings() {
   return (
     <div className="min-h-screen bg-gradient-hero p-6">
       <div className="max-w-4xl mx-auto">
+        <div className="mb-6">
+          <BackButton to="/dashboard" />
+        </div>
         <h1 className="text-3xl font-bold gradient-text mb-8">Configurações</h1>
         
         <Tabs defaultValue="profile" className="space-y-6">

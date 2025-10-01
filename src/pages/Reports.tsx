@@ -7,6 +7,7 @@ import { BarChart3, Calendar, DollarSign, TrendingUp, Users, Clock } from 'lucid
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { useSubscriptionLimits } from '@/hooks/use-subscription-limits';
 import { UpgradePrompt } from '@/components/ui/upgrade-prompt';
+import { BackButton } from '@/components/ui/back-button';
 
 interface ReportData {
   totalAppointments: number;

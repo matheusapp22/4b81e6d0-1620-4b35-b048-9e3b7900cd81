@@ -12,6 +12,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
 import { useSubscriptionLimits } from '@/hooks/use-subscription-limits';
 import { UpgradePrompt } from '@/components/ui/upgrade-prompt';
+import { BackButton } from '@/components/ui/back-button';
 
 interface Employee {
   id: string;

@@ -9,6 +9,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
+import { BackButton } from '@/components/ui/back-button';
 
 interface Client {
   id: string;
@@ -163,6 +164,9 @@ export function Clients() {
   return (
     <div className="min-h-screen bg-gradient-hero p-6">
       <div className="max-w-6xl mx-auto">
+        <div className="mb-6">
+          <BackButton to="/dashboard" />
+        </div>
         <div className="flex justify-between items-center mb-8">
           <h1 className="text-3xl font-bold gradient-text">Clientes</h1>
           <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>

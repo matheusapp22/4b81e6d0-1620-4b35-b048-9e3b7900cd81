@@ -16,6 +16,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 import { Upload, Clock, Save, Eye, Image as ImageIcon, User, Link2, Copy, Share2, QrCode, Plus, Trash2, Camera, Star, Edit, AlertCircle } from 'lucide-react';
 import { useSubscriptionLimits } from '@/hooks/use-subscription-limits';
 import { UpgradePrompt } from '@/components/ui/upgrade-prompt';
+import { BackButton } from '@/components/ui/back-button';
 
 interface BusinessHours {
   id: string;
