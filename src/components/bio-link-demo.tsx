@@ -5,6 +5,7 @@ import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { Separator } from "@/components/ui/separator";
 import { Phone, Instagram, Globe, Clock, Star, QrCode, Copy, MessageCircle, Calendar } from "lucide-react";
 import { useScrollAnimation } from "@/hooks/use-scroll-animation";
+import { Link } from "react-router-dom";
 
 export function BioLinkDemo() {
   useScrollAnimation();
@@ -77,18 +78,25 @@ export function BioLinkDemo() {
             </div>
 
             <div className="flex flex-col sm:flex-row gap-4">
-              <Button size="lg" className="flex-1 sm:flex-none">
-                <QrCode className="w-4 h-4 mr-2" />
-                Criar Meu Bio Link
+              <Button size="lg" className="flex-1 sm:flex-none" asChild>
+                <Link to="/biolink-editor">
+                  <QrCode className="w-4 h-4 mr-2" />
+                  Criar Meu Bio Link
+                </Link>
               </Button>
-              <Button variant="outline" size="lg" className="flex-1 sm:flex-none">
-                Ver Exemplo Completo
+              <Button variant="outline" size="lg" className="flex-1 sm:flex-none" asChild>
+                <a href="#biolink-example" onClick={(e) => {
+                  e.preventDefault();
+                  document.getElementById('biolink-example')?.scrollIntoView({ behavior: 'smooth' });
+                }}>
+                  Ver Exemplo Completo
+                </a>
               </Button>
             </div>
           </div>
 
           {/* Right Side - Bio Link Mock */}
-          <div className="relative animate-scale-in" style={{ animationDelay: '0.8s' }}>
+          <div id="biolink-example" className="relative animate-scale-in" style={{ animationDelay: '0.8s' }}>
             {/* Mobile Frame */}
             <div className="relative mx-auto max-w-sm">
               <div className="bg-card border-8 border-foreground/10 rounded-[2.5rem] p-6 shadow-2xl">
