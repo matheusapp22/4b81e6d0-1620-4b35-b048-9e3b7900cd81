@@ -25,13 +25,22 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const { toast } = useToast();
 
   const refreshProfile = async () => {
-    if (!user) return;
-    
     try {
+      // Get current session to ensure we have the latest user
+      const { data: { session } } = await supabase.auth.getSession();
+      const currentUser = session?.user;
+      
+      if (!currentUser) {
+        console.log('No user found, skipping profile refresh');
+        return;
+      }
+      
+      console.log('Refreshing profile for user:', currentUser.id);
+      
       const { data, error } = await supabase
         .from('profiles')
         .select('*')
-        .eq('user_id', user.id)
+        .eq('user_id', currentUser.id)
         .single();
       
       if (error && error.code !== 'PGRST116') {
@@ -39,6 +48,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         return;
       }
       
+      console.log('Profile refreshed:', data);
       setProfile(data);
     } catch (error) {
       console.error('Error in refreshProfile:', error);
