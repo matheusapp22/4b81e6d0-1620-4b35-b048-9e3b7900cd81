@@ -3,6 +3,7 @@ import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
 import { useScrollAnimation } from '@/hooks/use-scroll-animation';
 import { Badge } from '@/components/ui/badge';
+import { useSubscriptionLimits } from '@/hooks/use-subscription-limits';
 import { 
   Plus, 
   Calendar, 
@@ -20,6 +21,7 @@ import {
 } from 'lucide-react';
 
 export function QuickActions() {
+  const { limits, usage, loading } = useSubscriptionLimits();
   const actions = [
     {
       title: 'Novo Agendamento',
@@ -151,10 +153,19 @@ export function QuickActions() {
             <div className="mb-4">
               <div className="flex justify-between items-center mb-2">
                 <span className="text-micro font-medium">Uso mensal</span>
-                <span className="text-micro font-bold">8/20</span>
+                <span className="text-micro font-bold">
+                  {loading ? '...' : `${usage.appointments_this_month}/${limits.appointments_per_month}`}
+                </span>
               </div>
-              <div className="progress-premium" style={{ '--progress-width': '40%' } as React.CSSProperties}>
-                <div className="h-full bg-gradient-primary rounded-full transition-all duration-1000" style={{ width: '40%' }}></div>
+              <div className="progress-premium" style={{ 
+                '--progress-width': `${loading ? 0 : Math.min(100, (usage.appointments_this_month / limits.appointments_per_month) * 100)}%` 
+              } as React.CSSProperties}>
+                <div 
+                  className="h-full bg-gradient-primary rounded-full transition-all duration-1000" 
+                  style={{ 
+                    width: loading ? '0%' : `${Math.min(100, (usage.appointments_this_month / limits.appointments_per_month) * 100)}%` 
+                  }}
+                ></div>
               </div>
             </div>
             
