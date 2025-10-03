@@ -1,6 +1,5 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
-import { DomainValidator } from '@/components/security/DomainValidator'
 import { SecurityHeaders } from '@/components/security/SecurityHeaders'
 import { RateLimiter } from '@/components/security/RateLimiter'
 import { AntiClone } from '@/components/security/AntiClone'
@@ -13,13 +12,11 @@ setupAutoDataClearance()
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
-    <DomainValidator>
-      <AntiClone>
-        <RateLimiter>
-          <SecurityHeaders />
-          <App />
-        </RateLimiter>
-      </AntiClone>
-    </DomainValidator>
+    <AntiClone>
+      <RateLimiter>
+        <SecurityHeaders />
+        <App />
+      </RateLimiter>
+    </AntiClone>
   </React.StrictMode>,
 )
